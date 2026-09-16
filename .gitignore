@@ -52,6 +52,7 @@ htmlcov/
 *.sqlite3
 *.db
 postgres_data/
+uploads/
 
 # IDE & OS
 .vscode/

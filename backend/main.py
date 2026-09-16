@@ -13,6 +13,8 @@ from backend.core.errors import (
 )
 from backend.api.health import router as health_router
 from backend.api.auth import router as auth_router
+from backend.api.cases import router as cases_router
+from backend.api.messages import router as messages_router
 
 # Setup structured logging
 logging.basicConfig(
@@ -59,6 +61,8 @@ app.add_exception_handler(Exception, generic_exception_handler)
 # Include API v1 routers
 app.include_router(health_router, prefix="/api/v1")
 app.include_router(auth_router, prefix="/api/v1")
+app.include_router(cases_router, prefix="/api/v1")
+app.include_router(messages_router, prefix="/api/v1")
 
 
 @app.get("/", include_in_schema=False)
