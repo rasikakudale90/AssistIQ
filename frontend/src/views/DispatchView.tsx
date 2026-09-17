@@ -11,20 +11,23 @@ export const DispatchView: React.FC = () => {
   const fetchAlerts = async () => {
     setLoading(true);
     try {
-      const cases: Case[] = await listCasesApi();
+      const casesData = await listCasesApi();
+      const cases: Case[] = Array.isArray(casesData) ? casesData : [];
       const allEvents: Array<EscalationEvent & { caseRef?: string; caseTitle?: string }> = [];
 
       await Promise.all(
         cases.map(async (c: Case) => {
           try {
             const evs: EscalationEvent[] = await listCaseEscalationsApi(c.id);
-            evs.forEach((ev: EscalationEvent) => {
-              allEvents.push({
-                ...ev,
-                caseRef: c.reference_number,
-                caseTitle: c.title,
+            if (Array.isArray(evs)) {
+              evs.forEach((ev: EscalationEvent) => {
+                allEvents.push({
+                  ...ev,
+                  caseRef: c.reference_number || c.id.slice(0, 8),
+                  caseTitle: c.title,
+                });
               });
-            });
+            }
           } catch {
             // Ignored
           }
@@ -34,7 +37,7 @@ export const DispatchView: React.FC = () => {
       allEvents.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
       setEscalations(allEvents);
     } catch {
-      // Handled
+      setEscalations([]);
     } finally {
       setLoading(false);
     }
@@ -104,7 +107,7 @@ export const DispatchView: React.FC = () => {
           </div>
         ) : (
           escalations.map((ev) => {
-            const isAcknowledged = !!ev.acknowledged_at;
+            const isAcknowledged = ev.status === 'acknowledged' || ev.status === 'resolved' || !!ev.acknowledged_at;
             return (
               <div
                 key={ev.id}
@@ -117,11 +120,11 @@ export const DispatchView: React.FC = () => {
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs font-mono">
                   <div className="flex items-center gap-2">
                     <span className={`px-2 py-0.5 rounded font-bold uppercase text-[10px] ${
-                      ev.trigger_type === 'SLA_BREACH' || ev.trigger_type === 'MANUAL_OPERATOR'
+                      ev.trigger_type === 'SLA_BREACH' || ev.trigger_type === 'MISSED_DEADLINE' || ev.trigger_type === 'OPERATOR_REQUESTED'
                         ? 'bg-error text-on-error'
                         : 'bg-secondary text-on-secondary'
                     }`}>
-                      [{ev.trigger_type}]
+                      [{ev.trigger_type || 'ALERT'}]
                     </span>
                     <span className="font-bold text-primary">#{ev.caseRef}</span>
                     <span className="text-on-surface font-headline font-semibold text-sm">
@@ -153,7 +156,7 @@ export const DispatchView: React.FC = () => {
                 </p>
 
                 <div className="text-[11px] font-mono text-on-surface-variant pt-1 border-t border-outline-variant/20 flex items-center gap-4">
-                  <span>Target Role: <strong>{ev.notified_role}</strong></span>
+                  <span>Target Role: <strong>{ev.notified_role || 'TeamLead / Manager'}</strong></span>
                   {ev.acknowledged_at && (
                     <span>Acknowledged At: {new Date(ev.acknowledged_at).toLocaleTimeString()}</span>
                   )}

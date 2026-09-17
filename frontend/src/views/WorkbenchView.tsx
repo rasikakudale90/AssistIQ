@@ -20,15 +20,16 @@ export const WorkbenchView: React.FC = () => {
     setLoading(true);
     try {
       const data = await listCasesApi();
-      setCases(data);
-      if (data.length > 0 && !selectedCase) {
-        setSelectedCase(data[0]);
+      const safeData = Array.isArray(data) ? data : [];
+      setCases(safeData);
+      if (safeData.length > 0 && !selectedCase) {
+        setSelectedCase(safeData[0]);
       } else if (selectedCase) {
-        const found = data.find((c) => c.id === selectedCase.id);
+        const found = safeData.find((c) => c.id === selectedCase.id);
         if (found) setSelectedCase(found);
       }
     } catch {
-      // Ignored
+      setCases([]);
     } finally {
       setLoading(false);
     }
@@ -38,11 +39,18 @@ export const WorkbenchView: React.FC = () => {
     fetchCases();
   }, [user]);
 
-  const filteredCases = cases.filter((c) => {
+  const safeList = Array.isArray(cases) ? cases : [];
+
+  const filteredCases = safeList.filter((c) => {
+    const title = c.title || '';
+    const ref = c.reference_number || '';
+    const cat = c.category || c.service_id || '';
+    const query = searchQuery.toLowerCase();
+
     const matchesSearch =
-      c.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      c.reference_number.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      c.category.toLowerCase().includes(searchQuery.toLowerCase());
+      title.toLowerCase().includes(query) ||
+      ref.toLowerCase().includes(query) ||
+      cat.toLowerCase().includes(query);
 
     if (!matchesSearch) return false;
 
@@ -53,7 +61,7 @@ export const WorkbenchView: React.FC = () => {
       return c.sla?.response_breached || c.sla?.resolve_breached;
     }
     if (filterTab === 'UNASSIGNED') {
-      return !c.assigned_operator_id && !['Resolved', 'Closed', 'Cancelled'].includes(c.status);
+      return !c.assigned_operator_id && !c.owner_id && !['Resolved', 'Closed', 'Cancelled'].includes(c.status);
     }
     return true;
   });
@@ -107,7 +115,7 @@ export const WorkbenchView: React.FC = () => {
                     : 'text-on-surface-variant hover:text-on-surface'
                 }`}
               >
-                ALL ({cases.length})
+                ALL ({safeList.length})
               </button>
               <button
                 onClick={() => setFilterTab('ACTIVE')}
@@ -181,8 +189,8 @@ export const WorkbenchView: React.FC = () => {
                   >
                     <div className="flex items-center justify-between text-xs font-mono">
                       <div className="flex items-center gap-1.5">
-                        <span className="font-bold text-primary">#{c.reference_number}</span>
-                        <span className={`px-1.5 py-0.2 rounded text-[10px] font-bold ${priorityColors[c.priority]}`}>
+                        <span className="font-bold text-primary">#{c.reference_number || c.id.slice(0, 8)}</span>
+                        <span className={`px-1.5 py-0.2 rounded text-[10px] font-bold ${priorityColors[c.priority] || 'bg-surface-container'}`}>
                           {c.priority}
                         </span>
                       </div>
@@ -203,8 +211,8 @@ export const WorkbenchView: React.FC = () => {
                     </h3>
 
                     <div className="flex items-center justify-between text-[11px] font-mono text-on-surface-variant pt-1 border-t border-outline-variant/20">
-                      <span>📁 {c.category}</span>
-                      <span>{new Date(c.created_at).toLocaleDateString([], { month: 'short', day: 'numeric' })}</span>
+                      <span>📁 {c.category || c.service_id || 'General Support'}</span>
+                      <span>{c.created_at ? new Date(c.created_at).toLocaleDateString([], { month: 'short', day: 'numeric' }) : 'Today'}</span>
                     </div>
                   </div>
                 );

@@ -1,11 +1,12 @@
 import { apiClient } from './client';
 import { KnowledgeArticle } from './types';
 
-export async function listKnowledgeArticlesApi(category?: string): Promise<KnowledgeArticle[]> {
-  const res = await apiClient.get<KnowledgeArticle[]>('/knowledge', {
-    params: { category },
+export async function listKnowledgeArticlesApi(category?: string, search?: string): Promise<KnowledgeArticle[]> {
+  const res = await apiClient.get<any>('/knowledge', {
+    params: { category, search },
   });
-  return res.data;
+  const items = Array.isArray(res.data) ? res.data : (res.data?.items || []);
+  return items;
 }
 
 export async function getKnowledgeArticleApi(id: string): Promise<KnowledgeArticle> {
@@ -24,6 +25,9 @@ export async function createKnowledgeArticleApi(payload: {
 }
 
 export async function searchUnifiedApi(query: string): Promise<{ cases: any[]; articles: KnowledgeArticle[] }> {
-  const res = await apiClient.get('/search', { params: { q: query } });
-  return res.data;
+  const res = await apiClient.get<any>('/search', { params: { q: query } });
+  const results = res.data?.results || [];
+  const cases = results.filter((r: any) => r.type === 'case');
+  const articles = results.filter((r: any) => r.type === 'knowledge');
+  return { cases, articles };
 }

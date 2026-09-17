@@ -245,7 +245,7 @@ export const CaseIntakeModal: React.FC<CaseIntakeModalProps> = ({ isOpen, onClos
                       </span>
                     </div>
                     <span className="font-mono text-xs px-2 py-0.5 rounded bg-primary-container text-on-primary-container font-semibold">
-                      CONFIDENCE: {Math.round(triageResult.confidence_score * 100)}%
+                      CONFIDENCE: {triageResult.confidence_score !== undefined ? `${Math.round(triageResult.confidence_score * 100)}%` : (triageResult.confidence_level || 'HIGH')}
                     </span>
                   </div>
 
@@ -255,7 +255,7 @@ export const CaseIntakeModal: React.FC<CaseIntakeModalProps> = ({ isOpen, onClos
                         Recommended Category
                       </span>
                       <strong className="text-on-surface text-sm">
-                        {triageResult.predicted_category}
+                        {triageResult.suggested_category || triageResult.predicted_category || 'General IT'}
                       </strong>
                     </div>
 
@@ -264,7 +264,7 @@ export const CaseIntakeModal: React.FC<CaseIntakeModalProps> = ({ isOpen, onClos
                         Predicted Severity
                       </span>
                       <strong className="text-secondary font-mono text-sm">
-                        [{triageResult.predicted_priority}]
+                        [{triageResult.suggested_priority || triageResult.predicted_priority || 'P3'}]
                       </strong>
                     </div>
                   </div>
@@ -284,13 +284,13 @@ export const CaseIntakeModal: React.FC<CaseIntakeModalProps> = ({ isOpen, onClos
                   )}
 
                   {/* Missing Info Questions (SRS §5.4) */}
-                  {triageResult.missing_info_questions && triageResult.missing_info_questions.length > 0 && (
+                  {((triageResult.missing_info_questions && triageResult.missing_info_questions.length > 0) || (triageResult.missing_info && triageResult.missing_info.length > 0)) && (
                     <div className="p-3 bg-surface-container-high rounded border-l-2 border-secondary">
                       <span className="block font-mono text-[10px] text-secondary font-bold uppercase mb-1">
                         Suggested Clarification Questions (Missing Info)
                       </span>
                       <ul className="list-disc list-inside space-y-0.5 text-xs text-on-surface">
-                        {triageResult.missing_info_questions.map((q, i) => (
+                        {(triageResult.missing_info_questions || triageResult.missing_info || []).map((q, i) => (
                           <li key={i}>{q}</li>
                         ))}
                       </ul>

@@ -1,6 +1,6 @@
 from datetime import datetime
 from typing import Optional
-from pydantic import BaseModel, EmailStr, Field, ConfigDict
+from pydantic import BaseModel, Field, ConfigDict
 
 from backend.models.enums import UserRole, AuthProvider, AvailabilityStatus
 
@@ -8,7 +8,7 @@ from backend.models.enums import UserRole, AuthProvider, AvailabilityStatus
 class UserSignup(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
-    email: EmailStr
+    email: str = Field(..., min_length=3, max_length=255, description="Email address")
     password: str = Field(..., min_length=12, description="Minimum password length 12 characters per SRS §7.4")
     site: Optional[str] = Field(None, max_length=100)
     role: Optional[UserRole] = Field(UserRole.REQUESTER, description="Initial role assignment")
@@ -17,7 +17,7 @@ class UserSignup(BaseModel):
 class UserLogin(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
-    email: EmailStr
+    email: str = Field(..., min_length=3, max_length=255, description="Email address")
     password: str
 
 
@@ -33,7 +33,7 @@ class UserResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
     id: str
-    email: EmailStr
+    email: str
     role: UserRole
     auth_provider: AuthProvider
     team_id: Optional[str] = None
@@ -59,7 +59,7 @@ class RefreshTokenRequest(BaseModel):
 class PasswordResetRequest(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
-    email: EmailStr
+    email: str = Field(..., min_length=3, max_length=255, description="Email address")
 
 
 class PasswordResetConfirm(BaseModel):

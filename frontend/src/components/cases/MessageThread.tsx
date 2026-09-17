@@ -201,7 +201,7 @@ export const MessageThread: React.FC<MessageThreadProps> = ({ caseId, onMessageS
                     {m.attachments.map((att) => (
                       <a
                         key={att.id}
-                        href={getAttachmentDownloadUrl(att.id)}
+                        href={att.download_url || getAttachmentDownloadUrl(caseId, att.id)}
                         target="_blank"
                         rel="noreferrer"
                         className="inline-flex items-center gap-1 px-2 py-1 bg-surface-container rounded border border-outline-variant/30 text-[11px] font-mono text-primary hover:underline"

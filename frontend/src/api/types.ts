@@ -1,6 +1,6 @@
 export type UserRole = 'Requester' | 'Operator' | 'TeamLead' | 'Manager' | 'Administrator';
 
-export type CaseType = 'Incident' | 'ServiceRequest';
+export type CaseType = 'Incident' | 'ServiceRequest' | 'Service Request';
 
 export type CasePriority = 'P1' | 'P2' | 'P3' | 'P4';
 
@@ -11,6 +11,7 @@ export type CaseStatus =
   | 'Assigned'
   | 'AwaitingRequester'
   | 'AwaitingApproval'
+  | 'PendingExternal'
   | 'Resolved'
   | 'Closed'
   | 'Cancelled'
@@ -59,14 +60,18 @@ export interface Case {
   id: string;
   reference_number: string;
   title: string;
-  description: string;
+  description?: string;
   case_type: CaseType;
+  type?: CaseType;
   category: string;
+  service_id?: string;
   priority: CasePriority;
   status: CaseStatus;
   requester_id: string;
   requester_email?: string;
+  owner_id?: string;
   assigned_operator_id?: string;
+  team_id?: string;
   assigned_team_id?: string;
   site?: string;
   version: number;
@@ -75,16 +80,22 @@ export interface Case {
   closed_at?: string;
   resolved_at?: string;
   sla?: SLAInfo;
+  requester?: User;
+  owner?: User;
 }
 
 export interface AITriageResult {
   id: string;
   case_id: string;
-  predicted_category: string;
-  predicted_priority: CasePriority;
-  confidence_score: number;
-  supporting_factors: string[];
-  missing_info_questions: string[];
+  suggested_category?: string;
+  suggested_priority?: CasePriority;
+  predicted_category?: string;
+  predicted_priority?: CasePriority;
+  confidence_score?: number;
+  confidence_level?: string;
+  supporting_factors?: string[];
+  missing_info_questions?: string[];
+  missing_info?: string[];
   suggested_team?: string;
   recommended_next_action?: string;
   created_at: string;
@@ -94,10 +105,10 @@ export interface CaseSummary {
   id: string;
   case_id: string;
   summary_text: string;
-  what_was_reported: string;
-  what_happened_since: string;
-  what_is_confirmed: string;
-  what_remains_unresolved: string;
+  what_was_reported?: string;
+  what_happened_since?: string;
+  what_is_confirmed?: string;
+  what_remains_unresolved?: string;
   updated_at: string;
 }
 
@@ -105,18 +116,24 @@ export interface RiskAssessment {
   id: string;
   case_id: string;
   risk_level: 'Low' | 'Moderate' | 'High' | 'Critical';
-  risk_score: number;
-  risk_factors: string[];
-  recommended_action: string;
-  created_at: string;
+  risk_score?: number;
+  signals?: Record<string, any>;
+  risk_factors?: string[];
+  recommended_action?: string;
+  computed_at?: string;
+  created_at?: string;
 }
 
 export interface EscalationEvent {
   id: string;
   case_id: string;
-  trigger_type: 'SLA_BREACH' | 'REPEATED_REOPENS' | 'RISK_THRESHOLD' | 'MANUAL_OPERATOR';
-  reason: string;
-  notified_role: string;
+  trigger_reason?: string;
+  trigger_type?: string;
+  reason?: string;
+  notified_role?: string;
+  escalated_to?: string;
+  escalated_by?: string;
+  status?: string;
   acknowledged_by_id?: string;
   acknowledged_at?: string;
   created_at: string;
@@ -126,17 +143,18 @@ export interface CommunicationDraft {
   id: string;
   case_id: string;
   draft_type: 'info_request' | 'progress_update' | 'resolution' | 'escalation_summary';
-  recipient_role: string;
+  recipient_role?: string;
   subject: string;
   body: string;
-  status: 'DRAFT' | 'APPROVED' | 'SENT' | 'DISCARDED';
+  status: 'draft' | 'sent' | 'discarded' | 'DRAFT' | 'APPROVED' | 'SENT' | 'DISCARDED';
   created_at: string;
 }
 
 export interface Message {
   id: string;
   case_id: string;
-  sender_id: string;
+  author_id?: string;
+  sender_id?: string;
   sender_email?: string;
   sender_role?: string;
   visibility: 'requester_visible' | 'internal_only';
@@ -144,6 +162,7 @@ export interface Message {
   ai_generated: boolean;
   created_at: string;
   attachments?: Attachment[];
+  author?: User;
 }
 
 export interface Attachment {
@@ -151,9 +170,11 @@ export interface Attachment {
   case_id: string;
   message_id?: string;
   file_name: string;
+  file_type?: string;
   file_size: number;
-  mime_type: string;
+  mime_type?: string;
   storage_path: string;
+  download_url?: string;
   created_at: string;
 }
 
@@ -163,20 +184,25 @@ export interface AuditLog {
   actor_id?: string;
   actor_email?: string;
   action: string;
+  target_type?: string;
+  target_id?: string;
   old_value?: Record<string, any>;
   new_value?: Record<string, any>;
+  before_value?: Record<string, any>;
+  after_value?: Record<string, any>;
   created_at: string;
 }
 
 export interface KnowledgeArticle {
   id: string;
   title: string;
-  slug: string;
+  slug?: string;
   category: string;
   content: string;
-  status: 'DRAFT' | 'PUBLISHED' | 'ARCHIVED';
-  view_count: number;
-  owner_id: string;
+  state?: 'draft' | 'published' | 'archived';
+  status?: 'DRAFT' | 'PUBLISHED' | 'ARCHIVED';
+  view_count?: number;
+  owner_id?: string;
   created_at: string;
   updated_at: string;
 }
