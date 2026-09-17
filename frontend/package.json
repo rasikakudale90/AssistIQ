@@ -1,13 +1,30 @@
 {
-  "name": "assistiq-frontend",
+  "name": "assistiq-helpdesk",
   "private": true,
   "version": "1.0.0",
-  "type": "module",
+  "description": "AssistIQ AI-Assisted IT Helpdesk Desktop Console",
+  "main": "electron/main.cjs",
+  "author": "AssistIQ Team",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "desktop": "electron ./electron/main.cjs"
+    "desktop": "electron .",
+    "dist:win": "tsc && vite build && electron-builder --win --dir"
+  },
+  "build": {
+    "appId": "com.assistiq.helpdesk",
+    "productName": "AssistIQ Helpdesk",
+    "directories": {
+      "output": "dist-desktop"
+    },
+    "files": [
+      "dist/**/*",
+      "electron/**/*"
+    ],
+    "win": {
+      "target": "dir"
+    }
   },
   "dependencies": {
     "axios": "^1.7.9",
@@ -18,11 +35,13 @@
     "tailwind-merge": "^2.6.0"
   },
   "devDependencies": {
+    "@electron/packager": "^20.3.0",
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",
     "@vitejs/plugin-react": "^4.3.4",
     "autoprefixer": "^10.4.20",
     "electron": "^44.4.1",
+    "electron-builder": "^26.15.3",
     "postcss": "^8.4.49",
     "tailwindcss": "^3.4.17",
     "typescript": "^5.7.2",
