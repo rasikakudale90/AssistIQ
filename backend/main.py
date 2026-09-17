@@ -20,6 +20,8 @@ from backend.api.search import router as search_router
 from backend.api.ai import router as ai_router
 from backend.api.sla import router as sla_router
 from backend.api.escalations import router as escalations_router
+from backend.api.insights import router as insights_router
+from backend.api.reports import router as reports_router
 from backend.scheduler.scheduler import start_scheduler, stop_scheduler
 
 # Setup structured logging
@@ -79,6 +81,8 @@ app.include_router(search_router, prefix="/api/v1")
 app.include_router(ai_router, prefix="/api/v1")
 app.include_router(sla_router, prefix="/api/v1")
 app.include_router(escalations_router, prefix="/api/v1")
+app.include_router(insights_router, prefix="/api/v1")
+app.include_router(reports_router, prefix="/api/v1")
 
 
 @app.get("/", include_in_schema=False)

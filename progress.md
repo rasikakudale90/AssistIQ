@@ -17,11 +17,11 @@
 | **Phase 5** | Case Messaging (Visibility Scoping), File Attachments (Storage Providers) & Idempotency | ✅ Completed | 6 passed | `feature/phase-5-messaging` |
 | **Phase 6** | Unified Full-Text Search, Candidate Similarity Detection & Knowledge Base | ✅ Completed | 3 passed | `feature/phase-6-search-knowledge` |
 | **Phase 7** | Gemini AI Capabilities & In-Process Scheduler (The Sweep, SLA, Risk, Escalations) | ✅ Completed | 16 passed | `feature/phase-7-ai-sweep` |
-| **Phase 8** | Operational Insights, CSV Export, Demo Seeder (`seed_demo_data.py`) & Full Test Suite | ⏳ Next Up | Pending | `feature/phase-8-insights-seeder` |
+| **Phase 8** | Operational Insights, CSV Export, Demo Seeder (`seed_demo_data.py`) & Full Test Suite | ✅ Completed | 50 passed | `feature/phase-8-insights-seeder` |
 
 ---
 
-## 🛠️ Summary of Completed Phases (1 to 7)
+## 🛠️ Summary of Completed Phases (1 to 8)
 
 ### Phase 1: Backend Scaffolding & Environment Setup
 * Root configuration: [`.gitignore`](file:///e:/AssistIQ/.gitignore), [`docker-compose.yml`](file:///e:/AssistIQ/docker-compose.yml) (Postgres 16), [`backend/requirements.txt`](file:///e:/AssistIQ/backend/requirements.txt), [`backend/.env.example`](file:///e:/AssistIQ/backend/.env.example).
@@ -74,10 +74,16 @@
 * In-Process Scheduler ("The Sweep"): [`backend/scheduler/`](file:///e:/AssistIQ/backend/scheduler/) (APScheduler running `run_the_sweep` evaluating open cases for SLA breaches, computing `CaseRiskAssessment` scores, and raising automatic `EscalationEvent` records).
 * Level 2 Human Escalation & Endpoints: [`backend/api/ai.py`](file:///e:/AssistIQ/backend/api/ai.py), [`backend/api/sla.py`](file:///e:/AssistIQ/backend/api/sla.py), [`backend/api/escalations.py`](file:///e:/AssistIQ/backend/api/escalations.py).
 
+### Phase 8: Operational Insights, CSV Export, Demo Seeder & Full Verification
+* Operational Insights Service: [`backend/services/insights_service.py`](file:///e:/AssistIQ/backend/services/insights_service.py) (SQL aggregations across `7d`, `30d`, `90d`, and `all` time windows; volume by category, priority, status, site; reopen rate; average MTTR/resolution time; SLA compliance rate; AI plain-language operational narrative).
+* Role-Scoped CSV Export: [`backend/services/export_service.py`](file:///e:/AssistIQ/backend/services/export_service.py) & [`backend/api/reports.py`](file:///e:/AssistIQ/backend/api/reports.py) (`GET /api/v1/reports/export/cases.csv` enforcing requester vs staff visibility boundaries with streaming `text/csv`).
+* Quick Dashboard Stats: `GET /api/v1/insights/dashboard` returning real-time active, unassigned, breached, and critical counts.
+* Demo Seeder Script: [`scripts/seed_demo_data.py`](file:///e:/AssistIQ/scripts/seed_demo_data.py) (idempotent seeder creating 5 role-representative test users, 3 teams, 18 cases spanning all lifecycle states, SLAs, messages, attachments, AI triage/summaries/risk assessments, escalation events, and knowledge articles).
+
 ---
 
 ## 🧪 Test Suite Status
-Total tests passing: **44 tests (100% pass rate)**.
+Total tests passing: **50 tests (100% pass rate)**.
 Command to run full backend tests:
 ```cmd
 python -m pytest backend/tests/ -v
@@ -85,10 +91,9 @@ python -m pytest backend/tests/ -v
 
 ---
 
-## 🚀 Next Steps (Phase 8)
+## 🚀 Next Steps (Phase 9+: Frontend & Production Readiness)
 
-1. **Phase 8: Operational Insights, CSV Export & Demo Seeder**:
-   * SQL aggregations for Manager/Admin operational metrics (case volumes by category, site, team, resolution times, reopen rates).
-   * Plain-language operational insight narration via Gemini.
-   * Role-scoped CSV data export (`GET /api/v1/reports/export.csv`).
-   * `scripts/seed_demo_data.py`: comprehensive seed script populating all 5 roles, 15-20 cases across lifecycle states, sample messages, attachments, SLAs, triage results, summaries, risk assessments, and escalations.taset across all 5 roles and lifecycle states).
+1. **Phase 9: Flutter Multi-Target Web/Desktop/Mobile Application**:
+   * Scaffolding Flutter app with responsive split-screen layouts, glassmorphism dark mode aesthetic.
+   * State management, auth session storage, RBAC-aware navigation, and reactive notifications.
+   * Case creation wizards, AI triage inspection badges, message threads with visibility toggles, and live operational insights dashboards.
