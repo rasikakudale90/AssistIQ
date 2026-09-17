@@ -1,23 +1,28 @@
 import { apiClient } from './client';
 import { AuthTokens, User } from './types';
 
-export async function loginApi(email: string, password: string): Promise<{ tokens: AuthTokens; user: User }> {
-  const formData = new URLSearchParams();
-  formData.append('username', email);
-  formData.append('password', password);
+export interface TokenResponse {
+  access_token: string;
+  refresh_token: string;
+  token_type: string;
+  user: User;
+}
 
-  const res = await apiClient.post<AuthTokens>('/auth/login', formData, {
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+export async function loginApi(email: string, password: string): Promise<{ tokens: AuthTokens; user: User }> {
+  const res = await apiClient.post<TokenResponse>('/auth/login', {
+    email,
+    password,
   });
 
-  const tokens = res.data;
-  localStorage.setItem('assistiq_token', tokens.access_token);
-  localStorage.setItem('assistiq_refresh_token', tokens.refresh_token);
+  const { access_token, refresh_token, user } = res.data;
+  localStorage.setItem('assistiq_token', access_token);
+  localStorage.setItem('assistiq_refresh_token', refresh_token);
+  localStorage.setItem('assistiq_user', JSON.stringify(user));
 
-  const userRes = await apiClient.get<User>('/auth/me');
-  localStorage.setItem('assistiq_user', JSON.stringify(userRes.data));
-
-  return { tokens, user: userRes.data };
+  return {
+    tokens: { access_token, refresh_token, token_type: res.data.token_type },
+    user,
+  };
 }
 
 export async function getMeApi(): Promise<User> {
@@ -25,7 +30,17 @@ export async function getMeApi(): Promise<User> {
   return res.data;
 }
 
-export async function signupApi(email: string, password: string, role?: string): Promise<User> {
-  const res = await apiClient.post<User>('/auth/signup', { email, password, role });
+export async function signupApi(
+  email: string,
+  password: string,
+  role: string = 'Requester',
+  site: string = 'Main Facility'
+): Promise<User> {
+  const res = await apiClient.post<User>('/auth/signup', {
+    email,
+    password,
+    role,
+    site,
+  });
   return res.data;
 }

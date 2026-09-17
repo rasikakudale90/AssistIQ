@@ -19,11 +19,11 @@ export type CaseStatus =
 export interface User {
   id: string;
   email: string;
-  full_name?: string;
   role: UserRole;
-  is_active: boolean;
-  is_verified: boolean;
-  teams?: { id: string; name: string }[];
+  site?: string;
+  team_id?: string;
+  email_verified?: boolean;
+  is_active?: boolean;
 }
 
 export interface AuthTokens {

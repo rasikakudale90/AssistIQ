@@ -9,6 +9,12 @@ Populates:
 
 import sys
 import os
+
+if hasattr(sys.stdout, 'reconfigure'):
+    sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+if hasattr(sys.stderr, 'reconfigure'):
+    sys.stderr.reconfigure(encoding='utf-8', errors='replace')
+
 from datetime import datetime, timezone, timedelta
 
 # Add project root to path
@@ -49,6 +55,8 @@ from backend.services.sla_service import SLAService
 
 
 def seed_demo_data(db: Session) -> None:
+    print("🌱 [AssistIQ Seeder] Creating tables if not existing...")
+    Base.metadata.create_all(bind=engine)
     print("🌱 [AssistIQ Seeder] Starting database seeding...")
 
     # Default password hash for all demo users: Password123!@#
