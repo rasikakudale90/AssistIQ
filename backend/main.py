@@ -17,6 +17,10 @@ from backend.api.cases import router as cases_router
 from backend.api.messages import router as messages_router
 from backend.api.knowledge import router as knowledge_router
 from backend.api.search import router as search_router
+from backend.api.ai import router as ai_router
+from backend.api.sla import router as sla_router
+from backend.api.escalations import router as escalations_router
+from backend.scheduler.scheduler import start_scheduler, stop_scheduler
 
 # Setup structured logging
 logging.basicConfig(
@@ -32,9 +36,14 @@ async def lifespan(app: FastAPI):
     logger.info("Initializing AssistIQ Backend...")
     settings.validate_startup_config()
     logger.info(f"AssistIQ running in [{settings.ENVIRONMENT}] environment.")
+
+    # Start in-process scheduler (The Sweep) unless disabled for simple tests
+    start_scheduler()
+
     yield
     # Teardown
     logger.info("Shutting down AssistIQ Backend...")
+    stop_scheduler()
 
 
 app = FastAPI(
@@ -67,6 +76,9 @@ app.include_router(cases_router, prefix="/api/v1")
 app.include_router(messages_router, prefix="/api/v1")
 app.include_router(knowledge_router, prefix="/api/v1")
 app.include_router(search_router, prefix="/api/v1")
+app.include_router(ai_router, prefix="/api/v1")
+app.include_router(sla_router, prefix="/api/v1")
+app.include_router(escalations_router, prefix="/api/v1")
 
 
 @app.get("/", include_in_schema=False)

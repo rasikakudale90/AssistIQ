@@ -24,6 +24,7 @@ from backend.schemas.message import (
     AttachmentListResponse,
 )
 from backend.services.case_service import CaseService
+from backend.services.sla_service import SLAService
 
 
 class MessageService:
@@ -49,6 +50,10 @@ class MessageService:
             visibility=data.visibility,
             ai_generated=False,
         )
+
+        # 3. Record SLA first response if staff sent a requester-visible message (SRS §4.3)
+        if current_user.role != UserRole.REQUESTER and data.visibility == MessageVisibility.REQUESTER_VISIBLE:
+            SLAService.record_first_response(db, case.id)
 
         # 3. Lifecycle trigger: If case was AwaitingRequester and Requester replied -> advance to Assigned (SRS §6.1)
         if (

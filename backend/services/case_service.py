@@ -25,6 +25,7 @@ from backend.schemas.case import (
     CaseSummaryResponse,
     AuditLogResponse,
 )
+from backend.services.sla_service import SLAService
 
 
 class CaseService:
@@ -63,7 +64,10 @@ class CaseService:
             version=1,
         )
         db.add(case)
-        db.flush()  # Flush to get case.id for audit log
+        db.flush()  # Flush to get case.id for audit log and SLA
+
+        # Initialize 24/7 SLA record (SRS §4.3)
+        SLAService.create_sla_for_case(db, case)
 
         AuditRepository.create_log(
             db=db,
@@ -171,6 +175,7 @@ class CaseService:
         now = datetime.now(timezone.utc)
         if new_status == CaseStatus.RESOLVED:
             case.resolved_at = now
+            SLAService.record_resolution(db, case.id)
         elif new_status == CaseStatus.CLOSED:
             case.closed_at = now
         elif new_status == CaseStatus.ASSIGNED and old_status == CaseStatus.RESOLVED:
@@ -314,6 +319,9 @@ class CaseService:
         case.closed_at = None
         case.version += 1
         case.updated_at = datetime.now(timezone.utc)
+
+        # Reset SLA clock on 7-day reopen (SRS §6)
+        SLAService.reset_sla_on_reopen(db, case)
 
         AuditRepository.create_log(
             db=db,
