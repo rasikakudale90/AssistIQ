@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
-import { UserRole, DashboardStats } from '../../api/types';
+import { DashboardStats } from '../../api/types';
 import { getDashboardStatsApi } from '../../api/insights';
 
 export const Header: React.FC = () => {
-  const { user, logout, switchDemoRole } = useAuth();
+  const { user, logout } = useAuth();
   const [stats, setStats] = useState<DashboardStats | null>(null);
-  const [showRoleMenu, setShowRoleMenu] = useState(false);
+  const [showUserMenu, setShowUserMenu] = useState(false);
 
   useEffect(() => {
     if (user && user.role !== 'Requester') {
@@ -15,8 +15,6 @@ export const Header: React.FC = () => {
         .catch(() => {});
     }
   }, [user]);
-
-  const roles: UserRole[] = ['Requester', 'Operator', 'TeamLead', 'Manager', 'Administrator'];
 
   return (
     <header className="fixed top-0 w-full z-50 bg-surface-container-low/95 backdrop-blur-md shadow-[0_1px_8px_rgba(0,0,0,0.04)] border-b border-outline-variant/30">
@@ -54,23 +52,23 @@ export const Header: React.FC = () => {
           </div>
         )}
 
-        {/* User & Role Switcher */}
+        {/* User Profile & Account Actions */}
         <div className="flex items-center gap-3 flex-shrink-0">
           {user && (
             <div className="relative">
               <button
-                onClick={() => setShowRoleMenu(!showRoleMenu)}
-                className="flex items-center gap-2 bg-surface-container-high hover:bg-surface-container-highest px-3 py-1.5 rounded transition-colors border border-outline-variant/40"
+                onClick={() => setShowUserMenu(!showUserMenu)}
+                className="flex items-center gap-2.5 bg-surface-container-high hover:bg-surface-container-highest px-3 py-1.5 rounded transition-colors border border-outline-variant/40"
               >
                 <div className="flex flex-col items-end text-right">
-                  <span className="font-mono text-[11px] text-on-surface font-semibold truncate max-w-[120px]">
-                    {user.email.split('@')[0]}
+                  <span className="font-mono text-[11px] text-on-surface font-semibold truncate max-w-[140px]">
+                    {user.email}
                   </span>
                   <span className="font-mono text-[9px] uppercase tracking-wider text-primary font-bold">
                     [{user.role}]
                   </span>
                 </div>
-                <div className="w-7 h-7 rounded-full bg-primary flex items-center justify-center text-on-primary text-xs font-bold">
+                <div className="w-7 h-7 rounded-full bg-primary flex items-center justify-center text-on-primary text-xs font-bold shadow-xs">
                   {user.role[0]}
                 </div>
                 <span className="material-symbols-outlined text-[16px] text-on-surface-variant">
@@ -78,41 +76,38 @@ export const Header: React.FC = () => {
                 </span>
               </button>
 
-              {/* Demo Persona Switcher Dropdown */}
-              {showRoleMenu && (
-                <div className="absolute right-0 mt-2 w-56 bg-surface-container-lowest border border-outline-variant/50 rounded shadow-lg py-2 z-50">
-                  <div className="px-3 py-1 border-b border-outline-variant/20 mb-1">
-                    <span className="font-mono text-[10px] text-on-surface-variant uppercase tracking-wider">
-                      Switch Demo Persona
+              {/* User Account Menu Dropdown */}
+              {showUserMenu && (
+                <div className="absolute right-0 mt-2 w-64 bg-surface-container-lowest border border-outline-variant/50 rounded shadow-lg py-2 z-50">
+                  <div className="px-3.5 py-2 border-b border-outline-variant/20 mb-1">
+                    <span className="block font-mono text-[10px] text-on-surface-variant uppercase tracking-wider">
+                      Signed In As
                     </span>
-                  </div>
-                  {roles.map((r) => (
-                    <button
-                      key={r}
-                      onClick={() => {
-                        switchDemoRole(r);
-                        setShowRoleMenu(false);
-                      }}
-                      className={`w-full text-left px-3 py-1.5 text-xs flex items-center justify-between hover:bg-surface-container transition-colors ${
-                        user.role === r ? 'font-bold text-primary bg-surface-container-low' : 'text-on-surface'
-                      }`}
-                    >
-                      <span>{r}</span>
-                      {user.role === r && (
-                        <span className="font-mono text-[10px] text-primary">CURRENT</span>
+                    <strong className="block text-xs font-mono text-on-surface truncate">
+                      {user.email}
+                    </strong>
+                    <div className="flex items-center gap-2 mt-1 font-mono text-[10px]">
+                      <span className="px-1.5 py-0.2 bg-primary/10 text-primary font-bold rounded">
+                        {user.role}
+                      </span>
+                      {user.site && (
+                        <span className="text-on-surface-variant truncate">
+                          📍 {user.site}
+                        </span>
                       )}
-                    </button>
-                  ))}
-                  <div className="border-t border-outline-variant/20 mt-1 pt-1">
+                    </div>
+                  </div>
+
+                  <div className="pt-1">
                     <button
                       onClick={() => {
                         logout();
-                        setShowRoleMenu(false);
+                        setShowUserMenu(false);
                       }}
-                      className="w-full text-left px-3 py-1.5 text-xs text-error hover:bg-error-container/30 flex items-center gap-1.5 transition-colors"
+                      className="w-full text-left px-3.5 py-2 text-xs text-error hover:bg-error-container/30 flex items-center gap-2 font-mono font-semibold transition-colors"
                     >
-                      <span className="material-symbols-outlined text-[14px]">logout</span>
-                      Log out
+                      <span className="material-symbols-outlined text-[16px]">logout</span>
+                      Sign Out
                     </button>
                   </div>
                 </div>

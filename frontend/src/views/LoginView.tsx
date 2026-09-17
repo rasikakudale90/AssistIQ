@@ -4,7 +4,7 @@ import { signupApi } from '../api/auth';
 import { UserRole } from '../api/types';
 
 export const LoginView: React.FC = () => {
-  const { login, switchDemoRole, loading } = useAuth();
+  const { login, loading } = useAuth();
   const [authMode, setAuthMode] = useState<'signin' | 'register'>('signin');
 
   // Sign In States
@@ -27,7 +27,7 @@ export const LoginView: React.FC = () => {
     try {
       await login(email, password);
     } catch (err: any) {
-      setError(err.response?.data?.message || err.message || 'Invalid email or password');
+      setError(err.response?.data?.message || err.response?.data?.error?.message || err.message || 'Invalid email or password');
     }
   };
 
@@ -49,56 +49,23 @@ export const LoginView: React.FC = () => {
       setPassword('');
       setAuthMode('signin');
     } catch (err: any) {
-      setError(err.response?.data?.message || err.message || 'Registration failed. Email might already exist.');
+      setError(err.response?.data?.message || err.response?.data?.error?.message || err.message || 'Registration failed. Email might already exist.');
     } finally {
       setRegLoading(false);
     }
   };
 
-  const demoRoles: Array<{ role: UserRole; title: string; email: string; desc: string }> = [
-    {
-      role: 'Operator',
-      title: 'Tier 1 Operator',
-      email: 'operator@assistiq.local',
-      desc: 'Triage workbench, internal notes, AI draft assistance',
-    },
-    {
-      role: 'Manager',
-      title: 'IT Helpdesk Manager',
-      email: 'manager@assistiq.local',
-      desc: 'Operational insights, AI narrative, CSV reports',
-    },
-    {
-      role: 'TeamLead',
-      title: 'Support Team Lead',
-      email: 'lead@assistiq.local',
-      desc: 'Queue routing, SLA monitoring, escalations',
-    },
-    {
-      role: 'Requester',
-      title: 'Field Requester',
-      email: 'requester@assistiq.local',
-      desc: 'Submit incidents, track status, view public notes',
-    },
-    {
-      role: 'Administrator',
-      title: 'System Administrator',
-      email: 'admin@assistiq.local',
-      desc: 'Full RBAC, team administration, audit trails',
-    },
-  ];
-
   return (
-    <div className="min-h-screen bg-surface flex flex-col justify-center py-10 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-surface flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md text-center">
         <div className="w-12 h-12 rounded bg-primary flex items-center justify-center text-on-primary font-headline font-bold text-2xl mx-auto shadow-md">
           AI
         </div>
-        <h2 className="mt-3 font-headline text-2xl font-bold text-on-surface">
-          AssistIQ IT Helpdesk
+        <h2 className="mt-4 font-headline text-2xl font-bold text-on-surface">
+          AssistIQ Enterprise Helpdesk
         </h2>
         <p className="mt-1 font-mono text-xs text-primary font-medium tracking-wider uppercase">
-          MW-OS // ENTERPRISE AUTHENTICATION & ONBOARDING
+          MW-OS // SECURE WORKSTATION ACCESS
         </p>
       </div>
 
@@ -154,17 +121,17 @@ export const LoginView: React.FC = () => {
 
           {authMode === 'signin' ? (
             /* Sign In Form */
-            <form className="space-y-3" onSubmit={handleSignIn}>
+            <form className="space-y-3.5" onSubmit={handleSignIn}>
               <div>
                 <label className="block font-mono text-[11px] font-semibold text-on-surface-variant uppercase mb-1">
-                  Email Address
+                  Corporate Email
                 </label>
                 <input
                   type="email"
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="operator@assistiq.local"
+                  placeholder="your.email@assistiq.local"
                   className="w-full px-3 py-2 bg-surface-container-lowest border border-outline-variant/40 rounded text-xs text-on-surface focus:outline-none focus:ring-1 focus:ring-primary font-mono"
                 />
               </div>
@@ -178,7 +145,7 @@ export const LoginView: React.FC = () => {
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••"
+                  placeholder="••••••••••••"
                   className="w-full px-3 py-2 bg-surface-container-lowest border border-outline-variant/40 rounded text-xs text-on-surface focus:outline-none focus:ring-1 focus:ring-primary font-mono"
                 />
               </div>
@@ -194,7 +161,7 @@ export const LoginView: React.FC = () => {
             </form>
           ) : (
             /* Register Account Form */
-            <form className="space-y-3" onSubmit={handleRegister}>
+            <form className="space-y-3.5" onSubmit={handleRegister}>
               <div>
                 <label className="block font-mono text-[11px] font-semibold text-on-surface-variant uppercase mb-1">
                   Corporate Email
@@ -204,14 +171,14 @@ export const LoginView: React.FC = () => {
                   required
                   value={regEmail}
                   onChange={(e) => setRegEmail(e.target.value)}
-                  placeholder="new.user@company.local"
+                  placeholder="name@company.local"
                   className="w-full px-3 py-2 bg-surface-container-lowest border border-outline-variant/40 rounded text-xs text-on-surface focus:outline-none focus:ring-1 focus:ring-primary font-mono"
                 />
               </div>
 
               <div>
                 <label className="block font-mono text-[11px] font-semibold text-on-surface-variant uppercase mb-1">
-                  Create Password (Min 12 Chars)
+                  Create Password (Min 12 Characters)
                 </label>
                 <input
                   type="password"
@@ -219,18 +186,18 @@ export const LoginView: React.FC = () => {
                   minLength={12}
                   value={regPassword}
                   onChange={(e) => setRegPassword(e.target.value)}
-                  placeholder="Password123!@# (min 12 characters)"
+                  placeholder="Min 12 characters (e.g. Password123!@#)"
                   className="w-full px-3 py-2 bg-surface-container-lowest border border-outline-variant/40 rounded text-xs text-on-surface focus:outline-none focus:ring-1 focus:ring-primary font-mono"
                 />
                 <span className="text-[10px] text-on-surface-variant block mt-0.5">
-                  Must meet enterprise Argon2id complexity (12+ characters).
+                  Must meet enterprise Argon2id complexity requirements.
                 </span>
               </div>
 
               <div className="grid grid-cols-2 gap-2">
                 <div>
                   <label className="block font-mono text-[11px] font-semibold text-on-surface-variant uppercase mb-1">
-                    Role Assignment
+                    Role
                   </label>
                   <select
                     value={regRole}
@@ -253,7 +220,7 @@ export const LoginView: React.FC = () => {
                     type="text"
                     value={regSite}
                     onChange={(e) => setRegSite(e.target.value)}
-                    placeholder="e.g. Substation 4"
+                    placeholder="e.g. Main Facility"
                     className="w-full px-2.5 py-1.5 bg-surface-container-lowest border border-outline-variant/40 rounded text-xs text-on-surface font-mono"
                   />
                 </div>
@@ -269,43 +236,6 @@ export const LoginView: React.FC = () => {
               </button>
             </form>
           )}
-
-          {/* Quick 1-Click Demo Personas */}
-          <div className="mt-4 pt-4 border-t border-outline-variant/30">
-            <div className="flex items-center gap-1.5 mb-2.5">
-              <span className="material-symbols-outlined text-primary text-[16px]">vpn_key</span>
-              <span className="font-mono text-[11px] text-primary uppercase font-bold tracking-wider">
-                Instant 1-Click Demo Personas (Pre-seeded)
-              </span>
-            </div>
-            <div className="grid grid-cols-1 gap-1.5">
-              {demoRoles.map((d) => (
-                <button
-                  key={d.role}
-                  type="button"
-                  onClick={() => switchDemoRole(d.role)}
-                  className="flex items-center justify-between p-2 bg-surface-container-lowest hover:bg-surface-container rounded border border-outline-variant/30 text-left transition-colors group"
-                >
-                  <div className="min-w-0">
-                    <div className="flex items-center gap-1.5">
-                      <span className="font-mono text-xs font-bold text-on-surface">
-                        {d.title}
-                      </span>
-                      <span className="font-mono text-[10px] text-primary font-bold">
-                        [{d.role}]
-                      </span>
-                    </div>
-                    <span className="block font-sans text-[11px] text-on-surface-variant truncate">
-                      {d.desc}
-                    </span>
-                  </div>
-                  <span className="material-symbols-outlined text-[16px] text-on-surface-variant group-hover:text-primary transition-colors flex-shrink-0">
-                    arrow_forward
-                  </span>
-                </button>
-              ))}
-            </div>
-          </div>
         </div>
       </div>
     </div>
