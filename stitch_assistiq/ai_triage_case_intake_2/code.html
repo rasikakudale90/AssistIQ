@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500;600&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{width:100%;min-height:100%;margin:0;padding:0;background-color:#fff8f2;color:#1e1b17;}body{overscroll-behavior:none;-webkit-tap-highlight-color:transparent;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { colors: { "error": "#ba1a1a", "tertiary-container": "#916a07", "on-error-container": "#93000a", "tertiary": "#735300", "surface-container-lowest": "#ffffff", "surface-container-low": "#faf2ea", "on-primary": "#ffffff", "surface-bright": "#fff8f2", "secondary-container": "#fe8760", "on-primary-fixed": "#171e00", "on-primary-container": "#f0fcc4", "background": "#fff8f2", "primary-fixed": "#dde8b1", "surface-variant": "#e8e1d9", "on-error": "#ffffff", "secondary-fixed-dim": "#ffb59d", "surface": "#fff8f2", "on-tertiary-container": "#fff4e8", "on-secondary-fixed": "#390b00", "primary-container": "#6b7548", "on-tertiary": "#ffffff", "on-surface-variant": "#46483d", "outline-variant": "#c7c7b9", "inverse-primary": "#c1cc97", "surface-tint": "#596337", "on-secondary-container": "#732101", "primary-fixed-dim": "#c1cc97", "secondary": "#a0401f", "outline": "#77786c", "on-tertiary-fixed-variant": "#5d4200", "on-background": "#1e1b17", "surface-container": "#f4ede5", "tertiary-fixed": "#ffdea4", "inverse-on-surface": "#f7f0e7", "secondary-fixed": "#ffdbd0", "surface-container-highest": "#e8e1d9", "on-surface": "#1e1b17", "on-secondary-fixed-variant": "#802a08", "on-tertiary-fixed": "#261900", "surface-container-high": "#eee7df", "surface-dim": "#e0d9d1", "tertiary-fixed-dim": "#f0bf5c", "error-container": "#ffdad6", "inverse-surface": "#33302b", "on-secondary": "#ffffff", "on-primary-fixed-variant": "#414b22", "primary": "#535c32" }, borderRadius: { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" }, spacing: { "space-xl": "2rem", "gutter-mobile": "0.75rem", "margin": "1.5rem", "space-md": "1rem", "space-lg": "1.5rem", "gutter": "1rem", "margin-mobile": "1rem", "space-sm": "0.5rem", "space-xs": "0.25rem" }, fontFamily: { "body-sm": ["IBM Plex Sans"], "headline-sm": ["Space Grotesk"], "label-caps": ["JetBrains Mono"], "body-lg": ["IBM Plex Sans"], "label-sm": ["IBM Plex Sans"], "code-sm": ["JetBrains Mono"], "code-md": ["JetBrains Mono"], "headline-lg": ["Space Grotesk"], "title-md": ["Space Grotesk"], "code-lg": ["JetBrains Mono"], "headline-lg-mobile": ["Space Grotesk"], "body-md": ["IBM Plex Sans"], "headline-md": ["Space Grotesk"] }, fontSize: { "body-sm": ["13px", { "lineHeight": "18px", "fontWeight": "400" }], "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "600" }], "label-caps": ["11px", { "lineHeight": "16px", "letterSpacing": "0.08em", "fontWeight": "600" }], "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }], "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "500" }], "code-sm": ["11px", { "lineHeight": "16px", "fontWeight": "500" }], "code-md": ["13px", { "lineHeight": "18px", "fontWeight": "500" }], "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "title-md": ["16px", { "lineHeight": "24px", "fontWeight": "600" }], "code-lg": ["15px", { "lineHeight": "22px", "fontWeight": "500" }], "headline-lg-mobile": ["26px", { "lineHeight": "34px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }], "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }] } } } };</script><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head><body class="bg-surface font-body-md text-body-md text-on-surface flex flex-col min-h-screen antialiased"><header class="fixed top-0 w-full z-50 pt-safe bg-surface-container-low/95 backdrop-blur-md border-b border-outline-variant/50"><div class="h-16 px-4 flex items-center justify-between gap-3"><div class="flex items-center gap-2 min-w-0"><button aria-label="Navigate back" class="w-10 h-10 flex items-center justify-center rounded text-on-surface hover:bg-surface-container transition-colors flex-shrink-0" onclick="history.back()"><span class="material-symbols-outlined text-[20px]">arrow_back</span></button><div class="flex flex-col min-w-0 pl-1"><span class="font-label-caps text-[11px] text-primary tracking-wider uppercase font-normal truncate">MW-OS // DISPATCH</span><span class="font-title-md text-[16px] text-on-surface font-semibold truncate leading-tight">AI Triage &amp; Intake Review</span></div></div><div class="flex items-center gap-2 flex-shrink-0"><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="flex-1 w-full pt-20 pb-28 bg-surface min-h-screen"><div class="w-full max-w-lg mx-auto px-4 py-3 space-y-7">
+<!-- Case Reference & SLA Target Header Card -->
+<div class="bg-surface-container rounded-lg p-5 border border-outline-variant/60 shadow-sm space-y-3">
+<div class="flex items-center justify-between gap-2">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+<span class="font-label-caps text-[11px] text-primary tracking-wider uppercase font-normal">INTAKE DOSSIER // SRS §4.3</span>
+</div>
+<span class="font-code-sm text-[11px] bg-surface-container-highest px-2 py-0.5 rounded text-on-surface-variant font-normal">GATEWAY-SYNCED</span>
+</div>
+<div class="flex flex-wrap items-baseline justify-between gap-1">
+<h1 class="font-headline-sm text-[22px] text-on-surface font-semibold tracking-tight">#INC-2026-000123</h1>
+<span class="font-code-sm text-[11px] text-on-surface-variant font-normal">LOGGED: 10M AGO</span>
+</div>
+<div class="pt-2 border-t border-outline-variant/40 flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-secondary">alarm_on</span>
+<span class="font-code-sm text-[11px] text-secondary tracking-wider font-normal">[P1 CRITICAL // 15M RESPONSE // 4H RESOLUTION]</span>
+</div>
+</div>
+<!-- Section 1: Original Requester Report (SRS §5.2) -->
+<section class="bg-surface-container rounded-lg p-5 border border-outline-variant/60 shadow-sm space-y-4">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-tertiary">record_voice_over</span>
+<h2 class="font-title-md text-[16px] text-on-surface font-semibold">Original Requester Report</h2>
+</div>
+<span class="font-label-caps text-[11px] text-on-surface-variant tracking-wider uppercase font-normal">SRS §5.2</span>
+</div>
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px]">badge</span>
+<span class="font-body-md text-[14px] text-on-surface font-normal">Elena Rostova <span class="text-on-surface-variant text-[13px] font-normal">(Substation 04 Shift Lead)</span></span>
+</div>
+<!-- Nested verbatim quote block -->
+<div class="bg-surface-container-lowest p-4 rounded border border-outline-variant/40 space-y-2">
+<p class="font-body-md text-[14px] text-on-surface leading-relaxed italic font-normal">
+          “The main feed pump controller at Substation 04 started flashing error code ERR-88 and threw an emergency shutoff warning 10 minutes ago. Plant cooling loop is throttling down.”
+        </p>
+</div>
+<div class="flex items-center gap-2 text-on-surface-variant pt-1">
+<span class="material-symbols-outlined text-[15px]">location_on</span>
+<span class="font-code-sm text-[11px] font-normal">Substation 04 • Primary Loop Pump Bay</span>
+</div>
+</section>
+<!-- Section 2: AI Triage & Categorization Assessment (SRS §5.2, Level 1 Assist) -->
+<section class="bg-surface-container rounded-lg p-5 border border-outline-variant/60 shadow-sm space-y-4">
+<div class="flex items-center justify-between pb-1">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-primary">psychology</span>
+<h2 class="font-title-md text-[16px] text-on-surface font-semibold">AI Triage Assessment</h2>
+</div>
+<span class="bg-primary-container text-on-primary-container px-2.5 py-1 rounded font-code-sm text-[11px] font-normal">
+          [HIGH CONFIDENCE]
+        </span>
+</div>
+<!-- Category recommendation -->
+<div class="bg-surface-container-lowest p-4 rounded border border-outline-variant/40 space-y-1">
+<span class="font-label-caps text-[11px] text-on-surface-variant tracking-wider uppercase font-normal">RECOMMENDED CATEGORY &amp; SEVERITY</span>
+<div class="flex items-center gap-2 pt-1">
+<span class="material-symbols-outlined text-secondary text-[18px]">emergency_home</span>
+<p class="font-body-md text-[14px] text-on-surface font-medium leading-normal">Infrastructure &amp; Plant Controls // P1 - Critical</p>
+</div>
+</div>
+<!-- Supporting Factors Panel -->
+<div class="bg-surface-container-low p-4 rounded border border-outline-variant/40 space-y-3">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-tertiary">analytics</span>
+<span class="font-label-caps text-[11px] text-tertiary tracking-wider uppercase font-normal">SUPPORTING FACTORS BREAKDOWN</span>
+</div>
+<ul class="space-y-2.5 text-on-surface font-body-md text-[14px] leading-relaxed">
+<li class="flex items-start gap-2.5">
+<span class="w-1.5 h-1.5 rounded-full bg-primary mt-2 shrink-0"></span>
+<span class="font-normal"><strong class="font-normal text-on-surface">Substation core infrastructure:</strong> Direct nexus to main feed loop; failure propagates downstream within 30 minutes.</span>
+</li>
+<li class="flex items-start gap-2.5">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary mt-2 shrink-0"></span>
+<span class="font-normal"><strong class="font-normal text-on-surface">Imminent thermal throttle:</strong> Cooling loop pressure loss initiates cascading turbine protection shutdowns.</span>
+</li>
+<li class="flex items-start gap-2.5">
+<span class="w-1.5 h-1.5 rounded-full bg-primary mt-2 shrink-0"></span>
+<span class="font-normal"><strong class="font-normal text-on-surface">Safety protocol interlock:</strong> Code ERR-88 mandates physical interlock override and lockout-tagout verification.</span>
+</li>
+</ul>
+</div>
+</section>
+<!-- Section 3: Missing Information & Clarification Prompts (SRS §5.4) -->
+<section class="bg-surface-container rounded-lg p-5 border border-outline-variant/60 shadow-sm space-y-4">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-tertiary-container">help_center</span>
+<h2 class="font-title-md text-[16px] text-on-surface font-semibold">Missing Information Prompts</h2>
+</div>
+<span class="font-label-caps text-[11px] text-on-surface-variant tracking-wider uppercase font-normal">SRS §5.4</span>
+</div>
+<p class="font-body-md text-[14px] text-on-surface-variant font-normal leading-relaxed">
+        System identified 2 operational data gaps required before field dispatch authorization:
+      </p>
+<!-- Checklist of identified gaps -->
+<div class="space-y-3">
+<div class="bg-surface-container-lowest p-4 rounded border border-outline-variant/40 flex items-start gap-3">
+<span class="material-symbols-outlined text-secondary text-[18px] shrink-0 mt-0.5">check_box_outline_blank</span>
+<div class="flex flex-col gap-1 min-w-0 flex-1">
+<span class="font-body-md text-[14px] text-on-surface font-normal leading-normal">Physical valve position verified manually?</span>
+<span class="font-code-sm text-[11px] text-secondary tracking-wider uppercase font-normal">[STATUS: UNANSWERED]</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-4 rounded border border-outline-variant/40 flex items-start gap-3">
+<span class="material-symbols-outlined text-secondary text-[18px] shrink-0 mt-0.5">check_box_outline_blank</span>
+<div class="flex flex-col gap-1 min-w-0 flex-1">
+<span class="font-body-md text-[14px] text-on-surface font-normal leading-normal">Firmware patch version currently loaded on Controller Unit B</span>
+<span class="font-code-sm text-[11px] text-secondary tracking-wider uppercase font-normal">[STATUS: UNANSWERED]</span>
+</div>
+</div>
+</div>
+<!-- Secondary Action Button (§5.9) -->
+<button class="w-full bg-surface-container-high hover:bg-surface-container-highest border border-outline-variant/60 text-on-surface h-12 px-4 rounded flex items-center justify-center gap-2 transition-colors shadow-sm font-label-caps text-[11px] tracking-wider uppercase font-normal" id="btn-draft-clarification">
+<span class="material-symbols-outlined text-[18px]">forward_to_inbox</span>
+<span>DRAFT CLARIFICATION MESSAGE</span>
+</button>
+<div class="hidden p-3 bg-surface-container-low border border-primary/30 text-on-surface rounded font-body-md text-[13px] font-normal" id="draft-alert">
+        Automated request template queued for Elena Rostova terminal.
+      </div>
+</section>
+<!-- Section 4: Smart Assignment Recommendation (SRS §5.6) -->
+<section class="bg-surface-container rounded-lg p-5 border border-outline-variant/60 shadow-sm space-y-4">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-primary">engineering</span>
+<h2 class="font-title-md text-[16px] text-on-surface font-semibold">Smart Assignment</h2>
+</div>
+<span class="font-label-caps text-[11px] text-on-surface-variant tracking-wider uppercase font-normal">SRS §5.6</span>
+</div>
+<!-- Primary Recommended Technician -->
+<div class="bg-surface-container-lowest p-4 rounded border-2 border-primary/50 space-y-3 cursor-pointer" id="tech-card-primary">
+<div class="flex items-start justify-between gap-2">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded bg-primary-fixed flex items-center justify-center text-on-primary-fixed font-title-md text-[16px] font-semibold">
+              EV
+            </div>
+<div class="flex flex-col">
+<div class="flex items-center gap-2">
+<span class="font-body-md text-[14px] text-on-surface font-semibold">Eli Vance (Tech-7049)</span>
+<span class="bg-primary-fixed text-on-primary-fixed text-[11px] font-code-sm px-1.5 py-0.5 rounded font-normal">[RECOMMENDED]</span>
+</div>
+<span class="font-code-sm text-[11px] text-on-surface-variant font-normal">Certified High-Voltage &amp; PLC Controls</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-primary text-[20px]" id="primary-check" style="font-variation-settings: 'FILL' 1;">radio_button_checked</span>
+</div>
+<div class="pt-2 border-t border-outline-variant/30 grid grid-cols-2 gap-2 text-on-surface-variant font-code-sm text-[11px] font-normal">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[14px] text-primary">pin_drop</span>
+<span>Substation 04 (Co-located)</span>
+</div>
+<div class="flex items-center gap-1.5 justify-end">
+<span class="material-symbols-outlined text-[14px] text-primary">task_alt</span>
+<span>Available • 2 Active Cases</span>
+</div>
+</div>
+</div>
+<!-- Alternative Assignment -->
+<div class="bg-surface-container-low p-4 rounded border border-outline-variant/40 space-y-3 opacity-75 cursor-pointer" id="tech-card-alt">
+<div class="flex items-start justify-between gap-2">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded bg-surface-variant flex items-center justify-center text-on-surface-variant font-title-md text-[16px] font-semibold">
+              SQ
+            </div>
+<div class="flex flex-col">
+<span class="font-body-md text-[14px] text-on-surface font-semibold">Substation Electrical Squad</span>
+<span class="font-code-sm text-[11px] text-on-surface-variant font-normal">Lead: J. Miller • Rapid Response Team</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline text-[20px]" id="alt-check">radio_button_unchecked</span>
+</div>
+<div class="pt-2 border-t border-outline-variant/30 flex items-center justify-between text-on-surface-variant font-code-sm text-[11px] font-normal">
+<span>Central Depot (18m transit ETA)</span>
+<span>Standby Crew</span>
+</div>
+</div>
+<!-- Primary CTA Button -->
+<button class="w-full mt-2 bg-primary hover:bg-primary-container text-on-primary min-h-[48px] py-3 px-6 rounded shadow-sm flex items-center justify-center gap-2 transition-all font-body-md text-[14px] font-semibold" id="btn-confirm-assign">
+<span class="material-symbols-outlined text-[20px]">assignment_turned_in</span>
+<span>CONFIRM &amp; ASSIGN DISPATCH</span>
+</button>
+<!-- Confirmation feedback notice -->
+<div class="hidden p-4 bg-inverse-surface text-inverse-on-surface rounded shadow-md flex items-center gap-3" id="dispatch-banner">
+<span class="material-symbols-outlined text-primary-fixed text-[24px]">verified</span>
+<div class="flex flex-col min-w-0">
+<span class="font-title-md text-[16px] text-inverse-on-surface font-semibold">Dispatch Confirmed</span>
+<span class="font-code-sm text-[11px] text-surface-variant font-normal">Assigned to Eli Vance (Tech-7049) • SLA clock activated</span>
+</div>
+</div>
+</section>
+</div></main><nav class="fixed bottom-0 left-0 right-0 z-50 bg-surface-container-low/95 backdrop-blur-md border-t border-outline-variant/50 pb-safe"><div class="max-w-lg mx-auto h-16 grid grid-cols-4 px-2"><a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-on-surface gap-0.5 transition-colors" href="#"><span class="material-symbols-outlined text-[22px]">build</span><span class="font-code-sm text-[11px] font-normal">Bench</span></a><a class="flex flex-col items-center justify-center text-primary font-medium gap-0.5" href="#"><span class="material-symbols-outlined text-[22px]" style="font-variation-settings: 'FILL' 1;">folder_open</span><span class="font-code-sm text-[11px] font-normal">Cases</span></a><a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-on-surface gap-0.5 transition-colors" href="#"><span class="material-symbols-outlined text-[22px]">notifications</span><span class="font-code-sm text-[11px] font-normal">Alerts</span></a><a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-on-surface gap-0.5 transition-colors" href="#"><span class="material-symbols-outlined text-[22px]">settings</span><span class="font-code-sm text-[11px] font-normal">Admin</span></a></div></nav><script>
+  (function() {
+    const btnDraft = document.getElementById('btn-draft-clarification');
+    const draftAlert = document.getElementById('draft-alert');
+    const btnAssign = document.getElementById('btn-confirm-assign');
+    const dispatchBanner = document.getElementById('dispatch-banner');
+    
+    const cardPrimary = document.getElementById('tech-card-primary');
+    const cardAlt = document.getElementById('tech-card-alt');
+    const primaryCheck = document.getElementById('primary-check');
+    const altCheck = document.getElementById('alt-check');
+
+    btnDraft?.addEventListener('click', () => {
+      draftAlert?.classList.remove('hidden');
+      btnDraft.classList.add('opacity-60', 'pointer-events-none');
+    });
+
+    cardPrimary?.addEventListener('click', () => {
+      cardPrimary.classList.replace('opacity-75', 'border-2');
+      cardPrimary.classList.add('border-primary/50');
+      cardAlt.classList.add('opacity-75');
+      cardAlt.classList.remove('border-2', 'border-primary/50');
+      primaryCheck.innerText = 'radio_button_checked';
+      primaryCheck.style.fontVariationSettings = "'FILL' 1";
+      primaryCheck.classList.replace('text-outline', 'text-primary');
+      altCheck.innerText = 'radio_button_unchecked';
+      altCheck.style.fontVariationSettings = "'FILL' 0";
+      altCheck.classList.replace('text-primary', 'text-outline');
+    });
+
+    cardAlt?.addEventListener('click', () => {
+      cardAlt.classList.remove('opacity-75');
+      cardAlt.classList.add('border-2', 'border-primary/50');
+      cardPrimary.classList.add('opacity-75');
+      cardPrimary.classList.remove('border-2', 'border-primary/50');
+      altCheck.innerText = 'radio_button_checked';
+      altCheck.style.fontVariationSettings = "'FILL' 1";
+      altCheck.classList.replace('text-outline', 'text-primary');
+      primaryCheck.innerText = 'radio_button_unchecked';
+      primaryCheck.style.fontVariationSettings = "'FILL' 0";
+      primaryCheck.classList.replace('text-primary', 'text-outline');
+    });
+
+    btnAssign?.addEventListener('click', () => {
+      dispatchBanner?.classList.remove('hidden');
+      btnAssign.classList.add('opacity-50', 'pointer-events-none');
+      btnAssign.innerHTML = '<span class="material-symbols-outlined text-[20px]">done</span><span>DISPATCH TRANSMITTED</span>';
+    });
+  })();
+</script></body></html>

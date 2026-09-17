@@ -10,14 +10,10 @@ __pycache__/
 *$py.class
 *.so
 .Python
-build/
 develop-eggs/
-dist/
 downloads/
 eggs/
 .eggs/
-lib/
-lib64/
 parts/
 sdist/
 var/
@@ -27,6 +23,22 @@ share/python-wheels/
 .installed.cfg
 *.egg
 MANIFEST
+
+# Node & Frontend
+node_modules/
+frontend/node_modules/
+frontend/dist/
+.npm
+.eslintcache
+
+# Flutter & Dart
+.dart_tool/
+flutter_app/.dart_tool/
+flutter_app/build/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+*.lock
 
 # Virtual Environments
 venv/

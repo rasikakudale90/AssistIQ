@@ -1,0 +1,289 @@
+<!DOCTYPE html><html class="light" lang="en"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500;600&amp;family=Space+Grotesk:wght@600;700&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><style>@layer base{html,body{width:100%;min-height:100%;margin:0;padding:0;background-color:#fff8f2;color:#1e1b17;}body{overscroll-behavior:none;-webkit-tap-highlight-color:transparent;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { colors: { "error": "#ba1a1a", "tertiary-container": "#916a07", "on-error-container": "#93000a", "tertiary": "#735300", "surface-container-lowest": "#ffffff", "surface-container-low": "#faf2ea", "on-primary": "#ffffff", "surface-bright": "#fff8f2", "secondary-container": "#fe8760", "on-primary-fixed": "#171e00", "on-primary-container": "#f0fcc4", "background": "#fff8f2", "primary-fixed": "#dde8b1", "surface-variant": "#e8e1d9", "on-error": "#ffffff", "secondary-fixed-dim": "#ffb59d", "surface": "#fff8f2", "on-tertiary-container": "#fff4e8", "on-secondary-fixed": "#390b00", "primary-container": "#6b7548", "on-tertiary": "#ffffff", "on-surface-variant": "#46483d", "outline-variant": "#c7c7b9", "inverse-primary": "#c1cc97", "surface-tint": "#596337", "on-secondary-container": "#732101", "primary-fixed-dim": "#c1cc97", "secondary": "#a0401f", "outline": "#77786c", "on-tertiary-fixed-variant": "#5d4200", "on-background": "#1e1b17", "surface-container": "#f4ede5", "tertiary-fixed": "#ffdea4", "inverse-on-surface": "#f7f0e7", "secondary-fixed": "#ffdbd0", "surface-container-highest": "#e8e1d9", "on-surface": "#1e1b17", "on-secondary-fixed-variant": "#802a08", "on-tertiary-fixed": "#261900", "surface-container-high": "#eee7df", "surface-dim": "#e0d9d1", "tertiary-fixed-dim": "#f0bf5c", "error-container": "#ffdad6", "inverse-surface": "#33302b", "on-secondary": "#ffffff", "on-primary-fixed-variant": "#414b22", "primary": "#535c32" }, borderRadius: { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" }, spacing: { "space-xl": "2rem", "gutter-mobile": "0.75rem", "margin": "1.5rem", "space-md": "1rem", "space-lg": "1.5rem", "gutter": "1rem", "margin-mobile": "1rem", "space-sm": "0.5rem", "space-xs": "0.25rem" }, fontFamily: { "body-sm": ["IBM Plex Sans"], "headline-sm": ["Space Grotesk"], "label-caps": ["JetBrains Mono"], "body-lg": ["IBM Plex Sans"], "label-sm": ["IBM Plex Sans"], "code-sm": ["JetBrains Mono"], "code-md": ["JetBrains Mono"], "headline-lg": ["Space Grotesk"], "title-md": ["Space Grotesk"], "code-lg": ["JetBrains Mono"], "headline-lg-mobile": ["Space Grotesk"], "body-md": ["IBM Plex Sans"], "headline-md": ["Space Grotesk"] }, fontSize: { "body-sm": ["13px", { "lineHeight": "18px", "fontWeight": "400" }], "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "600" }], "label-caps": ["11px", { "lineHeight": "16px", "letterSpacing": "0.08em", "fontWeight": "600" }], "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }], "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "500" }], "code-sm": ["11px", { "lineHeight": "16px", "fontWeight": "500" }], "code-md": ["13px", { "lineHeight": "18px", "fontWeight": "500" }], "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "title-md": ["16px", { "lineHeight": "24px", "fontWeight": "600" }], "code-lg": ["15px", { "lineHeight": "22px", "fontWeight": "500" }], "headline-lg-mobile": ["26px", { "lineHeight": "34px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }], "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }] } } } };</script><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-surface font-body-md text-body-md text-on-surface flex flex-col min-h-screen"><header class="fixed top-0 w-full z-50 pt-safe bg-surface-container-low/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-16 px-gutter-mobile flex items-center justify-between gap-space-sm"><div class="flex items-center gap-space-sm min-w-0"><img alt="Brand logo. - Primary color: #6b7548
+- Font: spaceGrotesk
+- Mode: light
+- Roundness: rounded-sm
+" class="h-8 w-auto object-contain flex-shrink-0" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDaVc7vipaFb0D0iPlgeNLY6Tp6D7fHkbkEP1xlhdT5_O7eJCMslxR_qatzJNpCK1d7F7Ev8M96bk7YngwtvGBILla6IFwx5vAHIYa1cacVXPcTwYEPizZTJKrIBUhjTXHrajIq5zF_gj4hzByL1-NcQR5Ak0c-jLvJbzgVDfVHrCmv2DHWvSujfzmDHyb1LE5HwsoFY-7XJM5UGYuX279ZSf58J9n-Cv7HRS6dYAV1qD0QDQpYF4Mx9A"><div class="flex flex-col min-w-0"><span class="font-label-caps text-label-caps text-primary tracking-widest truncate">MW-OS // HELPDESK</span><span class="font-title-md text-title-md text-on-surface truncate">Alerts Feed</span></div></div><div class="flex items-center gap-space-xs flex-shrink-0"><div class="hidden xs:flex flex-col items-end pr-space-xs"><span class="font-code-sm text-code-sm text-on-surface-variant uppercase">TECH-409</span><span class="font-label-caps text-label-caps text-primary-container uppercase">[ONLINE]</span></div><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="flex flex-col relative w-full pt-16 pb-24 bg-surface min-h-screen"><div class="flex flex-col w-full px-gutter-mobile py-6 space-y-8">
+<!-- Header & Telemetry Status Docket -->
+<section class="flex flex-col space-y-2">
+<div class="flex items-center justify-between">
+<span class="font-code-sm text-code-sm text-primary uppercase tracking-wider flex items-center gap-space-xs font-normal">
+<span class="w-2 h-2 rounded-full bg-secondary animate-pulse inline-block"></span>
+        STREAM // LIVE BUFFER
+      </span>
+<span class="font-code-sm text-code-sm text-on-surface-variant font-normal">SYS_TIME: 14:42:08 UTC</span>
+</div>
+<h1 class="text-[22px] leading-tight font-headline-sm text-on-surface tracking-tight font-semibold">
+      ALERTS &amp; LOGS // DISPATCH NOTIFICATIONS
+    </h1>
+<p class="font-body-md text-[14px] leading-relaxed text-on-surface-variant font-normal">
+      Field triage feed, breach threshold monitors, and auto-escalated telemetry for dispatch bench.
+    </p>
+</section>
+<!-- Filter Docket Tabs (Horizontal Pill Rail) -->
+<nav aria-label="Alert Filters" class="flex items-center gap-2 overflow-x-auto pb-1 -mx-gutter-mobile px-gutter-mobile">
+<button class="filter-chip active flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary text-on-primary font-label-caps text-label-caps whitespace-nowrap shadow-sm transition-all font-normal" data-filter="all" type="button">
+<span class="">[ALL]</span>
+<span class="px-1.5 py-0.2 rounded-sm bg-on-primary/20 text-on-primary font-code-sm text-code-sm font-normal">04</span>
+</button>
+<button class="filter-chip flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-container text-on-surface-variant font-label-caps text-label-caps whitespace-nowrap hover:bg-surface-container-high transition-all font-normal" data-filter="sla" type="button">
+<span class="">[SLA WARNINGS]</span>
+<span class="px-1.5 py-0.2 rounded-sm bg-surface-container-highest text-secondary font-code-sm text-code-sm font-normal">01</span>
+</button>
+<button class="filter-chip flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-container text-on-surface-variant font-label-caps text-label-caps whitespace-nowrap hover:bg-surface-container-high transition-all font-normal" data-filter="escalation" type="button">
+<span class="">[ESCALATIONS]</span>
+<span class="px-1.5 py-0.2 rounded-sm bg-surface-container-highest text-on-surface-variant font-code-sm text-code-sm font-normal">01</span>
+</button>
+<button class="filter-chip flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-container text-on-surface-variant font-label-caps text-label-caps whitespace-nowrap hover:bg-surface-container-high transition-all font-normal" data-filter="communications" type="button">
+<span class="">[COMMUNICATIONS]</span>
+<span class="px-1.5 py-0.2 rounded-sm bg-surface-container-highest text-primary font-code-sm text-code-sm font-normal">01</span>
+</button>
+</nav>
+<!-- Section 1: Today - Critical & Urgent -->
+<section class="flex flex-col space-y-6" data-group="urgent">
+<div class="flex items-center justify-between pb-1">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-[18px]">warning</span>
+<h2 class="font-label-caps text-label-caps text-secondary uppercase tracking-widest font-normal">
+          TODAY - CRITICAL &amp; URGENT
+        </h2>
+</div>
+<span class="font-code-sm text-code-sm text-secondary font-normal">2 PENDING</span>
+</div>
+<!-- Alert 1: SLA Breach Warning -->
+<article class="alert-card group flex flex-col rounded-lg bg-surface-container p-6 shadow-sm transition-all relative overflow-hidden space-y-4" data-category="sla">
+<div class="absolute top-0 left-0 bottom-0 w-1 bg-secondary"></div>
+<!-- Card Top Bar: Meta & Badge -->
+<div class="flex items-start justify-between gap-space-sm pl-1">
+<div class="flex flex-wrap items-center gap-2">
+<span class="font-code-sm text-code-sm text-on-surface-variant font-normal">#INC-2026-000123</span>
+<span class="text-outline-variant font-code-sm text-code-sm">•</span>
+<span class="font-code-sm text-code-sm text-on-surface-variant font-normal">REL_T: +03h 46m</span>
+</div>
+<span class="inline-flex items-center px-2 py-0.5 rounded-sm bg-error-container text-on-error-container font-label-caps text-label-caps font-normal">
+          [SLA BREACH - 14M REMAINING]
+        </span>
+</div>
+<!-- Card Title & Body -->
+<div class="pl-1 space-y-2">
+<h3 class="font-title-md text-title-md text-on-surface font-semibold leading-snug">
+          Core Switchboard Firmware Loop
+        </h3>
+<p class="font-body-md text-[14px] leading-relaxed text-on-surface-variant font-normal">
+          The Sweep detected elapsed time threshold 80% reached. Target resolution window expiring for substation core node.
+        </p>
+</div>
+<!-- Telemetry Gauge Meter -->
+<div class="pl-1 space-y-2 bg-surface-container-high/50 p-4 rounded-sm">
+<div class="flex justify-between font-code-sm text-code-sm text-on-surface-variant font-normal">
+<span class="">SLA CONSUMPTION // 86%</span>
+<span class="text-secondary font-normal">T-MINUS 14:12</span>
+</div>
+<div class="w-full h-1.5 bg-surface-container-highest rounded-sm overflow-hidden flex">
+<div class="h-full bg-secondary" style="width: 86%;"></div>
+<div class="h-full bg-secondary-container/50 animate-pulse" style="width: 14%;"></div>
+</div>
+</div>
+<!-- Action Footer -->
+<div class="pt-4 pl-1 flex items-center justify-between border-t border-outline-variant/30">
+<div class="flex items-center gap-space-xs text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px]">sensors</span>
+<span class="font-code-sm text-code-sm font-normal">AUTO-PING ACTIVE</span>
+</div>
+<button class="ack-btn flex items-center gap-1.5 px-3 py-1.5 bg-secondary text-on-secondary rounded-sm font-label-caps text-label-caps font-semibold shadow-sm active:translate-y-0.5 transition-transform" data-ack-id="INC-2026-000123" type="button">
+<span class="material-symbols-outlined text-[15px]">done_all</span>
+<span class="">ACKNOWLEDGE</span>
+</button>
+</div>
+</article>
+<!-- Alert 2: Escalation Event (SRS §5.8) -->
+<article class="alert-card flex flex-col rounded-lg bg-surface-container p-6 shadow-sm transition-all relative overflow-hidden space-y-4" data-category="escalation">
+<div class="absolute top-0 left-0 bottom-0 w-1 bg-tertiary"></div>
+<!-- Card Top Bar: Meta & Badge -->
+<div class="flex items-start justify-between gap-space-sm pl-1">
+<div class="flex flex-wrap items-center gap-2">
+<span class="font-code-sm text-code-sm text-on-surface-variant font-normal">#INC-2026-000119</span>
+<span class="text-outline-variant font-code-sm text-code-sm">•</span>
+<span class="font-code-sm text-code-sm text-on-surface-variant font-normal">DISPATCH_REC_08</span>
+</div>
+<span class="inline-flex items-center px-2 py-0.5 rounded-sm bg-tertiary-fixed text-on-tertiary-fixed-variant font-label-caps text-label-caps font-normal">
+          [ESCALATED TO LEAD]
+        </span>
+</div>
+<!-- Card Title & Content -->
+<div class="pl-1 space-y-3">
+<h3 class="font-title-md text-title-md text-on-surface font-semibold leading-snug">
+          Hydraulic Press Sensor Drift
+        </h3>
+<div class="flex items-start gap-space-sm bg-surface-container-high p-4 rounded-sm">
+<span class="material-symbols-outlined text-tertiary text-[18px] flex-shrink-0 mt-0.5">rule_folder</span>
+<div class="flex flex-col space-y-1">
+<span class="font-label-caps text-label-caps text-on-surface uppercase font-normal">SRS §5.8 RULE TRIGGER:</span>
+<span class="font-body-md text-[14px] leading-relaxed text-on-surface-variant font-normal">Repeated reopen by Shift Supervisor (3 iterations within 24h cycle). Reallocated to Team Lead queue.</span>
+</div>
+</div>
+</div>
+<!-- Technician Attachment Spec Note -->
+<div class="pl-1 pt-2 flex items-center justify-between text-on-surface-variant border-t border-outline-variant/30">
+<span class="font-code-sm text-code-sm font-normal">PREV_TECH: J. Mercer (Sub-02)</span>
+<button class="text-primary hover:underline font-label-caps text-label-caps flex items-center gap-1 font-semibold" type="button">
+          VIEW AUDIT LOG <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</button>
+</div>
+</article>
+</section>
+<!-- Section 2: Earlier This Shift -->
+<section class="flex flex-col space-y-6" data-group="earlier">
+<div class="flex items-center justify-between pb-1">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[18px]">history</span>
+<h2 class="font-label-caps text-label-caps text-primary uppercase tracking-widest font-normal">
+          EARLIER THIS SHIFT
+        </h2>
+</div>
+<span class="font-code-sm text-code-sm text-on-surface-variant font-normal">LOG RECORDED</span>
+</div>
+<!-- Alert 3: AI Draft Communication Ready (SRS §5.9) -->
+<article class="alert-card flex flex-col rounded-lg bg-surface-container p-6 shadow-sm transition-all relative overflow-hidden space-y-4" data-category="communications">
+<div class="absolute top-0 left-0 bottom-0 w-1 bg-primary"></div>
+<!-- Card Top Bar: Meta & Badge -->
+<div class="flex items-start justify-between gap-space-sm pl-1">
+<div class="flex flex-wrap items-center gap-2">
+<span class="font-code-sm text-code-sm text-on-surface-variant font-normal">#REQ-2026-000088</span>
+<span class="text-outline-variant font-code-sm text-code-sm">•</span>
+<span class="font-code-sm text-code-sm text-on-surface-variant font-normal">AI-ASSIST // COMMS</span>
+</div>
+<span class="inline-flex items-center px-2 py-0.5 rounded-sm bg-primary-fixed text-on-primary-fixed-variant font-label-caps text-label-caps font-normal">
+          [AI DRAFT READY]
+        </span>
+</div>
+<!-- Card Title & Description -->
+<div class="pl-1 space-y-3">
+<h3 class="font-title-md text-title-md text-on-surface font-semibold leading-snug">
+          Clarification Request Formatted
+        </h3>
+<p class="font-body-md text-[14px] leading-relaxed text-on-surface-variant font-normal">
+          Clarification request drafted for requester <span class="text-on-surface">M. Santos</span> regarding missing asset MAC address and power calibration snapshot.
+        </p>
+</div>
+<!-- Inset Draft Preview Box -->
+<div class="pl-1">
+<div class="p-4 bg-surface-container-low rounded-sm text-on-surface-variant font-code-sm text-code-sm italic flex flex-col space-y-1">
+<span class="font-label-caps text-label-caps not-italic text-primary font-normal">[DRAFT PREVIEW]</span>
+<span class="leading-relaxed">"Hello M. Santos, to finish provisioning line 3 gateway, please supply terminal MAC tag from sticker plate..."</span>
+</div>
+</div>
+<!-- Action Row -->
+<div class="pl-1 pt-2 flex items-center justify-between border-t border-outline-variant/30">
+<span class="font-code-sm text-code-sm text-on-surface-variant flex items-center gap-1 font-normal">
+<span class="material-symbols-outlined text-[15px]">auto_awesome</span> MODEL: DISPATCH-7B
+        </span>
+<button class="flex items-center gap-1 px-3 py-1.5 bg-primary text-on-primary rounded-sm font-label-caps text-label-caps font-semibold shadow-sm active:translate-y-0.5 transition-transform" onclick="alert('Opening Draft Console for #REQ-2026-000088')" type="button">
+<span class="material-symbols-outlined text-[15px]">send</span>
+<span class="">REVIEW &amp; SEND</span>
+</button>
+</div>
+</article>
+<!-- Alert 4: Case Reassigned by Manager -->
+<article class="alert-card flex flex-col rounded-lg bg-surface-container p-6 shadow-sm transition-all relative overflow-hidden space-y-4" data-category="assignment">
+<div class="absolute top-0 left-0 bottom-0 w-1 bg-outline"></div>
+<!-- Card Top Bar: Meta & Badge -->
+<div class="flex items-start justify-between gap-space-sm pl-1">
+<div class="flex flex-wrap items-center gap-2">
+<span class="font-code-sm text-code-sm text-on-surface-variant font-normal">#INC-2026-000104</span>
+<span class="text-outline-variant font-code-sm text-code-sm">•</span>
+<span class="font-code-sm text-code-sm text-on-surface-variant font-normal">ROUTING</span>
+</div>
+<span class="inline-flex items-center px-2 py-0.5 rounded-sm bg-surface-container-highest text-on-surface-variant font-label-caps text-label-caps font-normal">
+          [REASSIGNED]
+        </span>
+</div>
+<!-- Card Content -->
+<div class="pl-1 space-y-3">
+<h3 class="font-title-md text-title-md text-on-surface font-semibold leading-snug">
+          Case Reassigned by Dispatch Manager
+        </h3>
+<p class="font-body-md text-[14px] leading-relaxed text-on-surface-variant font-normal">
+          Ticket reassigned to <span class="text-on-surface">Tech E. Vance</span> (Substation 04) to balance regional field load. Handover notes preserved in docket.
+        </p>
+</div>
+<!-- Card Footer Information -->
+<div class="pl-1 pt-2 flex items-center justify-between text-on-surface-variant font-code-sm text-code-sm font-normal border-t border-outline-variant/30">
+<span class="">ACTIONED BY: MGR-D.RHODES</span>
+<span class="">1h 22m AGO</span>
+</div>
+</article>
+</section>
+<!-- Bottom Global Actions (Hairline Style Utility) -->
+<section class="pt-4 flex flex-col items-center space-y-3">
+<button class="w-full flex items-center justify-center gap-space-xs py-3 px-space-md rounded-lg bg-surface-container text-on-surface-variant hover:bg-surface-container-high active:bg-surface-container-highest font-label-caps text-label-caps font-semibold transition-colors shadow-sm" id="mark-all-read-btn" type="button">
+<span class="material-symbols-outlined text-[18px]">done_all</span>
+<span class="">MARK ALL AS READ // PURGE BUFFER</span>
+</button>
+<span class="font-code-sm text-code-sm text-on-surface-variant/70 uppercase font-normal">
+      MW-OS BUFFER ENGINE • 4 EVENTS RETRACTABLE
+    </span>
+</section>
+</div>
+<script>
+  // Filter chips functionality
+  const chips = document.querySelectorAll('.filter-chip');
+  const cards = document.querySelectorAll('.alert-card');
+
+  chips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      chips.forEach(c => {
+        c.classList.remove('bg-primary', 'text-on-primary', 'shadow-sm');
+        c.classList.add('bg-surface-container', 'text-on-surface-variant');
+      });
+      chip.classList.remove('bg-surface-container', 'text-on-surface-variant');
+      chip.classList.add('bg-primary', 'text-on-primary', 'shadow-sm');
+
+      const filter = chip.getAttribute('data-filter');
+
+      cards.forEach(card => {
+        const cat = card.getAttribute('data-category');
+        if (filter === 'all' || cat === filter) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+  });
+
+  // Acknowledge alert interaction
+  const ackBtns = document.querySelectorAll('.ack-btn');
+  ackBtns.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const parent = btn.closest('.alert-card');
+      btn.disabled = true;
+      btn.innerHTML = '<span class="material-symbols-outlined text-[15px]">check</span> ACKNOWLEDGED';
+      btn.classList.replace('bg-secondary', 'bg-surface-container-highest');
+      btn.classList.replace('text-on-secondary', 'text-on-surface-variant');
+      if (parent) {
+        parent.classList.add('opacity-75');
+      }
+    });
+  });
+
+  // Mark all as read micro-interaction
+  const markReadBtn = document.getElementById('mark-all-read-btn');
+  if (markReadBtn) {
+    markReadBtn.addEventListener('click', () => {
+      cards.forEach(c => c.classList.add('opacity-50'));
+      markReadBtn.innerHTML = '<span class="material-symbols-outlined text-[18px]">check_circle</span> ALL ALERTS ARCHIVED';
+      markReadBtn.disabled = true;
+      setTimeout(() => {
+        markReadBtn.innerHTML = '<span class="material-symbols-outlined text-[18px]">done_all</span> BUFFER SYNCHRONIZED';
+      }, 1500);
+    });
+  }
+</script></main><nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface-container-low/95 backdrop-blur-xl shadow-[0_-2px_10px_rgba(0,0,0,0.04)]" data-active-classes="text-primary font-semibold bg-surface-container"><div class="flex justify-around items-center h-16 px-space-xs"><a class="flex flex-col items-center justify-center min-w-[64px] h-12 rounded px-space-xs text-on-surface-variant transition-colors" data-path="bench-dashboard" href="#"><span class="material-symbols-outlined text-[22px]">precision_manufacturing</span><span class="font-label-caps text-label-caps mt-space-xs uppercase">Bench</span></a><a class="flex flex-col items-center justify-center min-w-[64px] h-12 rounded px-space-xs text-on-surface-variant transition-colors" data-path="cases-queue" href="#"><span class="material-symbols-outlined text-[22px]">confirmation_number</span><span class="font-label-caps text-label-caps mt-space-xs uppercase">Cases</span></a><a aria-current="page" class="flex flex-col items-center justify-center min-w-[64px] h-12 rounded px-space-xs transition-colors text-primary font-semibold bg-surface-container" data-path="alerts-feed" href="#"><span class="material-symbols-outlined text-[22px]">notification_important</span><span class="font-label-caps text-label-caps mt-space-xs uppercase">Alerts</span></a><a class="flex flex-col items-center justify-center min-w-[64px] h-12 rounded px-space-xs text-on-surface-variant transition-colors" data-path="profile-admin" href="#"><span class="material-symbols-outlined text-[22px]">shield_person</span><span class="font-label-caps text-label-caps mt-space-xs uppercase">Admin</span></a></div></nav>
+
+</body></html>

@@ -1,0 +1,320 @@
+<!DOCTYPE html><html class="light" lang="en"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500;600&amp;family=Space+Grotesk:wght@600;700&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><style>@layer base{html,body{width:100%;min-height:100%;margin:0;padding:0;background-color:#fff8f2;color:#1e1b17;}body{overscroll-behavior:none;-webkit-tap-highlight-color:transparent;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { colors: { "error": "#ba1a1a", "tertiary-container": "#916a07", "on-error-container": "#93000a", "tertiary": "#735300", "surface-container-lowest": "#ffffff", "surface-container-low": "#faf2ea", "on-primary": "#ffffff", "surface-bright": "#fff8f2", "secondary-container": "#fe8760", "on-primary-fixed": "#171e00", "on-primary-container": "#f0fcc4", "background": "#fff8f2", "primary-fixed": "#dde8b1", "surface-variant": "#e8e1d9", "on-error": "#ffffff", "secondary-fixed-dim": "#ffb59d", "surface": "#fff8f2", "on-tertiary-container": "#fff4e8", "on-secondary-fixed": "#390b00", "primary-container": "#6b7548", "on-tertiary": "#ffffff", "on-surface-variant": "#46483d", "outline-variant": "#c7c7b9", "inverse-primary": "#c1cc97", "surface-tint": "#596337", "on-secondary-container": "#732101", "primary-fixed-dim": "#c1cc97", "secondary": "#a0401f", "outline": "#77786c", "on-tertiary-fixed-variant": "#5d4200", "on-background": "#1e1b17", "surface-container": "#f4ede5", "tertiary-fixed": "#ffdea4", "inverse-on-surface": "#f7f0e7", "secondary-fixed": "#ffdbd0", "surface-container-highest": "#e8e1d9", "on-surface": "#1e1b17", "on-secondary-fixed-variant": "#802a08", "on-tertiary-fixed": "#261900", "surface-container-high": "#eee7df", "surface-dim": "#e0d9d1", "tertiary-fixed-dim": "#f0bf5c", "error-container": "#ffdad6", "inverse-surface": "#33302b", "on-secondary": "#ffffff", "on-primary-fixed-variant": "#414b22", "primary": "#535c32" }, borderRadius: { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" }, spacing: { "space-xl": "2rem", "gutter-mobile": "0.75rem", "margin": "1.5rem", "space-md": "1rem", "space-lg": "1.5rem", "gutter": "1rem", "margin-mobile": "1rem", "space-sm": "0.5rem", "space-xs": "0.25rem" }, fontFamily: { "body-sm": ["IBM Plex Sans"], "headline-sm": ["Space Grotesk"], "label-caps": ["JetBrains Mono"], "body-lg": ["IBM Plex Sans"], "label-sm": ["IBM Plex Sans"], "code-sm": ["JetBrains Mono"], "code-md": ["JetBrains Mono"], "headline-lg": ["Space Grotesk"], "title-md": ["Space Grotesk"], "code-lg": ["JetBrains Mono"], "headline-lg-mobile": ["Space Grotesk"], "body-md": ["IBM Plex Sans"], "headline-md": ["Space Grotesk"] }, fontSize: { "body-sm": ["13px", { "lineHeight": "18px", "fontWeight": "400" }], "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "600" }], "label-caps": ["11px", { "lineHeight": "16px", "letterSpacing": "0.08em", "fontWeight": "600" }], "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }], "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "500" }], "code-sm": ["11px", { "lineHeight": "16px", "fontWeight": "500" }], "code-md": ["13px", { "lineHeight": "18px", "fontWeight": "500" }], "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "title-md": ["16px", { "lineHeight": "24px", "fontWeight": "600" }], "code-lg": ["15px", { "lineHeight": "22px", "fontWeight": "500" }], "headline-lg-mobile": ["26px", { "lineHeight": "34px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }], "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }] } } } };</script><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-surface font-body-md text-body-md text-on-surface flex flex-col min-h-screen"><header class="fixed top-0 w-full z-50 pt-safe bg-surface-container-low/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-16 px-gutter-mobile flex items-center justify-between gap-space-sm"><div class="flex items-center gap-space-sm min-w-0"><img alt="Brand logo. - Primary color: #6b7548
+- Font: spaceGrotesk
+- Mode: light
+- Roundness: rounded-sm
+" class="h-8 w-auto object-contain flex-shrink-0" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAUaRuEBAC9Z8hLrk9iqp_jNw4F0Jivm5Z4CkbOIAd9QCpT1b-23C2CKrR0WDRZQnxciHHNwe8hJPFodju7HvXw7A2IfffmPd9uTxIOqhx2xSyd83bpjd2zYeZ02FLyqDAlAtDNQvsV9kJkQcf7elMvuR5esI4Cp0pgit3mrAPL1ycVKsxUrM4gyxXnxlWC9jERQpVYtRx6GUjsjpYc8TR6v60tesFvPMNC14GLJF72F3esE0DcWFFIjA"><div class="flex flex-col min-w-0"><span class="font-label-caps text-label-caps text-primary tracking-widest truncate">MW-OS // HELPDESK</span><span class="font-title-md text-title-md text-on-surface truncate">Profile Admin</span></div></div><div class="flex items-center gap-space-xs flex-shrink-0"><div class="hidden xs:flex flex-col items-end pr-space-xs"><span class="font-code-sm text-code-sm text-on-surface-variant uppercase">TECH-409</span><span class="font-label-caps text-label-caps text-primary-container uppercase">[ONLINE]</span></div><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="flex flex-col relative w-full pt-16 pb-24 bg-surface min-h-screen"><div class="flex flex-col w-full px-4 sm:px-6 py-6 sm:py-8 space-y-7 max-w-3xl mx-auto">
+<!-- Header Docket Identifier -->
+<div class="flex items-center justify-between bg-surface-container px-4 py-3 rounded shadow-sm">
+<div class="flex items-center gap-2 min-w-0">
+<span class="material-symbols-outlined text-primary text-[18px]">verified_user</span>
+<span class="font-label-caps text-[11px] tracking-wider text-on-surface truncate uppercase font-medium">OPERATOR CREDENTIALS // SYSTEM ADMIN</span>
+</div>
+<div class="flex items-center gap-1.5 flex-shrink-0">
+<span class="inline-block w-2 h-2 rounded-full bg-primary-container animate-pulse"></span>
+<span class="font-code-sm text-[11px] text-primary uppercase font-normal tracking-wide">SYNC: 14ms</span>
+</div>
+</div>
+
+<!-- Technician Dossier Card -->
+<div class="flex flex-col bg-surface-container-low rounded p-5 sm:p-6 shadow-sm space-y-6">
+<!-- Perforated Split Bar & ID -->
+<div class="flex items-center justify-between bg-surface-container-high px-3.5 py-2 rounded">
+<span class="font-code-sm text-[11px] text-on-surface font-normal tracking-wider uppercase">DOC // SEC-REC-7049</span>
+<span class="font-label-caps text-[11px] text-on-surface-variant font-normal uppercase tracking-wider">REV. 2024.11</span>
+</div>
+<!-- Identity Row -->
+<div class="flex items-start gap-4">
+<div class="relative flex-shrink-0">
+<img class="w-16 h-16 rounded object-cover shadow-sm" data-alt="Close-up portrait of Eli Vance, a mid-40s experienced field technician in a rugged olive canvas workshop shirt, subtle warm industrial fluorescent lighting, tactile dust and grease accents, sharp focus, filmic tonal warmth" src="https://lh3.googleusercontent.com/aida-public/AB6AXuALq3dco5VX4WjzMtesz_oWOdIVHAUFgE8lq6QoRUaa-p_wy9hzkscTYmCdz6JAo_P4WmQkUBl2geUp-89P-YtAmyyTIRyaT3W0G953BuYutTEjmaoabU-vOttpsHjKl_zKrTG6ZW4wvEcac3ascR-Z8goLZMlcCBKbSHORsbQSt2ipCxWEqtiQDMExni0rKrDT5VbcyxJtVoOG3Vvb08t5wrRxsKWgLGkuKfOR0xrRwpt0vHW-pTsPeA">
+<div class="absolute -bottom-1 -right-1 bg-surface-container-highest px-1.5 py-0.5 rounded shadow-sm">
+<span class="font-code-sm text-[10px] text-on-surface uppercase font-normal">#7049</span>
+</div>
+</div>
+<div class="flex flex-col min-w-0 flex-1 space-y-1.5">
+<div class="flex items-center justify-between flex-wrap gap-2">
+<h2 class="font-headline-sm text-[22px] font-semibold text-on-surface leading-tight">Eli Vance</h2>
+<span class="bg-primary-container text-on-primary-container font-code-sm text-[11px] px-2 py-0.5 rounded font-normal tracking-wide">
+            TECH-7049
+          </span>
+</div>
+<div class="flex items-center gap-2 flex-wrap pt-0.5">
+<span class="bg-surface-container-highest text-on-surface-variant font-label-caps text-[11px] px-2 py-0.5 rounded font-normal uppercase tracking-wide">
+            FIELD OPERATOR // LEAD
+          </span>
+<span class="bg-surface-container-high text-primary font-code-sm text-[11px] px-2 py-0.5 rounded flex items-center gap-1 font-normal">
+<span class="material-symbols-outlined text-[13px]">cloud_done</span>
+            [GOOGLE OIDC VERIFIED]
+          </span>
+</div>
+</div>
+</div>
+<!-- Station & Facility Parameters -->
+<div class="grid grid-cols-2 gap-3 bg-surface-container p-4 rounded">
+<div class="flex flex-col space-y-1 min-w-0">
+<span class="font-label-caps text-[11px] text-on-surface-variant uppercase tracking-wider font-normal">ASSIGNED STATION</span>
+<span class="font-code-md text-[14px] text-on-surface font-normal truncate">Substation 04 - Bench D</span>
+</div>
+<div class="flex flex-col space-y-1 min-w-0">
+<span class="font-label-caps text-[11px] text-on-surface-variant uppercase tracking-wider font-normal">PRIMARY SITE</span>
+<span class="font-code-md text-[14px] text-on-surface font-normal truncate">Plant North (Sector 2)</span>
+</div>
+</div>
+<!-- Status Toggle -->
+<div class="flex flex-col space-y-2 pt-1">
+<div class="flex items-center justify-between">
+<span class="font-label-caps text-[11px] text-on-surface-variant uppercase tracking-wider font-normal">AVAILABILITY DISPATCH TELEMETRY</span>
+<span class="font-code-sm text-[12px] text-primary font-medium tracking-wide" id="status-live-indicator">[STATE: OPERATIONAL]</span>
+</div>
+<div class="grid grid-cols-3 gap-2 bg-surface-container-high p-1.5 rounded">
+<button class="status-btn flex items-center justify-center gap-1.5 py-2.5 px-2 rounded transition-all bg-primary-container text-on-primary-container font-label-caps text-[11px] tracking-wider uppercase font-semibold shadow-sm" id="btn-status-avail" onclick="setStatus('AVAILABLE')">
+<span class="w-2 h-2 rounded-full bg-on-primary-container"></span>
+          AVAILABLE
+        </button>
+<button class="status-btn flex items-center justify-center gap-1.5 py-2.5 px-2 rounded transition-all bg-transparent text-on-surface-variant font-label-caps text-[11px] tracking-wider uppercase font-normal" id="btn-status-away" onclick="setStatus('AWAY')">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+          AWAY
+        </button>
+<button class="status-btn flex items-center justify-center gap-1.5 py-2.5 px-2 rounded transition-all bg-transparent text-on-surface-variant font-label-caps text-[11px] tracking-wider uppercase font-normal" id="btn-status-offline" onclick="setStatus('OFFLINE')">
+<span class="w-2 h-2 rounded-full bg-outline"></span>
+          OFFLINE
+        </button>
+</div>
+</div>
+</div>
+
+<!-- System Administration Governance Panel -->
+<div class="flex flex-col bg-surface-container-low rounded p-5 sm:p-6 shadow-sm space-y-5">
+<div class="flex items-center justify-between pb-1 border-b border-surface-container">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-[22px]">admin_panel_settings</span>
+<h3 class="font-title-md text-[20px] font-semibold text-on-surface">GOVERNANCE &amp; CONTROLS</h3>
+</div>
+<span class="bg-secondary text-on-secondary font-code-sm text-[11px] px-2 py-0.5 rounded font-normal uppercase tracking-wide">
+        [ROLE: SYS_ADMIN]
+      </span>
+</div>
+<!-- Metric Strip Preview -->
+<div class="flex items-center justify-between bg-surface-container px-4 py-3.5 rounded">
+<div class="flex flex-col space-y-0.5">
+<span class="font-label-caps text-[11px] text-on-surface-variant uppercase tracking-wider font-normal">NETWORK CONCURRENCY</span>
+<span class="font-headline-sm text-[18px] text-on-surface font-semibold">14 ACTIVE TECHS</span>
+</div>
+<div class="h-8 w-24 flex items-end gap-1.5">
+<div class="w-3 bg-primary-container h-4 rounded-t-sm"></div>
+<div class="w-3 bg-primary-container h-6 rounded-t-sm"></div>
+<div class="w-3 bg-primary-container h-5 rounded-t-sm"></div>
+<div class="w-3 bg-primary-container h-7 rounded-t-sm"></div>
+<div class="w-3 bg-primary h-8 rounded-t-sm"></div>
+</div>
+</div>
+<!-- Governance Actions List -->
+<div class="flex flex-col space-y-2.5">
+<!-- Item 1 -->
+<a class="flex items-center justify-between p-4 rounded bg-surface hover:bg-surface-container transition-colors group shadow-sm" href="#">
+<div class="flex items-center gap-3.5 min-w-0">
+<div class="w-9 h-9 rounded bg-surface-container-highest flex items-center justify-center flex-shrink-0 text-on-surface">
+<span class="material-symbols-outlined text-[20px]">group</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-title-md text-[15px] font-medium text-on-surface truncate leading-snug">User &amp; Team Directory</span>
+<span class="font-body-sm text-[12px] text-on-surface-variant truncate font-normal leading-relaxed">14 Active Operators Roster</span>
+</div>
+</div>
+<div class="flex items-center gap-1.5 flex-shrink-0">
+<span class="font-label-caps text-[11px] text-primary uppercase tracking-wider font-normal">[OPEN]</span>
+<span class="material-symbols-outlined text-on-surface-variant text-[18px] group-hover:translate-x-0.5 transition-transform">chevron_right</span>
+</div>
+</a>
+<!-- Item 2 -->
+<a class="flex items-center justify-between p-4 rounded bg-surface hover:bg-surface-container transition-colors group shadow-sm" href="#">
+<div class="flex items-center gap-3.5 min-w-0">
+<div class="w-9 h-9 rounded bg-surface-container-highest flex items-center justify-center flex-shrink-0 text-on-surface">
+<span class="material-symbols-outlined text-[20px]">speed</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-title-md text-[15px] font-medium text-on-surface truncate leading-snug">24/7 SLA Target Configuration</span>
+<span class="font-body-sm text-[12px] text-on-surface-variant truncate font-normal leading-relaxed">Active Matrix: v3.3 Strict</span>
+</div>
+</div>
+<div class="flex items-center gap-1.5 flex-shrink-0">
+<span class="font-label-caps text-[11px] text-tertiary uppercase tracking-wider font-normal">[MATRIX]</span>
+<span class="material-symbols-outlined text-on-surface-variant text-[18px] group-hover:translate-x-0.5 transition-transform">chevron_right</span>
+</div>
+</a>
+<!-- Item 3 -->
+<a class="flex items-center justify-between p-4 rounded bg-surface hover:bg-surface-container transition-colors group shadow-sm" href="#">
+<div class="flex items-center gap-3.5 min-w-0">
+<div class="w-9 h-9 rounded bg-surface-container-highest flex items-center justify-center flex-shrink-0 text-on-surface">
+<span class="material-symbols-outlined text-[20px]">receipt_long</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-title-md text-[15px] font-medium text-on-surface truncate leading-snug">Append-Only Audit Trail</span>
+<span class="font-body-sm text-[12px] text-on-surface-variant truncate font-normal leading-relaxed">Inspection Log #AUD-9921</span>
+</div>
+</div>
+<div class="flex items-center gap-1.5 flex-shrink-0">
+<span class="font-label-caps text-[11px] text-secondary uppercase tracking-wider font-normal">[SEC-LOG]</span>
+<span class="material-symbols-outlined text-on-surface-variant text-[18px] group-hover:translate-x-0.5 transition-transform">chevron_right</span>
+</div>
+</a>
+</div>
+</div>
+
+<!-- Account & Security Preferences Card -->
+<div class="flex flex-col bg-surface-container-low rounded p-5 sm:p-6 shadow-sm space-y-5">
+<div class="flex items-center justify-between pb-1 border-b border-surface-container">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[22px]">security</span>
+<h3 class="font-title-md text-[20px] font-semibold text-on-surface">ACCOUNT &amp; SECURITY PROTOCOLS</h3>
+</div>
+<span class="font-code-sm text-[11px] text-on-surface-variant uppercase tracking-wider font-normal">TLS 1.3 // RFC 8446</span>
+</div>
+<!-- Parameter Spec List -->
+<div class="flex flex-col space-y-3">
+<!-- Row 1: Auth Provider -->
+<div class="flex items-center justify-between p-4 rounded bg-surface-container">
+<div class="flex flex-col min-w-0 space-y-0.5">
+<span class="font-label-caps text-[11px] text-on-surface-variant uppercase tracking-wider font-normal">IDENTITY PROVIDER</span>
+<span class="font-title-md text-[15px] font-medium text-on-surface truncate">Google OAuth 2.0 Enterprise</span>
+</div>
+<span class="bg-primary text-on-primary font-code-sm text-[11px] px-2 py-0.5 rounded flex items-center gap-1 font-normal tracking-wide">
+<span class="material-symbols-outlined text-[13px]">link</span>
+          LINKED
+        </span>
+</div>
+<!-- Row 2: Email verification -->
+<div class="flex items-center justify-between p-4 rounded bg-surface-container">
+<div class="flex flex-col min-w-0 space-y-0.5">
+<span class="font-label-caps text-[11px] text-on-surface-variant uppercase tracking-wider font-normal">PRIMARY COMM ADDR</span>
+<span class="font-code-md text-[14px] text-on-surface truncate font-normal">e.vance@plant-north.mw-os.net</span>
+</div>
+<span class="bg-surface-container-high text-primary font-code-sm text-[11px] px-2 py-0.5 rounded flex items-center gap-1 font-normal tracking-wide">
+<span class="material-symbols-outlined text-[13px]">verified</span>
+          CONFIRMED
+        </span>
+</div>
+<!-- Row 3: Notification dispatch -->
+<div class="flex items-center justify-between p-4 rounded bg-surface-container">
+<div class="flex flex-col min-w-0 space-y-0.5">
+<span class="font-label-caps text-[11px] text-on-surface-variant uppercase tracking-wider font-normal">DISPATCH CHANNELS (SRS §3.9)</span>
+<span class="font-body-md text-[14px] text-on-surface truncate font-normal leading-relaxed">In-App HUD + Brevo Transactional</span>
+</div>
+<span class="bg-primary-container text-on-primary-container font-code-sm text-[11px] px-2 py-0.5 rounded font-normal tracking-wide">
+          ACTIVE
+        </span>
+</div>
+<!-- Row 4: Multi-device sessions -->
+<div class="flex flex-col p-4 rounded bg-surface-container space-y-3">
+<div class="flex items-center justify-between">
+<span class="font-label-caps text-[11px] text-on-surface-variant uppercase tracking-wider font-normal">CONCURRENT SESSIONS</span>
+<span class="bg-surface-container-highest text-on-surface font-code-sm text-[11px] px-2 py-0.5 rounded font-normal tracking-wide">
+            2 ATTACHED DEVICES
+          </span>
+</div>
+<div class="flex flex-col space-y-2.5 pt-1">
+<div class="flex items-center justify-between text-body-sm py-1">
+<span class="flex items-center gap-2 font-body-md text-[14px] text-on-surface font-normal">
+<span class="material-symbols-outlined text-[16px] text-primary">smartphone</span>
+              Field Terminal MT-80 (This Handset)
+            </span>
+<span class="font-code-sm text-[11px] text-primary font-medium tracking-wide">CURRENT</span>
+</div>
+<div class="flex items-center justify-between text-body-sm py-1 border-t border-surface-container-high/60">
+<span class="flex items-center gap-2 font-body-md text-[14px] text-on-surface-variant font-normal">
+<span class="material-symbols-outlined text-[16px]">desktop_windows</span>
+              Workbench D Workstation (Firefox 128)
+            </span>
+<span class="font-code-sm text-[11px] text-on-surface-variant font-normal tracking-wide">IDLE 22m</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Danger Zone / Primary Session Termination -->
+<div class="flex flex-col bg-surface-container-low rounded p-5 sm:p-6 shadow-sm space-y-4">
+<div class="flex items-center justify-between pb-1 border-b border-surface-container">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-[22px]">warning</span>
+<h3 class="font-title-md text-[20px] font-semibold text-on-surface">DANGER &amp; REVOCATION</h3>
+</div>
+<span class="font-code-sm text-[11px] text-secondary font-medium tracking-wide uppercase">SRS §6 SPEC</span>
+</div>
+<p class="font-body-md text-[14px] text-on-surface-variant leading-relaxed font-normal">
+      Revoking active tokens instantly forces state invalidation across mobile telemetry handsets, bench browsers, and active OIDC handshakes.
+    </p>
+<!-- Tactile Revoke Button -->
+<button class="w-full mt-2 py-3 px-4 rounded bg-secondary hover:bg-secondary/90 text-on-secondary font-label-caps text-[12px] tracking-wider uppercase font-semibold flex items-center justify-center gap-2 active:translate-y-0.5 shadow-sm transition-all" id="revoke-btn" onclick="triggerRevocationSequence()">
+<span class="material-symbols-outlined text-[18px]">phonelink_erase</span>
+<span class="">LOG OUT ALL DEVICES (REVOKE REFRESH TOKENS)</span>
+</button>
+</div>
+
+<!-- Workshop Equipment Metadata Footer -->
+<div class="flex flex-col items-center justify-center py-4 text-center space-y-1.5">
+<span class="font-label-caps text-[11px] text-outline uppercase tracking-widest font-normal">
+      STATION-04 // FIRMWARE v4.19.8-LTS
+    </span>
+<span class="font-code-sm text-[11px] text-outline font-normal">
+      MW-OS CRYPTO ENGINE SHA-256 :: VALID
+    </span>
+</div>
+</div>
+<script>
+  function setStatus(status) {
+    const indicator = document.getElementById('status-live-indicator');
+    const btnAvail = document.getElementById('btn-status-avail');
+    const btnAway = document.getElementById('btn-status-away');
+    const btnOffline = document.getElementById('btn-status-offline');
+
+    const resetBtn = (btn) => {
+      btn.className = 'status-btn flex items-center justify-center gap-1.5 py-2 px-1 rounded transition-all bg-transparent text-on-surface-variant font-label-caps text-label-caps';
+    };
+
+    resetBtn(btnAvail);
+    resetBtn(btnAway);
+    resetBtn(btnOffline);
+
+    if (status === 'AVAILABLE') {
+      btnAvail.className = 'status-btn flex items-center justify-center gap-1.5 py-2 px-1 rounded transition-all bg-primary-container text-on-primary-container font-label-caps text-label-caps shadow-sm';
+      indicator.textContent = '[STATE: OPERATIONAL]';
+      indicator.className = 'font-code-sm text-code-sm text-primary font-semibold';
+    } else if (status === 'AWAY') {
+      btnAway.className = 'status-btn flex items-center justify-center gap-1.5 py-2 px-1 rounded transition-all bg-tertiary-container text-on-tertiary-container font-label-caps text-label-caps shadow-sm';
+      indicator.textContent = '[STATE: DISPATCH PAUSED]';
+      indicator.className = 'font-code-sm text-code-sm text-tertiary font-semibold';
+    } else if (status === 'OFFLINE') {
+      btnOffline.className = 'status-btn flex items-center justify-center gap-1.5 py-2 px-1 rounded transition-all bg-surface-container-highest text-on-surface font-label-caps text-label-caps shadow-sm';
+      indicator.textContent = '[STATE: DISCONNECTED]';
+      indicator.className = 'font-code-sm text-code-sm text-on-surface-variant font-semibold';
+    }
+  }
+
+  function triggerRevocationSequence() {
+    const btn = document.getElementById('revoke-btn');
+    const originalText = btn.innerHTML;
+    
+    btn.innerHTML = '<span class="material-symbols-outlined text-[18px] animate-spin">sync</span><span>INVALIDATING TOKENS...</span>';
+    btn.classList.add('opacity-90');
+    
+    setTimeout(() => {
+      btn.innerHTML = '<span class="material-symbols-outlined text-[18px]">check_circle</span><span>ALL TOKENS REVOKED [OIDC FLUSHED]</span>';
+      btn.classList.remove('bg-secondary');
+      btn.classList.add('bg-primary');
+      
+      setTimeout(() => {
+        btn.innerHTML = originalText;
+        btn.classList.remove('bg-primary', 'opacity-90');
+        btn.classList.add('bg-secondary');
+      }, 3000);
+    }, 1200);
+  }
+</script></main><nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface-container-low/95 backdrop-blur-xl shadow-[0_-2px_10px_rgba(0,0,0,0.04)]" data-active-classes="text-primary font-semibold bg-surface-container"><div class="flex justify-around items-center h-16 px-space-xs"><a class="flex flex-col items-center justify-center min-w-[64px] h-12 rounded px-space-xs text-on-surface-variant transition-colors" data-path="bench-dashboard" href="#"><span class="material-symbols-outlined text-[22px]">precision_manufacturing</span><span class="font-label-caps text-label-caps mt-space-xs uppercase">Bench</span></a><a class="flex flex-col items-center justify-center min-w-[64px] h-12 rounded px-space-xs text-on-surface-variant transition-colors" data-path="cases-queue" href="#"><span class="material-symbols-outlined text-[22px]">confirmation_number</span><span class="font-label-caps text-label-caps mt-space-xs uppercase">Cases</span></a><a class="flex flex-col items-center justify-center min-w-[64px] h-12 rounded px-space-xs text-on-surface-variant transition-colors" data-path="alerts-feed" href="#"><span class="material-symbols-outlined text-[22px]">notification_important</span><span class="font-label-caps text-label-caps mt-space-xs uppercase">Alerts</span></a><a aria-current="page" class="flex flex-col items-center justify-center min-w-[64px] h-12 rounded px-space-xs transition-colors text-primary font-semibold bg-surface-container" data-path="profile-admin" href="#"><span class="material-symbols-outlined text-[22px]">shield_person</span><span class="font-label-caps text-label-caps mt-space-xs uppercase">Admin</span></a></div></nav>
+
+</body></html>
