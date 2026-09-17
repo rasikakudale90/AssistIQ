@@ -19,15 +19,31 @@ class CaseRepository:
         prefix = "INC" if case_type == CaseType.INCIDENT else "REQ"
         pattern = f"{prefix}-{year}-%"
 
-        # Count existing cases of this type for the current year
-        count = (
-            db.query(func.count(Case.id))
+        # Query all existing reference numbers matching this pattern to find the highest sequence
+        existing_refs = (
+            db.query(Case.reference_number)
             .filter(Case.reference_number.like(pattern))
-            .scalar()
-            or 0
+            .all()
         )
-        sequence_number = count + 1
-        return f"{prefix}-{year}-{sequence_number:06d}"
+        
+        max_seq = 0
+        for (ref,) in existing_refs:
+            try:
+                parts = ref.split("-")
+                if len(parts) == 3:
+                    seq = int(parts[2])
+                    if seq > max_seq:
+                        max_seq = seq
+            except (ValueError, IndexError):
+                continue
+
+        next_seq = max_seq + 1
+        while True:
+            candidate = f"{prefix}-{year}-{next_seq:06d}"
+            exists = db.query(Case.id).filter(Case.reference_number == candidate).first()
+            if not exists:
+                return candidate
+            next_seq += 1
 
     @staticmethod
     def get_by_id(db: Session, case_id: str) -> Optional[Case]:
