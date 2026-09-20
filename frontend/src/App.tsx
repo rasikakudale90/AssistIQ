@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import { ThemeProvider } from './context/ThemeContext';
 import { Header } from './components/layout/Header';
 import { Navigation } from './components/layout/Navigation';
 import { LoginView } from './views/LoginView';
@@ -26,7 +27,7 @@ const MainLayout: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-surface flex flex-col font-sans text-on-surface">
+    <div className="min-h-screen bg-surface flex flex-col font-sans text-on-surface transition-colors duration-300">
       <Header />
       <div className="pt-16">
         <Navigation />
@@ -48,9 +49,11 @@ const MainLayout: React.FC = () => {
 export const App: React.FC = () => {
   return (
     <BrowserRouter>
-      <AuthProvider>
-        <MainLayout />
-      </AuthProvider>
+      <ThemeProvider>
+        <AuthProvider>
+          <MainLayout />
+        </AuthProvider>
+      </ThemeProvider>
     </BrowserRouter>
   );
 };
