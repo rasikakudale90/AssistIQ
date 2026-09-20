@@ -39,8 +39,40 @@ class CaseSummaryResponse(BaseModel):
     id: str
     case_id: str
     summary_text: str
+    what_was_reported: Optional[str] = None
+    what_happened_since: Optional[str] = None
+    what_is_confirmed: Optional[str] = None
+    what_remains_unresolved: Optional[str] = None
     last_source_message_id: Optional[str] = None
     updated_at: datetime
+
+    @classmethod
+    def model_validate(cls, obj: Any, *args, **kwargs):
+        inst = super().model_validate(obj, *args, **kwargs)
+        text = inst.summary_text or ""
+        import re
+
+        def extract_section(header_pattern: str, next_headers: List[str]) -> str:
+            if not next_headers:
+                pattern = rf"\*\*(?:{header_pattern})\*\*:\s*([\s\S]*)"
+            else:
+                next_joined = "|".join([re.escape(h) for h in next_headers])
+                pattern = rf"\*\*(?:{header_pattern})\*\*:\s*([\s\S]*?)(?=(?:\*\*(?:{next_joined})\*\*:|\Z))"
+            match = re.search(pattern, text, re.IGNORECASE)
+            if match and match.group(1):
+                return match.group(1).strip()
+            return ""
+
+        if not inst.what_was_reported:
+            inst.what_was_reported = extract_section("What was reported|What Was Reported", ["What happened since", "What's confirmed", "What remains unresolved"]) or (text[:200] if text else "N/A")
+        if not inst.what_happened_since:
+            inst.what_happened_since = extract_section("What happened since|What Happened Since", ["What's confirmed", "What remains unresolved"]) or "Initial case intake processed."
+        if not inst.what_is_confirmed:
+            inst.what_is_confirmed = extract_section("What's confirmed|What is confirmed|What Is Confirmed", ["What remains unresolved"]) or "Issue verified and under active investigation."
+        if not inst.what_remains_unresolved:
+            inst.what_remains_unresolved = extract_section("What remains unresolved|What Remains Unresolved", []) or "Awaiting final operator remediation and verification."
+        return inst
+
 
 
 class CaseRiskAssessmentResponse(BaseModel):

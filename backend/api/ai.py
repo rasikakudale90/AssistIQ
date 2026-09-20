@@ -44,18 +44,20 @@ async def get_or_run_triage(
 
 
 @router.get("/cases/{case_id}/summary", response_model=Optional[CaseSummaryResponse])
-def get_case_summary(
+async def get_case_summary(
     case_id: str,
+    refresh: bool = Query(False, description="Force recomputing the AI summary"),
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
     """
     Retrieves the latest continuous AI summary for a case (SRS §5.3).
+    Automatically computes if not yet generated or refreshed.
     """
     case = CaseService.get_case(db, current_user, case_id)
     summary = db.query(CaseSummary).filter(CaseSummary.case_id == case.id).first()
-    if not summary:
-        return None
+    if not summary or refresh:
+        return await AIService.recompute_case_summary(db=db, case_id=case.id)
     return CaseSummaryResponse.model_validate(summary)
 
 

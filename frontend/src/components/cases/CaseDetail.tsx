@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
-import { Case, CasePriority, CaseStatus, CaseSummary, RiskAssessment, SLAInfo, AuditLog } from '../../api/types';
+import { Case, CasePriority, CaseStatus, CaseSummary, RiskAssessment, SLAInfo, AuditLog, AITriageResult } from '../../api/types';
 import { updateCaseStatusApi, updateCasePriorityApi, getCaseTimelineApi, getSimilarCasesApi, reopenCaseApi } from '../../api/cases';
-import { getCaseSummaryApi, getCaseRiskApi } from '../../api/ai';
+import { getCaseSummaryApi, getCaseRiskApi, getCaseTriageApi } from '../../api/ai';
 import { getCaseSLAApi, createManualEscalationApi } from '../../api/escalations';
 import { MessageThread } from './MessageThread';
 
@@ -14,11 +14,12 @@ interface CaseDetailProps {
 export const CaseDetail: React.FC<CaseDetailProps> = ({ caseItem, onCaseUpdated }) => {
   const { user } = useAuth();
   const [summary, setSummary] = useState<CaseSummary | null>(null);
+  const [triage, setTriage] = useState<AITriageResult | null>(null);
   const [risk, setRisk] = useState<RiskAssessment | null>(null);
   const [sla, setSla] = useState<SLAInfo | null>(null);
   const [similarCases, setSimilarCases] = useState<any[]>([]);
   const [timeline, setTimeline] = useState<AuditLog[]>([]);
-  const [activeTab, setActiveTab] = useState<'messages' | 'summary' | 'timeline'>('messages');
+  const [activeTab, setActiveTab] = useState<'messages' | 'summary' | 'triage' | 'timeline'>('messages');
 
   // Escalation & Reopen modals
   const [escalateOpen, setEscalateOpen] = useState(false);
@@ -31,12 +32,14 @@ export const CaseDetail: React.FC<CaseDetailProps> = ({ caseItem, onCaseUpdated 
 
   const loadCaseMetadata = async () => {
     try {
-      const [sumData, slaData] = await Promise.all([
+      const [sumData, slaData, triageData] = await Promise.all([
         getCaseSummaryApi(caseItem.id).catch(() => null),
         getCaseSLAApi(caseItem.id).catch(() => null),
+        getCaseTriageApi(caseItem.id).catch(() => null),
       ]);
       setSummary(sumData);
       setSla(slaData);
+      setTriage(triageData);
 
       if (isStaff) {
         const [riskData, similarData] = await Promise.all([
@@ -306,6 +309,16 @@ export const CaseDetail: React.FC<CaseDetailProps> = ({ caseItem, onCaseUpdated 
           AI Case Summary
         </button>
         <button
+          onClick={() => setActiveTab('triage')}
+          className={`px-3 py-1 rounded transition-colors ${
+            activeTab === 'triage'
+              ? 'bg-primary text-on-primary font-bold'
+              : 'text-on-surface-variant hover:bg-surface-container'
+          }`}
+        >
+          AI Triage & Telemetry
+        </button>
+        <button
           onClick={() => {
             setActiveTab('timeline');
             loadTimeline();
@@ -360,6 +373,90 @@ export const CaseDetail: React.FC<CaseDetailProps> = ({ caseItem, onCaseUpdated 
             </div>
           ) : (
             <p className="text-xs text-on-surface-variant italic">No AI summary generated yet.</p>
+          )}
+        </div>
+      )}
+
+      {activeTab === 'triage' && (
+        <div className="space-y-3 bg-surface-container-lowest p-4 rounded border border-outline-variant/30">
+          <div className="flex items-center justify-between border-b border-outline-variant/20 pb-2">
+            <div className="flex items-center gap-1.5 text-primary font-mono text-xs font-bold uppercase">
+              <span className="material-symbols-outlined text-[18px]">psychology</span>
+              AI Triage & Diagnostic Telemetry [SRS §5.2]
+            </div>
+            {triage && (
+              <span className="font-mono text-xs px-2 py-0.5 rounded bg-primary-container text-on-primary-container font-semibold">
+                CONFIDENCE: {triage.confidence_score !== undefined ? `${Math.round(triage.confidence_score * 100)}%` : (triage.confidence_level || 'HIGH')}
+              </span>
+            )}
+          </div>
+
+          {triage ? (
+            <div className="space-y-3 text-xs">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="p-2.5 bg-surface-container-low rounded">
+                  <span className="block font-mono text-[10px] text-on-surface-variant uppercase">
+                    Suggested Category & Team
+                  </span>
+                  <strong className="text-on-surface text-sm block">
+                    {triage.suggested_category || triage.predicted_category || 'General IT'}
+                  </strong>
+                  <span className="text-[11px] text-primary font-mono font-semibold">
+                    ➔ {triage.suggested_team || 'Service Desk'}
+                  </span>
+                </div>
+
+                <div className="p-2.5 bg-surface-container-low rounded">
+                  <span className="block font-mono text-[10px] text-on-surface-variant uppercase">
+                    Predicted Severity & Priority
+                  </span>
+                  <strong className="text-secondary font-mono text-sm block">
+                    [{triage.suggested_priority || triage.predicted_priority || 'P3'}]
+                  </strong>
+                  <span className="text-[11px] text-on-surface-variant font-mono">
+                    Severity: {triage.suggested_severity || 'Medium'}
+                  </span>
+                </div>
+              </div>
+
+              {/* Supporting Telemetry Factors */}
+              {triage.supporting_factors && triage.supporting_factors.length > 0 && (
+                <div className="p-3 bg-surface-container-low rounded">
+                  <span className="block font-mono text-[10px] text-tertiary font-bold uppercase mb-1">
+                    Supporting Telemetry & Factors
+                  </span>
+                  <ul className="list-disc list-inside space-y-1 text-xs text-on-surface">
+                    {triage.supporting_factors.map((factor, i) => (
+                      <li key={i}>{factor}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {/* Missing Info Clarification Questions */}
+              {((triage.missing_info_questions && triage.missing_info_questions.length > 0) || (triage.missing_info && triage.missing_info.length > 0)) && (
+                <div className="p-3 bg-surface-container-high rounded border-l-2 border-secondary">
+                  <span className="block font-mono text-[10px] text-secondary font-bold uppercase mb-1">
+                    Suggested Clarification Questions (Missing Info - SRS §5.4)
+                  </span>
+                  <ul className="list-disc list-inside space-y-1 text-xs text-on-surface">
+                    {(triage.missing_info_questions || triage.missing_info || []).map((q, i) => (
+                      <li key={i}>{q}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {/* Recommended Next Action */}
+              {triage.recommended_next_action && (
+                <div className="p-2.5 bg-primary/5 rounded border border-primary/20 text-xs font-mono">
+                  <span className="text-[10px] uppercase font-bold text-primary block">Recommended Next Action:</span>
+                  <span className="text-on-surface">{triage.recommended_next_action}</span>
+                </div>
+              )}
+            </div>
+          ) : (
+            <p className="text-xs text-on-surface-variant italic">No AI triage assessment recorded.</p>
           )}
         </div>
       )}

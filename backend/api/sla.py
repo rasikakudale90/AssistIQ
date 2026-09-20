@@ -32,3 +32,20 @@ def get_case_sla(
         db.refresh(sla)
 
     return SLAService.build_sla_response(sla)
+
+
+@router.post("/scheduler/sweep")
+async def trigger_the_sweep(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    """
+    Manually triggers 'The Sweep' background job on demand (SRS §4.3 & §5.7).
+    """
+    from backend.scheduler.sweep import run_the_sweep
+    stats = await run_the_sweep(db=db)
+    return {
+        "status": "success",
+        "message": "The Sweep executed successfully",
+        "stats": stats,
+    }

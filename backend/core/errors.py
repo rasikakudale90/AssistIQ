@@ -82,13 +82,20 @@ async def app_exception_handler(request: Request, exc: AppException) -> JSONResp
 
 
 async def validation_exception_handler(request: Request, exc: RequestValidationError) -> JSONResponse:
+    safe_errors = []
+    for err in exc.errors():
+        safe_err = dict(err)
+        if "input" in safe_err and isinstance(safe_err["input"], (bytes, bytearray)):
+            safe_err["input"] = safe_err["input"].decode("utf-8", errors="replace")
+        safe_errors.append(safe_err)
+
     return JSONResponse(
         status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
         content={
             "error": {
                 "code": "VALIDATION_ERROR",
                 "message": "The request body or parameters failed validation.",
-                "details": {"errors": exc.errors()},
+                "details": {"errors": safe_errors},
             }
         },
     )
