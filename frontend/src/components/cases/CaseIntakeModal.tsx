@@ -69,27 +69,30 @@ export const CaseIntakeModal: React.FC<CaseIntakeModalProps> = ({ isOpen, onClos
   };
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-inverse-surface/60 backdrop-blur-xs flex items-center justify-center p-4">
-      <div className="bg-surface-container-high rounded-lg max-w-2xl w-full p-6 shadow-xl border border-outline-variant/40 space-y-5">
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-inverse-surface/40 backdrop-blur-md flex items-center justify-center p-4 animate-fadeIn">
+      <div className="liquid-glass-elevated rounded-xl max-w-2xl w-full p-6 shadow-2xl border border-outline-variant/50 space-y-5 animate-scaleUp">
         {/* Header */}
         <div className="flex items-center justify-between border-b border-outline-variant/30 pb-3">
-          <div className="flex items-center gap-2">
-            <span className="w-2.5 h-2.5 rounded-full bg-secondary animate-pulse" />
+          <div className="flex items-center gap-2.5">
+            <span className="w-2.5 h-2.5 rounded-full bg-secondary radar-live" />
             <span className="font-mono text-xs text-primary font-bold tracking-wider uppercase">
-              NEW DOCKET INTAKE // AI TRIAGE
+              NEW DOCKET INTAKE // AI TRIAGE ENGINE
             </span>
           </div>
           <button
             onClick={handleReset}
-            className="w-8 h-8 rounded hover:bg-surface-container flex items-center justify-center text-on-surface-variant"
+            className="w-8 h-8 rounded-lg hover:bg-surface-container/60 flex items-center justify-center text-on-surface-variant press-tactile transition-colors"
           >
             <span className="material-symbols-outlined text-[18px]">close</span>
           </button>
         </div>
 
         {error && (
-          <div className="p-3 bg-error-container text-on-error-container text-xs rounded border border-error/20">
-            {error}
+          <div className="p-3.5 bg-error-container/80 backdrop-blur-xs text-on-error-container text-xs rounded-lg border border-error/30 shadow-xs animate-shake">
+            <div className="flex items-center gap-2">
+              <span className="material-symbols-outlined text-[16px]">error</span>
+              <span>{error}</span>
+            </div>
           </div>
         )}
 
@@ -97,7 +100,7 @@ export const CaseIntakeModal: React.FC<CaseIntakeModalProps> = ({ isOpen, onClos
           /* Intake Form */
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block font-mono text-xs font-semibold text-on-surface-variant uppercase mb-1">
+              <label className="block font-mono text-xs font-semibold text-on-surface-variant uppercase mb-1.5 tracking-wider">
                 Docket Title / Summary
               </label>
               <input
@@ -106,12 +109,12 @@ export const CaseIntakeModal: React.FC<CaseIntakeModalProps> = ({ isOpen, onClos
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="e.g. Substation 4 conveyor line suddenly halted after calibration"
-                className="w-full px-3 py-2 bg-surface-container-lowest border border-outline-variant/40 rounded text-sm text-on-surface focus:outline-none focus:ring-1 focus:ring-primary"
+                className="w-full px-3.5 py-2.5 bg-surface-container-lowest/80 border border-outline-variant/40 rounded-lg text-sm text-on-surface input-liquid focus:outline-none"
               />
             </div>
 
             <div>
-              <label className="block font-mono text-xs font-semibold text-on-surface-variant uppercase mb-1">
+              <label className="block font-mono text-xs font-semibold text-on-surface-variant uppercase mb-1.5 tracking-wider">
                 Detailed Statement / Symptoms
               </label>
               <textarea
@@ -120,19 +123,19 @@ export const CaseIntakeModal: React.FC<CaseIntakeModalProps> = ({ isOpen, onClos
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 placeholder="Describe exact symptoms, error codes, affected hardware, and immediate impact..."
-                className="w-full px-3 py-2 bg-surface-container-lowest border border-outline-variant/40 rounded text-sm text-on-surface focus:outline-none focus:ring-1 focus:ring-primary"
+                className="w-full px-3.5 py-2.5 bg-surface-container-lowest/80 border border-outline-variant/40 rounded-lg text-sm text-on-surface input-liquid focus:outline-none"
               />
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
               <div>
-                <label className="block font-mono text-[11px] font-semibold text-on-surface-variant uppercase mb-1">
+                <label className="block font-mono text-[11px] font-semibold text-on-surface-variant uppercase mb-1.5 tracking-wider">
                   Type
                 </label>
                 <select
                   value={caseType}
                   onChange={(e) => setCaseType(e.target.value as CaseType)}
-                  className="w-full px-2.5 py-1.5 bg-surface-container-lowest border border-outline-variant/40 rounded text-xs text-on-surface"
+                  className="w-full px-2.5 py-2 bg-surface-container-lowest/80 border border-outline-variant/40 rounded-lg text-xs text-on-surface input-liquid focus:outline-none"
                 >
                   <option value="Incident">Incident</option>
                   <option value="ServiceRequest">Service Request</option>
@@ -140,13 +143,13 @@ export const CaseIntakeModal: React.FC<CaseIntakeModalProps> = ({ isOpen, onClos
               </div>
 
               <div>
-                <label className="block font-mono text-[11px] font-semibold text-on-surface-variant uppercase mb-1">
+                <label className="block font-mono text-[11px] font-semibold text-on-surface-variant uppercase mb-1.5 tracking-wider">
                   Category
                 </label>
                 <select
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
-                  className="w-full px-2.5 py-1.5 bg-surface-container-lowest border border-outline-variant/40 rounded text-xs text-on-surface"
+                  className="w-full px-2.5 py-2 bg-surface-container-lowest/80 border border-outline-variant/40 rounded-lg text-xs text-on-surface input-liquid focus:outline-none"
                 >
                   <option value="Hardware">Hardware</option>
                   <option value="Network">Network</option>
@@ -158,13 +161,13 @@ export const CaseIntakeModal: React.FC<CaseIntakeModalProps> = ({ isOpen, onClos
               </div>
 
               <div>
-                <label className="block font-mono text-[11px] font-semibold text-on-surface-variant uppercase mb-1">
+                <label className="block font-mono text-[11px] font-semibold text-on-surface-variant uppercase mb-1.5 tracking-wider">
                   Initial Severity
                 </label>
                 <select
                   value={priority}
                   onChange={(e) => setPriority(e.target.value as CasePriority)}
-                  className="w-full px-2.5 py-1.5 bg-surface-container-lowest border border-outline-variant/40 rounded text-xs text-on-surface font-mono"
+                  className="w-full px-2.5 py-2 bg-surface-container-lowest/80 border border-outline-variant/40 rounded-lg text-xs text-on-surface font-mono input-liquid focus:outline-none"
                 >
                   <option value="P1">P1 - Critical (15m resp / 4h sla)</option>
                   <option value="P2">P2 - High (1h resp / 8h sla)</option>
@@ -174,7 +177,7 @@ export const CaseIntakeModal: React.FC<CaseIntakeModalProps> = ({ isOpen, onClos
               </div>
 
               <div>
-                <label className="block font-mono text-[11px] font-semibold text-on-surface-variant uppercase mb-1">
+                <label className="block font-mono text-[11px] font-semibold text-on-surface-variant uppercase mb-1.5 tracking-wider">
                   Site / Facility
                 </label>
                 <input
@@ -182,23 +185,23 @@ export const CaseIntakeModal: React.FC<CaseIntakeModalProps> = ({ isOpen, onClos
                   value={site}
                   onChange={(e) => setSite(e.target.value)}
                   placeholder="e.g. Substation 4"
-                  className="w-full px-2.5 py-1.5 bg-surface-container-lowest border border-outline-variant/40 rounded text-xs text-on-surface"
+                  className="w-full px-2.5 py-2 bg-surface-container-lowest/80 border border-outline-variant/40 rounded-lg text-xs text-on-surface input-liquid focus:outline-none"
                 />
               </div>
             </div>
 
-            <div className="flex justify-end gap-2 pt-3 border-t border-outline-variant/30">
+            <div className="flex justify-end gap-2.5 pt-4 border-t border-outline-variant/30">
               <button
                 type="button"
                 onClick={handleReset}
-                className="px-4 py-2 bg-surface-container hover:bg-surface-container-highest text-on-surface font-mono text-xs rounded transition-colors"
+                className="px-4 py-2 bg-surface-container/60 hover:bg-surface-container text-on-surface font-mono text-xs rounded-lg press-tactile transition-colors"
               >
                 Cancel
               </button>
               <button
                 type="submit"
                 disabled={loading}
-                className="px-4 py-2 bg-primary hover:bg-primary-container text-on-primary font-mono text-xs font-bold rounded shadow-xs transition-colors uppercase tracking-wider flex items-center gap-1.5"
+                className="px-4 py-2 bg-primary hover:bg-primary-container text-on-primary font-mono text-xs font-bold rounded-lg shadow-md press-tactile transition-all uppercase tracking-wider flex items-center gap-1.5 disabled:opacity-50"
               >
                 <span className="material-symbols-outlined text-[16px]">psychology</span>
                 {loading ? 'Submitting & Triaging...' : 'Submit & Run AI Triage'}
@@ -208,59 +211,71 @@ export const CaseIntakeModal: React.FC<CaseIntakeModalProps> = ({ isOpen, onClos
         ) : (
           /* Post-Creation AI Triage Review Card (Matching Stitch Screen 1 & 2) */
           <div className="space-y-4">
-            <div className="p-4 bg-surface-container-low rounded border border-outline-variant/40">
+            <div className="p-4 liquid-glass rounded-xl border border-outline-variant/40 shadow-xs">
               <div className="flex items-center justify-between mb-2">
-                <span className="font-headline font-bold text-base text-on-surface">
+                <span className="font-headline font-bold text-base text-on-surface flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-secondary radar-live" />
                   {createdCase.reference_number}: {createdCase.title}
                 </span>
-                <span className="font-mono text-xs bg-primary text-on-primary px-2 py-0.5 rounded font-bold">
+                <span className="font-mono text-xs bg-primary text-on-primary px-2.5 py-0.5 rounded-full font-bold shadow-xs">
                   {createdCase.status}
                 </span>
               </div>
-              <p className="text-xs text-on-surface-variant italic font-sans">
+              <p className="text-xs text-on-surface-variant italic font-sans pl-4 border-l-2 border-primary/30">
                 "{createdCase.description}"
               </p>
             </div>
 
             {triageLoading ? (
-              <div className="p-8 text-center bg-surface-container-lowest rounded border border-outline-variant/30 flex flex-col items-center gap-2">
-                <span className="material-symbols-outlined text-primary text-3xl animate-spin">
-                  sync
-                </span>
-                <span className="font-mono text-xs text-primary font-semibold">
-                  Analyzing Case Symptoms with Gemini AI Model...
-                </span>
+              <div className="p-8 text-center liquid-glass rounded-xl border border-outline-variant/30 flex flex-col items-center gap-3">
+                <div className="relative flex items-center justify-center w-14 h-14">
+                  <div className="absolute inset-0 rounded-full border-2 border-primary/40 animate-ping" />
+                  <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                    <span className="material-symbols-outlined text-primary text-2xl animate-spin">
+                      sync
+                    </span>
+                  </div>
+                </div>
+                <div>
+                  <span className="font-mono text-xs text-primary font-bold block">
+                    Analyzing Case Symptoms with Gemini AI Model...
+                  </span>
+                  <span className="text-[11px] text-on-surface-variant font-sans">
+                    Extracting supporting telemetry, confidence metrics, and potential missing data
+                  </span>
+                </div>
               </div>
             ) : triageResult ? (
               <div className="space-y-3">
                 {/* AI Confidence & Predictions */}
-                <div className="bg-surface-container-lowest p-4 rounded border border-outline-variant/30 space-y-3">
-                  <div className="flex items-center justify-between border-b border-outline-variant/20 pb-2">
-                    <div className="flex items-center gap-1.5">
-                      <span className="material-symbols-outlined text-primary text-[18px]">
+                <div className="liquid-glass p-4 rounded-xl border border-outline-variant/40 space-y-3 shadow-xs">
+                  <div className="flex items-center justify-between border-b border-outline-variant/20 pb-2.5">
+                    <div className="flex items-center gap-2">
+                      <span className="material-symbols-outlined text-primary text-[20px]">
                         psychology
                       </span>
-                      <span className="font-mono text-xs text-primary font-bold uppercase">
+                      <span className="font-mono text-xs text-primary font-bold uppercase tracking-wider">
                         AI Triage Assessment [SRS §5.2]
                       </span>
                     </div>
-                    <span className="font-mono text-xs px-2 py-0.5 rounded bg-primary-container text-on-primary-container font-semibold">
+                    <span className="font-mono text-xs px-2.5 py-1 rounded-full bg-primary-container text-on-primary-container font-bold shadow-xs flex items-center gap-1.5">
+                      <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
                       CONFIDENCE: {triageResult.confidence_score !== undefined ? `${Math.round(triageResult.confidence_score * 100)}%` : (triageResult.confidence_level || 'HIGH')}
                     </span>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-                    <div className="p-2.5 bg-surface-container-low rounded">
-                      <span className="block font-mono text-[10px] text-on-surface-variant uppercase">
+                    <div className="p-3 bg-surface-container-low/70 rounded-lg border border-outline-variant/30 card-3d">
+                      <span className="block font-mono text-[10px] text-on-surface-variant uppercase tracking-wider mb-1">
                         Recommended Category
                       </span>
-                      <strong className="text-on-surface text-sm">
+                      <strong className="text-on-surface text-sm font-headline">
                         {triageResult.suggested_category || triageResult.predicted_category || 'General IT'}
                       </strong>
                     </div>
 
-                    <div className="p-2.5 bg-surface-container-low rounded">
-                      <span className="block font-mono text-[10px] text-on-surface-variant uppercase">
+                    <div className="p-3 bg-surface-container-low/70 rounded-lg border border-outline-variant/30 card-3d">
+                      <span className="block font-mono text-[10px] text-on-surface-variant uppercase tracking-wider mb-1">
                         Predicted Severity
                       </span>
                       <strong className="text-secondary font-mono text-sm">
@@ -271,13 +286,14 @@ export const CaseIntakeModal: React.FC<CaseIntakeModalProps> = ({ isOpen, onClos
 
                   {/* Supporting Factors */}
                   {triageResult.supporting_factors && triageResult.supporting_factors.length > 0 && (
-                    <div className="p-3 bg-surface-container-low rounded">
-                      <span className="block font-mono text-[10px] text-tertiary font-bold uppercase mb-1">
+                    <div className="p-3.5 bg-surface-container-low/70 rounded-lg border border-outline-variant/30">
+                      <span className="block font-mono text-[10px] text-tertiary font-bold uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+                        <span className="material-symbols-outlined text-[14px]">tune</span>
                         Supporting Telemetry & Factors
                       </span>
-                      <ul className="list-disc list-inside space-y-0.5 text-xs text-on-surface">
+                      <ul className="list-disc list-inside space-y-1 text-xs text-on-surface">
                         {triageResult.supporting_factors.map((f, i) => (
-                          <li key={i}>{f}</li>
+                          <li key={i} className="leading-relaxed">{f}</li>
                         ))}
                       </ul>
                     </div>
@@ -285,13 +301,14 @@ export const CaseIntakeModal: React.FC<CaseIntakeModalProps> = ({ isOpen, onClos
 
                   {/* Missing Info Questions (SRS §5.4) */}
                   {((triageResult.missing_info_questions && triageResult.missing_info_questions.length > 0) || (triageResult.missing_info && triageResult.missing_info.length > 0)) && (
-                    <div className="p-3 bg-surface-container-high rounded border-l-2 border-secondary">
-                      <span className="block font-mono text-[10px] text-secondary font-bold uppercase mb-1">
+                    <div className="p-3.5 bg-secondary-container/30 backdrop-blur-xs rounded-lg border border-secondary/30">
+                      <span className="block font-mono text-[10px] text-secondary font-bold uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+                        <span className="material-symbols-outlined text-[14px]">help_outline</span>
                         Suggested Clarification Questions (Missing Info)
                       </span>
-                      <ul className="list-disc list-inside space-y-0.5 text-xs text-on-surface">
+                      <ul className="list-disc list-inside space-y-1 text-xs text-on-surface">
                         {(triageResult.missing_info_questions || triageResult.missing_info || []).map((q, i) => (
-                          <li key={i}>{q}</li>
+                          <li key={i} className="leading-relaxed">{q}</li>
                         ))}
                       </ul>
                     </div>
@@ -304,7 +321,7 @@ export const CaseIntakeModal: React.FC<CaseIntakeModalProps> = ({ isOpen, onClos
               <button
                 type="button"
                 onClick={handleReset}
-                className="px-4 py-2 bg-primary text-on-primary font-mono text-xs font-bold rounded shadow-xs"
+                className="px-4 py-2 bg-primary hover:bg-primary-container text-on-primary font-mono text-xs font-bold rounded-lg shadow-md press-tactile transition-all"
               >
                 Go to Workbench
               </button>

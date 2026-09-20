@@ -10,16 +10,16 @@ export const Navigation: React.FC = () => {
   const isManagerOrAdmin = ['TeamLead', 'Manager', 'Administrator'].includes(user.role);
 
   return (
-    <nav className="bg-surface-container border-b border-outline-variant/30 px-4 md:px-6">
-      <div className="max-w-7xl mx-auto flex items-center gap-2 overflow-x-auto py-2">
+    <nav className="liquid-glass border-b border-outline-variant/30 px-4 md:px-6 sticky top-16 z-40">
+      <div className="max-w-7xl mx-auto flex items-center gap-2 overflow-x-auto py-2.5">
         <NavLink
           to="/"
           end
           className={({ isActive }) =>
-            `flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-mono transition-colors ${
+            `flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-mono transition-all duration-200 press-tactile ${
               isActive
-                ? 'bg-primary text-on-primary font-semibold shadow-xs'
-                : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high'
+                ? 'bg-primary text-on-primary font-bold shadow-sm scale-[1.02]'
+                : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container/80'
             }`
           }
         >
@@ -31,10 +31,10 @@ export const Navigation: React.FC = () => {
           <NavLink
             to="/insights"
             className={({ isActive }) =>
-              `flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-mono transition-colors ${
+              `flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-mono transition-all duration-200 press-tactile ${
                 isActive
-                  ? 'bg-primary text-on-primary font-semibold shadow-xs'
-                  : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high'
+                  ? 'bg-primary text-on-primary font-bold shadow-sm scale-[1.02]'
+                  : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container/80'
               }`
             }
           >
@@ -47,10 +47,10 @@ export const Navigation: React.FC = () => {
           <NavLink
             to="/dispatch"
             className={({ isActive }) =>
-              `flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-mono transition-colors ${
+              `flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-mono transition-all duration-200 press-tactile ${
                 isActive
-                  ? 'bg-primary text-on-primary font-semibold shadow-xs'
-                  : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high'
+                  ? 'bg-primary text-on-primary font-bold shadow-sm scale-[1.02]'
+                  : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container/80'
               }`
             }
           >
@@ -62,10 +62,10 @@ export const Navigation: React.FC = () => {
         <NavLink
           to="/knowledge"
           className={({ isActive }) =>
-            `flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-mono transition-colors ${
+            `flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-mono transition-all duration-200 press-tactile ${
               isActive
-                ? 'bg-primary text-on-primary font-semibold shadow-xs'
-                : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high'
+                ? 'bg-primary text-on-primary font-bold shadow-sm scale-[1.02]'
+                : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container/80'
             }`
           }
         >
@@ -77,10 +77,10 @@ export const Navigation: React.FC = () => {
           <NavLink
             to="/admin"
             className={({ isActive }) =>
-              `flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-mono transition-colors ${
+              `flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-mono transition-all duration-200 press-tactile ${
                 isActive
-                  ? 'bg-primary text-on-primary font-semibold shadow-xs'
-                  : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high'
+                  ? 'bg-primary text-on-primary font-bold shadow-sm scale-[1.02]'
+                  : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container/80'
               }`
             }
           >

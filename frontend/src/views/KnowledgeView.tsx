@@ -81,13 +81,18 @@ export const KnowledgeView: React.FC = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 md:px-6 py-6 space-y-6">
       {/* Header Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-surface-container-high p-4 rounded border border-outline-variant/30 shadow-xs">
-        <div className="flex items-center gap-2">
-          <span className="material-symbols-outlined text-primary text-[24px]">menu_book</span>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 liquid-glass p-5 rounded-xl border border-outline-variant/40 shadow-sm">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary shadow-xs">
+            <span className="material-symbols-outlined text-[24px]">menu_book</span>
+          </div>
           <div>
-            <span className="font-mono text-[10px] text-primary uppercase font-bold tracking-wider">
-              KNOWLEDGE REPOSITORY // RBAC SEARCH
-            </span>
+            <div className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-secondary radar-live" />
+              <span className="font-mono text-[10px] text-primary uppercase font-bold tracking-wider">
+                KNOWLEDGE REPOSITORY // RBAC SEARCH
+              </span>
+            </div>
             <h1 className="font-headline text-lg font-bold text-on-surface">
               Technical Documentation & Solutions Directory
             </h1>
@@ -97,7 +102,7 @@ export const KnowledgeView: React.FC = () => {
         {isStaff && (
           <button
             onClick={() => setCreateModalOpen(true)}
-            className="px-4 py-2 bg-primary hover:bg-primary-container text-on-primary font-mono text-xs font-bold rounded shadow-xs transition-colors flex items-center gap-1.5 uppercase"
+            className="px-4 py-2.5 bg-primary hover:bg-primary-container text-on-primary font-mono text-xs font-bold rounded-lg shadow-md press-tactile transition-all flex items-center gap-1.5 uppercase tracking-wider"
           >
             <span className="material-symbols-outlined text-[16px]">add</span>
             <span>Publish New KB Article</span>
@@ -107,7 +112,7 @@ export const KnowledgeView: React.FC = () => {
 
       {/* Unified Search Input */}
       <form onSubmit={handleSearch} className="relative">
-        <span className="material-symbols-outlined absolute left-3 top-2.5 text-on-surface-variant text-[18px]">
+        <span className="material-symbols-outlined absolute left-3.5 top-3 text-on-surface-variant text-[18px]">
           search
         </span>
         <input
@@ -115,11 +120,11 @@ export const KnowledgeView: React.FC = () => {
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder="Unified full-text search across knowledge articles and permitted support dockets..."
-          className="w-full pl-10 pr-24 py-2 bg-surface-container-lowest border border-outline-variant/40 rounded text-xs text-on-surface font-mono focus:outline-none focus:ring-1 focus:ring-primary shadow-xs"
+          className="w-full pl-10 pr-24 py-2.5 bg-surface-container-lowest/80 border border-outline-variant/40 rounded-xl text-xs text-on-surface font-mono input-liquid focus:outline-none shadow-xs"
         />
         <button
           type="submit"
-          className="absolute right-1.5 top-1.5 px-3 py-1 bg-primary hover:bg-primary-container text-on-primary font-mono text-[11px] font-bold rounded"
+          className="absolute right-2 top-2 px-3.5 py-1 bg-primary hover:bg-primary-container text-on-primary font-mono text-[11px] font-bold rounded-lg press-tactile transition-all shadow-xs"
         >
           Search
         </button>
@@ -127,13 +132,14 @@ export const KnowledgeView: React.FC = () => {
 
       {/* Unified Search Results View */}
       {loading ? (
-        <div className="p-12 text-center font-mono text-xs text-on-surface-variant">
-          Loading knowledge repository...
+        <div className="space-y-4 p-4">
+          <div className="h-40 liquid-glass rounded-xl shimmer-warm border border-outline-variant/30" />
         </div>
       ) : searchResults ? (
-        <div className="space-y-4 bg-surface-container-low p-5 rounded border border-outline-variant/30">
-          <div className="flex items-center justify-between border-b border-outline-variant/20 pb-2">
-            <span className="font-mono text-xs font-bold text-primary uppercase">
+        <div className="space-y-4 liquid-glass-elevated p-5 rounded-xl border border-outline-variant/40 shadow-md">
+          <div className="flex items-center justify-between border-b border-outline-variant/20 pb-2.5">
+            <span className="font-mono text-xs font-bold text-primary uppercase tracking-wider flex items-center gap-2">
+              <span className="material-symbols-outlined text-[16px]">manage_search</span>
               Unified Search Results for "{searchQuery}"
             </span>
             <button
@@ -141,7 +147,7 @@ export const KnowledgeView: React.FC = () => {
                 setSearchResults(null);
                 setSearchQuery('');
               }}
-              className="text-xs font-mono text-on-surface-variant hover:underline"
+              className="text-xs font-mono text-on-surface-variant hover:text-primary press-tactile transition-colors underline"
             >
               Clear Search
             </button>
@@ -150,7 +156,7 @@ export const KnowledgeView: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Articles */}
             <div className="space-y-2">
-              <h3 className="font-mono text-xs font-bold text-on-surface uppercase">
+              <h3 className="font-mono text-xs font-bold text-on-surface uppercase tracking-wider">
                 Knowledge Articles ({searchResults.articles.length})
               </h3>
               {searchResults.articles.map((art) => (
@@ -160,23 +166,23 @@ export const KnowledgeView: React.FC = () => {
                     setSelectedArticle(art);
                     setSearchResults(null);
                   }}
-                  className="p-3 bg-surface-container-lowest rounded border border-outline-variant/30 hover:border-primary cursor-pointer"
+                  className="p-3.5 liquid-glass-interactive rounded-xl border border-outline-variant/30 cursor-pointer card-3d"
                 >
                   <span className="font-mono text-[10px] text-primary block">📁 {art.category}</span>
-                  <h4 className="font-headline font-bold text-sm text-on-surface">{art.title}</h4>
+                  <h4 className="font-headline font-bold text-sm text-on-surface mt-0.5">{art.title}</h4>
                 </div>
               ))}
             </div>
 
             {/* Cases */}
             <div className="space-y-2">
-              <h3 className="font-mono text-xs font-bold text-on-surface uppercase">
+              <h3 className="font-mono text-xs font-bold text-on-surface uppercase tracking-wider">
                 Permitted Cases ({searchResults.cases.length})
               </h3>
               {searchResults.cases.map((cs) => (
-                <div key={cs.id} className="p-3 bg-surface-container-lowest rounded border border-outline-variant/30">
+                <div key={cs.id} className="p-3.5 liquid-glass rounded-xl border border-outline-variant/30">
                   <span className="font-mono text-[10px] text-primary font-bold">#{cs.reference_number}</span>
-                  <h4 className="font-headline font-bold text-sm text-on-surface">{cs.title}</h4>
+                  <h4 className="font-headline font-bold text-sm text-on-surface mt-0.5">{cs.title}</h4>
                   <span className="text-[11px] font-mono text-on-surface-variant">Status: {cs.status}</span>
                 </div>
               ))}
@@ -187,20 +193,20 @@ export const KnowledgeView: React.FC = () => {
         /* Split Articles Directory */
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Article List */}
-          <div className="lg:col-span-4 space-y-2 max-h-[600px] overflow-y-auto">
+          <div className="lg:col-span-4 space-y-2.5 max-h-[600px] overflow-y-auto pr-1">
             {articles.map((art) => (
               <div
                 key={art.id}
                 onClick={() => setSelectedArticle(art)}
-                className={`p-3.5 rounded border transition-all cursor-pointer space-y-1 ${
+                className={`p-3.5 rounded-xl border transition-all cursor-pointer space-y-1 card-3d ${
                   selectedArticle?.id === art.id
-                    ? 'bg-surface-container-lowest border-primary shadow-sm ring-1 ring-primary/40'
-                    : 'bg-surface-container-lowest border-outline-variant/30 hover:bg-surface-container-low'
+                    ? 'liquid-glass-elevated border-primary shadow-sm ring-1 ring-primary/40'
+                    : 'liquid-glass border-outline-variant/30 hover:bg-surface-container/60'
                 }`}
               >
                 <div className="flex items-center justify-between text-xs font-mono">
-                  <span className="text-primary font-semibold">📁 {art.category}</span>
-                  <span className="text-on-surface-variant text-[10px]">👁 {art.view_count} views</span>
+                  <span className="text-primary font-bold text-[11px]">📁 {art.category}</span>
+                  <span className="text-on-surface-variant text-[10px] bg-surface-container/60 px-2 py-0.5 rounded">👁 {art.view_count} views</span>
                 </div>
                 <h3 className="font-headline font-bold text-sm text-on-surface">{art.title}</h3>
               </div>
@@ -210,25 +216,25 @@ export const KnowledgeView: React.FC = () => {
           {/* Article Viewer */}
           <div className="lg:col-span-8">
             {selectedArticle ? (
-              <div className="bg-surface-container-lowest p-6 rounded-lg border border-outline-variant/30 shadow-xs space-y-4">
-                <div className="border-b border-outline-variant/20 pb-3 space-y-1">
+              <div className="liquid-glass-elevated p-6 rounded-xl border border-outline-variant/40 shadow-md space-y-4">
+                <div className="border-b border-outline-variant/20 pb-3 space-y-1.5">
                   <div className="flex items-center gap-2 font-mono text-xs text-primary font-semibold">
-                    <span>📁 {selectedArticle.category}</span>
+                    <span className="px-2 py-0.5 rounded-md bg-primary/10">📁 {selectedArticle.category}</span>
                     <span>•</span>
-                    <span>Status: {selectedArticle.status}</span>
+                    <span className="text-on-surface-variant">Status: <strong className="text-on-surface">{selectedArticle.status}</strong></span>
                   </div>
                   <h2 className="font-headline text-xl font-bold text-on-surface">
                     {selectedArticle.title}
                   </h2>
                 </div>
 
-                <div className="font-sans text-sm text-on-surface leading-relaxed whitespace-pre-wrap">
+                <div className="font-sans text-sm text-on-surface leading-relaxed whitespace-pre-wrap pl-3 border-l-2 border-primary/30">
                   {selectedArticle.content}
                 </div>
               </div>
             ) : (
-              <div className="p-12 text-center bg-surface-container-high rounded-lg border border-outline-variant/30 font-mono text-xs text-on-surface-variant">
-                Select a knowledge article to read details.
+              <div className="p-12 text-center liquid-glass rounded-xl border border-outline-variant/30 font-mono text-xs text-on-surface-variant italic">
+                Select a knowledge article from the directory to view full contents.
               </div>
             )}
           </div>
@@ -237,13 +243,23 @@ export const KnowledgeView: React.FC = () => {
 
       {/* Create Article Modal */}
       {createModalOpen && (
-        <div className="fixed inset-0 z-50 bg-inverse-surface/60 flex items-center justify-center p-4">
-          <form onSubmit={handleCreateArticle} className="bg-surface-container-high p-6 rounded-lg max-w-xl w-full space-y-4 border border-outline-variant/40 shadow-xl">
-            <h3 className="font-headline font-bold text-lg text-on-surface">
-              Publish New Knowledge Base Article
-            </h3>
+        <div className="fixed inset-0 z-50 bg-inverse-surface/40 backdrop-blur-md flex items-center justify-center p-4 animate-fadeIn">
+          <form onSubmit={handleCreateArticle} className="liquid-glass-elevated p-6 rounded-xl max-w-xl w-full space-y-4 border border-outline-variant/40 shadow-2xl animate-scaleUp">
+            <div className="flex items-center justify-between border-b border-outline-variant/30 pb-3">
+              <h3 className="font-headline font-bold text-lg text-on-surface flex items-center gap-2">
+                <span className="material-symbols-outlined text-primary text-[20px]">post_add</span>
+                Publish New Knowledge Base Article
+              </h3>
+              <button
+                type="button"
+                onClick={() => setCreateModalOpen(false)}
+                className="w-8 h-8 rounded-lg hover:bg-surface-container/60 flex items-center justify-center text-on-surface-variant press-tactile transition-colors"
+              >
+                <span className="material-symbols-outlined text-[18px]">close</span>
+              </button>
+            </div>
             <div>
-              <label className="block font-mono text-xs font-semibold text-on-surface-variant uppercase mb-1">
+              <label className="block font-mono text-xs font-semibold text-on-surface-variant uppercase mb-1.5 tracking-wider">
                 Article Title
               </label>
               <input
@@ -252,17 +268,17 @@ export const KnowledgeView: React.FC = () => {
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="e.g. Modbus Bus Collision Diagnostic Procedure (KB-409)"
-                className="w-full px-3 py-2 bg-surface-container-lowest border border-outline-variant/40 rounded text-xs text-on-surface"
+                className="w-full px-3.5 py-2.5 bg-surface-container-lowest/80 border border-outline-variant/40 rounded-lg text-xs text-on-surface input-liquid focus:outline-none"
               />
             </div>
             <div>
-              <label className="block font-mono text-xs font-semibold text-on-surface-variant uppercase mb-1">
+              <label className="block font-mono text-xs font-semibold text-on-surface-variant uppercase mb-1.5 tracking-wider">
                 Category
               </label>
               <select
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
-                className="w-full px-3 py-2 bg-surface-container-lowest border border-outline-variant/40 rounded text-xs text-on-surface font-mono"
+                className="w-full px-3.5 py-2.5 bg-surface-container-lowest/80 border border-outline-variant/40 rounded-lg text-xs text-on-surface font-mono input-liquid focus:outline-none"
               >
                 <option value="Hardware">Hardware</option>
                 <option value="Network">Network</option>
@@ -272,7 +288,7 @@ export const KnowledgeView: React.FC = () => {
               </select>
             </div>
             <div>
-              <label className="block font-mono text-xs font-semibold text-on-surface-variant uppercase mb-1">
+              <label className="block font-mono text-xs font-semibold text-on-surface-variant uppercase mb-1.5 tracking-wider">
                 Markdown / Text Content
               </label>
               <textarea
@@ -281,21 +297,21 @@ export const KnowledgeView: React.FC = () => {
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
                 placeholder="Enter procedural instructions, resolution steps, error codes, and troubleshooting workflow..."
-                className="w-full p-3 bg-surface-container-lowest border border-outline-variant/40 rounded text-xs text-on-surface font-mono"
+                className="w-full p-3.5 bg-surface-container-lowest/80 border border-outline-variant/40 rounded-lg text-xs text-on-surface font-mono input-liquid focus:outline-none"
               />
             </div>
-            <div className="flex justify-end gap-2 pt-2 border-t border-outline-variant/20">
+            <div className="flex justify-end gap-2.5 pt-3 border-t border-outline-variant/20">
               <button
                 type="button"
                 onClick={() => setCreateModalOpen(false)}
-                className="px-4 py-2 bg-surface-container text-xs font-mono rounded"
+                className="px-4 py-2 bg-surface-container/60 hover:bg-surface-container text-xs font-mono rounded-lg press-tactile transition-colors"
               >
                 Cancel
               </button>
               <button
                 type="submit"
                 disabled={createLoading}
-                className="px-4 py-2 bg-primary hover:bg-primary-container text-on-primary text-xs font-mono font-bold rounded shadow-xs uppercase"
+                className="px-4 py-2 bg-primary hover:bg-primary-container text-on-primary text-xs font-mono font-bold rounded-lg shadow-md press-tactile transition-all uppercase tracking-wider disabled:opacity-50"
               >
                 {createLoading ? 'Publishing...' : 'Publish Article'}
               </button>

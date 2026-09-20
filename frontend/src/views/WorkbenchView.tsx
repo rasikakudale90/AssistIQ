@@ -76,11 +76,13 @@ export const WorkbenchView: React.FC = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 md:px-6 py-6 space-y-6">
       {/* Workbench Header & Action Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-surface-container-high p-4 rounded border border-outline-variant/30 shadow-xs">
-        <div className="flex items-center gap-2">
-          <span className="material-symbols-outlined text-primary text-[22px]">handyman</span>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 liquid-glass p-5 rounded-xl border border-outline-variant/35 shadow-sm card-3d">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center text-primary shadow-xs">
+            <span className="material-symbols-outlined text-[24px]">handyman</span>
+          </div>
           <div>
-            <span className="font-mono text-[10px] text-primary uppercase font-bold tracking-wider">
+            <span className="font-mono text-[10px] text-primary uppercase font-bold tracking-wider block">
               MW-OS // IT BENCH
             </span>
             <h1 className="font-headline text-lg font-bold text-on-surface">
@@ -92,9 +94,9 @@ export const WorkbenchView: React.FC = () => {
         <div className="flex items-center gap-2">
           <button
             onClick={() => setIntakeModalOpen(true)}
-            className="px-4 py-2 bg-primary hover:bg-primary-container text-on-primary font-mono text-xs font-bold rounded shadow-xs transition-colors flex items-center gap-1.5 uppercase"
+            className="px-4 py-2.5 bg-primary hover:bg-primary-container text-on-primary font-mono text-xs font-bold rounded-lg shadow-sm transition-all duration-200 flex items-center gap-2 uppercase press-tactile"
           >
-            <span className="material-symbols-outlined text-[16px]">add_circle</span>
+            <span className="material-symbols-outlined text-[18px]">add_circle</span>
             <span>New Docket Intake</span>
           </button>
         </div>
@@ -105,44 +107,44 @@ export const WorkbenchView: React.FC = () => {
         {/* Left Column: Ticket Queue & Filters */}
         <div className="lg:col-span-5 space-y-3">
           {/* Filter Pills & Search */}
-          <div className="space-y-2">
-            <div className="flex items-center gap-1 bg-surface-container-lowest p-1 rounded border border-outline-variant/30 overflow-x-auto text-xs font-mono">
+          <div className="space-y-2.5">
+            <div className="flex items-center gap-1.5 liquid-glass p-1.5 rounded-lg border border-outline-variant/30 overflow-x-auto text-xs font-mono">
               <button
                 onClick={() => setFilterTab('ALL')}
-                className={`px-2.5 py-1 rounded transition-colors ${
+                className={`px-3 py-1.5 rounded-md transition-all duration-200 press-tactile ${
                   filterTab === 'ALL'
-                    ? 'bg-primary text-on-primary font-bold shadow-xs'
-                    : 'text-on-surface-variant hover:text-on-surface'
+                    ? 'bg-primary text-on-primary font-bold shadow-xs scale-[1.02]'
+                    : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60'
                 }`}
               >
                 ALL ({safeList.length})
               </button>
               <button
                 onClick={() => setFilterTab('ACTIVE')}
-                className={`px-2.5 py-1 rounded transition-colors ${
+                className={`px-3 py-1.5 rounded-md transition-all duration-200 press-tactile ${
                   filterTab === 'ACTIVE'
-                    ? 'bg-primary text-on-primary font-bold shadow-xs'
-                    : 'text-on-surface-variant hover:text-on-surface'
+                    ? 'bg-primary text-on-primary font-bold shadow-xs scale-[1.02]'
+                    : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60'
                 }`}
               >
                 ACTIVE
               </button>
               <button
                 onClick={() => setFilterTab('BREACHED')}
-                className={`px-2.5 py-1 rounded transition-colors ${
+                className={`px-3 py-1.5 rounded-md transition-all duration-200 press-tactile ${
                   filterTab === 'BREACHED'
-                    ? 'bg-secondary text-on-secondary font-bold shadow-xs'
-                    : 'text-on-surface-variant hover:text-on-surface'
+                    ? 'bg-secondary text-on-secondary font-bold shadow-xs scale-[1.02]'
+                    : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60'
                 }`}
               >
                 BREACHED
               </button>
               <button
                 onClick={() => setFilterTab('UNASSIGNED')}
-                className={`px-2.5 py-1 rounded transition-colors ${
+                className={`px-3 py-1.5 rounded-md transition-all duration-200 press-tactile ${
                   filterTab === 'UNASSIGNED'
-                    ? 'bg-primary text-on-primary font-bold shadow-xs'
-                    : 'text-on-surface-variant hover:text-on-surface'
+                    ? 'bg-primary text-on-primary font-bold shadow-xs scale-[1.02]'
+                    : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60'
                 }`}
               >
                 UNASSIGNED
@@ -150,7 +152,7 @@ export const WorkbenchView: React.FC = () => {
             </div>
 
             <div className="relative">
-              <span className="material-symbols-outlined absolute left-2.5 top-2.5 text-on-surface-variant text-[16px]">
+              <span className="material-symbols-outlined absolute left-3 top-2.5 text-on-surface-variant text-[18px]">
                 search
               </span>
               <input
@@ -158,19 +160,21 @@ export const WorkbenchView: React.FC = () => {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Filter by ref, keyword, category..."
-                className="w-full pl-8 pr-3 py-1.5 bg-surface-container-lowest border border-outline-variant/40 rounded text-xs text-on-surface placeholder:text-on-surface-variant/70 focus:outline-none focus:ring-1 focus:ring-primary font-mono"
+                className="w-full pl-9 pr-3.5 py-2 input-liquid rounded-lg text-xs text-on-surface placeholder:text-on-surface-variant/70 font-mono shadow-xs"
               />
             </div>
           </div>
 
           {/* Ticket Cards List */}
-          <div className="space-y-2 max-h-[600px] overflow-y-auto pr-1">
+          <div className="space-y-2.5 max-h-[640px] overflow-y-auto pr-1">
             {loading ? (
-              <div className="p-8 text-center font-mono text-xs text-on-surface-variant">
-                Loading workbench tickets...
+              <div className="space-y-2.5 p-2">
+                {[1, 2, 3, 4].map((i) => (
+                  <div key={i} className="p-4 rounded-lg shimmer-warm h-24 border border-outline-variant/20" />
+                ))}
               </div>
             ) : filteredCases.length === 0 ? (
-              <div className="p-8 text-center bg-surface-container-low rounded border border-outline-variant/30 font-mono text-xs text-on-surface-variant italic">
+              <div className="p-8 text-center liquid-glass rounded-lg border border-outline-variant/30 font-mono text-xs text-on-surface-variant italic">
                 No tickets matching current filter.
               </div>
             ) : (
@@ -181,26 +185,26 @@ export const WorkbenchView: React.FC = () => {
                   <div
                     key={c.id}
                     onClick={() => setSelectedCase(c)}
-                    className={`p-3.5 rounded border transition-all cursor-pointer space-y-2 ${
+                    className={`p-3.5 rounded-xl border transition-all duration-200 cursor-pointer space-y-2.5 card-3d press-tactile ${
                       isSelected
-                        ? 'bg-surface-container-lowest border-primary shadow-sm ring-1 ring-primary/40'
-                        : 'bg-surface-container-lowest border-outline-variant/30 hover:border-outline-variant hover:bg-surface-container-low'
+                        ? 'liquid-glass border-primary shadow-md ring-2 ring-primary/30 scale-[1.01]'
+                        : 'liquid-glass-interactive'
                     }`}
                   >
                     <div className="flex items-center justify-between text-xs font-mono">
-                      <div className="flex items-center gap-1.5">
+                      <div className="flex items-center gap-2">
                         <span className="font-bold text-primary">#{c.reference_number || c.id.slice(0, 8)}</span>
-                        <span className={`px-1.5 py-0.2 rounded text-[10px] font-bold ${priorityColors[c.priority] || 'bg-surface-container'}`}>
+                        <span className={`px-2 py-0.5 rounded text-[10px] font-bold shadow-xs ${priorityColors[c.priority] || 'bg-surface-container'}`}>
                           {c.priority}
                         </span>
                       </div>
-                      <div className="flex items-center gap-1">
+                      <div className="flex items-center gap-1.5">
                         {isBreached && (
-                          <span className="px-1.5 py-0.2 bg-error text-on-error rounded text-[9px] font-bold">
+                          <span className="px-2 py-0.5 bg-error text-on-error rounded text-[9px] font-bold radar-breached">
                             BREACH
                           </span>
                         )}
-                        <span className="px-1.5 py-0.2 bg-surface-container-high rounded text-[10px] text-on-surface font-semibold uppercase">
+                        <span className="px-2 py-0.5 bg-surface-container-high/80 rounded text-[10px] text-on-surface font-semibold uppercase">
                           {c.status}
                         </span>
                       </div>
@@ -210,7 +214,7 @@ export const WorkbenchView: React.FC = () => {
                       {c.title}
                     </h3>
 
-                    <div className="flex items-center justify-between text-[11px] font-mono text-on-surface-variant pt-1 border-t border-outline-variant/20">
+                    <div className="flex items-center justify-between text-[11px] font-mono text-on-surface-variant pt-2 border-t border-outline-variant/20">
                       <span>📁 {c.category || c.service_id || 'General Support'}</span>
                       <span>{c.created_at ? new Date(c.created_at).toLocaleDateString([], { month: 'short', day: 'numeric' }) : 'Today'}</span>
                     </div>
@@ -232,7 +236,7 @@ export const WorkbenchView: React.FC = () => {
               }}
             />
           ) : (
-            <div className="p-12 text-center bg-surface-container-high rounded-lg border border-outline-variant/30 font-mono text-xs text-on-surface-variant">
+            <div className="p-12 text-center liquid-glass rounded-xl border border-outline-variant/30 font-mono text-xs text-on-surface-variant">
               Select a case from the workbench queue to inspect details.
             </div>
           )}
