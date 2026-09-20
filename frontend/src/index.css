@@ -342,3 +342,41 @@
     transform: translateY(-3px);
   }
 }
+
+/* 10. Bell Icon Ringing / Shake Microinteraction */
+@keyframes bellShake {
+  0% {
+    transform: rotate(0);
+  }
+  15% {
+    transform: rotate(15deg);
+  }
+  30% {
+    transform: rotate(-14deg);
+  }
+  45% {
+    transform: rotate(10deg);
+  }
+  60% {
+    transform: rotate(-8deg);
+  }
+  75% {
+    transform: rotate(4deg);
+  }
+  85% {
+    transform: rotate(-2deg);
+  }
+  100% {
+    transform: rotate(0);
+  }
+}
+
+.bell-shake-hover {
+  transform-origin: top center;
+  transition: transform 0.2s ease;
+}
+
+.group:hover .bell-shake-hover,
+.bell-shake-hover:hover {
+  animation: bellShake 0.65s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}

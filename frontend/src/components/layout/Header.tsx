@@ -99,13 +99,13 @@ export const Header: React.FC = () => {
                   setShowNotifications(!showNotifications);
                   setShowUserMenu(false);
                 }}
-                className={`w-9 h-9 rounded-lg liquid-glass hover:bg-surface-container/60 text-on-surface-variant hover:text-on-surface flex items-center justify-center relative press-tactile transition-all duration-200 border border-outline-variant/30 ${
+                className={`w-9 h-9 rounded-lg liquid-glass hover:bg-surface-container/60 text-on-surface-variant hover:text-on-surface flex items-center justify-center relative press-tactile transition-all duration-200 border border-outline-variant/30 group ${
                   showNotifications ? 'ring-2 ring-primary/40 bg-surface-container/70' : ''
                 }`}
                 title="Notifications & Dispatch Alerts"
                 aria-label="View notifications"
               >
-                <span className={`material-symbols-outlined text-[20px] ${hasAlerts ? 'text-secondary' : 'text-on-surface-variant'}`}>
+                <span className={`material-symbols-outlined text-[20px] bell-shake-hover ${hasAlerts ? 'text-secondary' : 'text-on-surface-variant'}`}>
                   {hasAlerts ? 'notifications_active' : 'notifications'}
                 </span>
                 {hasAlerts && (
