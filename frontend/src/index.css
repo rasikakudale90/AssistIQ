@@ -56,53 +56,57 @@
 }
 
 /* ==========================================================================
-   LIQUID GLASSMORPHISM & 3D DEPTH STYLING (Stitch Theme Compatible)
+   ULTRA-CLEAR CRYSTAL GLASSMORPHISM & 3D DEPTH (Zero Milky Film)
    ========================================================================== */
 
-/* 1. Base Liquid Glass Container */
+/* 1. Base Crystal Liquid Glass Container */
 .liquid-glass {
-  background: rgba(255, 255, 255, 0.72);
-  backdrop-filter: blur(12px) saturate(160%);
-  -webkit-backdrop-filter: blur(12px) saturate(160%);
-  border: 1px solid rgba(199, 199, 185, 0.45);
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(14px) saturate(170%);
+  -webkit-backdrop-filter: blur(14px) saturate(170%);
+  border: 1px solid rgba(119, 120, 108, 0.18);
+  border-top: 1px solid rgba(255, 255, 255, 0.65);
   box-shadow: 
-    inset 0 1px 1px 0 rgba(255, 255, 255, 0.8),
-    0 4px 20px -2px rgba(30, 27, 23, 0.04);
+    inset 0 1px 1px 0 rgba(255, 255, 255, 0.45),
+    0 6px 24px -4px rgba(30, 27, 23, 0.04);
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* 2. Elevated Liquid Glass (Modals, Drawers, Flyouts) */
+/* 2. Elevated Crystal Glass (Modals, Drawers, Flyouts) */
 .liquid-glass-elevated {
-  background: rgba(255, 255, 255, 0.88);
-  backdrop-filter: blur(16px) saturate(180%);
-  -webkit-backdrop-filter: blur(16px) saturate(180%);
-  border: 1px solid rgba(199, 199, 185, 0.6);
+  background: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(20px) saturate(190%);
+  -webkit-backdrop-filter: blur(20px) saturate(190%);
+  border: 1px solid rgba(119, 120, 108, 0.25);
+  border-top: 1px solid rgba(255, 255, 255, 0.85);
   box-shadow: 
-    inset 0 1px 2px 0 rgba(255, 255, 255, 0.95),
-    0 16px 40px -4px rgba(30, 27, 23, 0.09),
-    0 6px 16px -2px rgba(30, 27, 23, 0.05);
+    inset 0 1.5px 1.5px 0 rgba(255, 255, 255, 0.65),
+    0 20px 48px -8px rgba(30, 27, 23, 0.12),
+    0 6px 18px -2px rgba(30, 27, 23, 0.06);
 }
 
-/* 3. Interactive Liquid Glass (Cards & List Items) */
+/* 3. Interactive Crystal Glass (Cards & List Items) */
 .liquid-glass-interactive {
-  background: rgba(255, 255, 255, 0.75);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(199, 199, 185, 0.4);
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px) saturate(160%);
+  -webkit-backdrop-filter: blur(12px) saturate(160%);
+  border: 1px solid rgba(119, 120, 108, 0.16);
+  border-top: 1px solid rgba(255, 255, 255, 0.55);
   box-shadow: 
-    inset 0 1px 1px 0 rgba(255, 255, 255, 0.7),
-    0 2px 8px -1px rgba(30, 27, 23, 0.03);
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    inset 0 1px 1px 0 rgba(255, 255, 255, 0.4),
+    0 3px 10px -1px rgba(30, 27, 23, 0.03);
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .liquid-glass-interactive:hover {
-  background: rgba(255, 255, 255, 0.92);
-  border-color: rgba(107, 117, 72, 0.4);
-  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(83, 92, 50, 0.45);
+  border-top-color: rgba(255, 255, 255, 0.9);
+  transform: translateY(-2.5px);
   box-shadow: 
-    inset 0 1px 1px 0 rgba(255, 255, 255, 0.9),
-    0 8px 24px -4px rgba(83, 92, 50, 0.08),
-    0 2px 8px -1px rgba(30, 27, 23, 0.04);
+    inset 0 1px 1.5px 0 rgba(255, 255, 255, 0.75),
+    0 10px 28px -4px rgba(83, 92, 50, 0.1),
+    0 3px 10px -1px rgba(30, 27, 23, 0.05);
 }
 
 /* 4. 3D Card Physics & Micro-Lift */
@@ -112,7 +116,7 @@
 }
 
 .card-3d:hover {
-  transform: translateY(-3px) scale(1.004);
+  transform: translateY(-3px) scale(1.005);
   box-shadow: 
     0 12px 28px -6px rgba(30, 27, 23, 0.08),
     0 4px 10px -2px rgba(30, 27, 23, 0.03);
@@ -129,7 +133,7 @@
   filter: brightness(0.97);
 }
 
-/* 6. Theme-Aligned Warm Shimmer Waves (Not overly flashy) */
+/* 6. Theme-Aligned Radiant Warm Shimmer Waves (Brightened & Crisp) */
 @keyframes warmShimmer {
   0% {
     background-position: -200% 0;
@@ -142,34 +146,38 @@
 .shimmer-warm {
   background: linear-gradient(
     90deg,
-    rgba(244, 237, 229, 0.6) 0%,
-    rgba(255, 255, 255, 0.85) 50%,
-    rgba(244, 237, 229, 0.6) 100%
+    rgba(255, 255, 255, 0.04) 0%,
+    rgba(255, 255, 255, 0.45) 25%,
+    rgba(254, 215, 170, 0.38) 50%,
+    rgba(255, 255, 255, 0.45) 75%,
+    rgba(255, 255, 255, 0.04) 100%
   );
   background-size: 200% 100%;
-  animation: warmShimmer 2.2s infinite ease-in-out;
+  animation: warmShimmer 2.0s infinite ease-in-out;
 }
 
 .shimmer-ai {
   background: linear-gradient(
     90deg,
-    rgba(107, 117, 72, 0.06) 0%,
-    rgba(254, 135, 96, 0.14) 50%,
-    rgba(107, 117, 72, 0.06) 100%
+    rgba(83, 92, 50, 0.05) 0%,
+    rgba(107, 117, 72, 0.24) 25%,
+    rgba(254, 135, 96, 0.36) 50%,
+    rgba(107, 117, 72, 0.24) 75%,
+    rgba(83, 92, 50, 0.05) 100%
   );
   background-size: 200% 100%;
-  animation: warmShimmer 2.6s infinite ease-in-out;
+  animation: warmShimmer 2.2s infinite ease-in-out;
 }
 
 /* 7. Subtle 3D Radar Breathing Ring (for AI Triage & Live SLAs) */
 @keyframes radarPulse {
   0% {
     transform: scale(0.95);
-    box-shadow: 0 0 0 0 rgba(83, 92, 50, 0.35);
+    box-shadow: 0 0 0 0 rgba(83, 92, 50, 0.45);
   }
   70% {
     transform: scale(1);
-    box-shadow: 0 0 0 8px rgba(83, 92, 50, 0);
+    box-shadow: 0 0 0 9px rgba(83, 92, 50, 0);
   }
   100% {
     transform: scale(0.95);
@@ -184,11 +192,11 @@
 @keyframes breachPulse {
   0% {
     transform: scale(0.95);
-    box-shadow: 0 0 0 0 rgba(186, 26, 26, 0.4);
+    box-shadow: 0 0 0 0 rgba(186, 26, 26, 0.5);
   }
   70% {
     transform: scale(1);
-    box-shadow: 0 0 0 8px rgba(186, 26, 26, 0);
+    box-shadow: 0 0 0 9px rgba(186, 26, 26, 0);
   }
   100% {
     transform: scale(0.95);
@@ -202,16 +210,18 @@
 
 /* 8. Modern Input Liquid Focus */
 .input-liquid {
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(199, 199, 185, 0.6);
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(119, 120, 108, 0.25);
+  border-top: 1px solid rgba(255, 255, 255, 0.6);
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .input-liquid:focus {
-  background: #ffffff;
+  background: rgba(255, 255, 255, 0.45);
   border-color: #535c32;
-  box-shadow: 0 0 0 3px rgba(83, 92, 50, 0.12), inset 0 1px 1px rgba(0, 0, 0, 0.04);
+  border-top-color: #535c32;
+  box-shadow: 0 0 0 3px rgba(83, 92, 50, 0.15), inset 0 1px 1px rgba(0, 0, 0, 0.04);
   outline: none;
 }
 
