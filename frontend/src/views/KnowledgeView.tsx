@@ -111,8 +111,8 @@ export const KnowledgeView: React.FC = () => {
       </div>
 
       {/* Unified Search Input */}
-      <form onSubmit={handleSearch} className="relative">
-        <span className="material-symbols-outlined absolute left-3.5 top-3 text-on-surface-variant text-[18px]">
+      <form onSubmit={handleSearch} className="relative flex items-center">
+        <span className="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-primary dark:text-primary-fixed text-[20px] pointer-events-none z-10 transition-colors">
           search
         </span>
         <input
@@ -120,11 +120,11 @@ export const KnowledgeView: React.FC = () => {
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder="Unified full-text search across knowledge articles and permitted support dockets..."
-          className="w-full pl-10 pr-24 py-2.5 bg-surface-container-lowest/80 border border-outline-variant/40 rounded-xl text-xs text-on-surface font-mono input-liquid focus:outline-none shadow-xs"
+          className="w-full pl-11 pr-24 py-2.5 bg-surface-container-lowest/80 border border-outline-variant/40 rounded-xl text-xs text-on-surface font-mono input-liquid focus:outline-none shadow-xs"
         />
         <button
           type="submit"
-          className="absolute right-2 top-2 px-3.5 py-1 bg-primary hover:bg-primary-container text-on-primary font-mono text-[11px] font-bold rounded-lg press-tactile transition-all shadow-xs"
+          className="absolute right-2 top-1/2 -translate-y-1/2 px-3.5 py-1.5 bg-primary hover:bg-primary-container text-on-primary font-mono text-[11px] font-bold rounded-lg press-tactile transition-all shadow-xs"
         >
           Search
         </button>

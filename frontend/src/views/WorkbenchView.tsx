@@ -151,8 +151,8 @@ export const WorkbenchView: React.FC = () => {
               </button>
             </div>
 
-            <div className="relative">
-              <span className="material-symbols-outlined absolute left-3 top-2.5 text-on-surface-variant text-[18px]">
+            <div className="relative flex items-center">
+              <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-primary dark:text-primary-fixed text-[20px] pointer-events-none z-10 transition-colors">
                 search
               </span>
               <input
@@ -160,7 +160,7 @@ export const WorkbenchView: React.FC = () => {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Filter by ref, keyword, category..."
-                className="w-full pl-9 pr-3.5 py-2 input-liquid rounded-lg text-xs text-on-surface placeholder:text-on-surface-variant/70 font-mono shadow-xs"
+                className="w-full pl-10 pr-3.5 py-2.5 input-liquid rounded-xl text-xs text-on-surface placeholder:text-on-surface-variant/70 font-mono shadow-xs focus:outline-none"
               />
             </div>
           </div>
