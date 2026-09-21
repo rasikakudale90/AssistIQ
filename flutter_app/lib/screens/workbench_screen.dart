@@ -34,7 +34,6 @@ class _WorkbenchScreenState extends State<WorkbenchScreen> {
   @override
   Widget build(BuildContext context) {
     final auth = Provider.of<AuthProvider>(context);
-    final caseProv = Provider.of<CaseProvider>(context);
     final isStaff = auth.user?.role != 'Requester';
 
     final navDestinations = [
@@ -127,19 +126,22 @@ class _WorkbenchScreenState extends State<WorkbenchScreen> {
         // Filter Pills
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-          child: Row(
-            children: ['ALL', 'ACTIVE', 'BREACHED', 'UNASSIGNED'].map((f) {
-              final isSel = caseProv.filter == f;
-              return Padding(
-                padding: const EdgeInsets.only(right: 6),
-                child: ChoiceChip(
-                  label: Text(f, style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: isSel ? Colors.white : null)),
-                  selected: isSel,
-                  selectedColor: AssistIQTheme.primary,
-                  onSelected: (_) => caseProv.setFilter(f),
-                ),
-              );
-            }).toList(),
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: ['ALL', 'ACTIVE', 'BREACHED', 'UNASSIGNED'].map((f) {
+                final isSel = caseProv.filter == f;
+                return Padding(
+                  padding: const EdgeInsets.only(right: 6),
+                  child: ChoiceChip(
+                    label: Text(f, style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: isSel ? Colors.white : null)),
+                    selected: isSel,
+                    selectedColor: AssistIQTheme.primary,
+                    onSelected: (_) => caseProv.setFilter(f),
+                  ),
+                );
+              }).toList(),
+            ),
           ),
         ),
 
@@ -207,12 +209,15 @@ class _WorkbenchScreenState extends State<WorkbenchScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.between,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                '#${c.referenceNumber} — ${c.title}',
-                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              Expanded(
+                child: Text(
+                  '#${c.referenceNumber} — ${c.title}',
+                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
               ),
+              const SizedBox(width: 8),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                 decoration: BoxDecoration(color: AssistIQTheme.primary, borderRadius: BorderRadius.circular(4)),
@@ -250,11 +255,30 @@ class _WorkbenchScreenState extends State<WorkbenchScreen> {
                   style: ElevatedButton.styleFrom(backgroundColor: AssistIQTheme.primary, foregroundColor: Colors.white),
                   child: const Text('Mark Resolved'),
                 ),
-              if (c.status == 'Resolved')
+              if (c.status == 'Resolved') ...[
                 ElevatedButton(
                   onPressed: () => caseProv.updateStatus(c.id, 'Closed', c.version),
-                  child: const Text('Close Case'),
+                  style: ElevatedButton.styleFrom(backgroundColor: AssistIQTheme.primary, foregroundColor: Colors.white),
+                  child: const Text('Confirm Fix & Close'),
                 ),
+                OutlinedButton(
+                  onPressed: () => caseProv.updateStatus(c.id, 'Assigned', c.version),
+                  style: OutlinedButton.styleFrom(foregroundColor: AssistIQTheme.secondary),
+                  child: const Text('Reject Fix (Still Broken)'),
+                ),
+              ],
+              if (c.status == 'Closed')
+                ElevatedButton.icon(
+                  onPressed: () => _showReopenDialog(context, caseProv, c.id),
+                  icon: const Icon(Icons.refresh, size: 16),
+                  label: const Text('Reopen (7-Day Window)'),
+                  style: ElevatedButton.styleFrom(backgroundColor: AssistIQTheme.secondary, foregroundColor: Colors.white),
+                ),
+              OutlinedButton.icon(
+                onPressed: () => _showEscalateDialog(context, caseProv, c.id),
+                icon: const Icon(Icons.warning, size: 14, color: AssistIQTheme.error),
+                label: const Text('Escalate L2', style: TextStyle(color: AssistIQTheme.error)),
+              ),
             ],
           ),
           const SizedBox(height: 16),
@@ -267,4 +291,67 @@ class _WorkbenchScreenState extends State<WorkbenchScreen> {
       ),
     );
   }
+
+  void _showReopenDialog(BuildContext context, CaseProvider caseProv, String caseId) {
+    final reasonCtrl = TextEditingController();
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Reopen Case (7-Day SLA Window)', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+        content: TextField(
+          controller: reasonCtrl,
+          decoration: const InputDecoration(
+            labelText: 'Reason for reopening',
+            border: OutlineInputBorder(),
+          ),
+          maxLines: 3,
+        ),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('Cancel')),
+          ElevatedButton(
+            onPressed: () async {
+              if (reasonCtrl.text.trim().isNotEmpty) {
+                await caseProv.reopenCase(caseId, reasonCtrl.text.trim());
+                if (ctx.mounted) Navigator.pop(ctx);
+              }
+            },
+            style: ElevatedButton.styleFrom(backgroundColor: AssistIQTheme.secondary, foregroundColor: Colors.white),
+            child: const Text('Reopen Case'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showEscalateDialog(BuildContext context, CaseProvider caseProv, String caseId) {
+    final reasonCtrl = TextEditingController();
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Escalate Case to L2 / TeamLead', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+        content: TextField(
+          controller: reasonCtrl,
+          decoration: const InputDecoration(
+            labelText: 'Escalation rationale',
+            border: OutlineInputBorder(),
+          ),
+          maxLines: 3,
+        ),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('Cancel')),
+          ElevatedButton(
+            onPressed: () async {
+              if (reasonCtrl.text.trim().isNotEmpty) {
+                await caseProv.escalateCase(caseId, reasonCtrl.text.trim());
+                if (ctx.mounted) Navigator.pop(ctx);
+              }
+            },
+            style: ElevatedButton.styleFrom(backgroundColor: AssistIQTheme.error, foregroundColor: Colors.white),
+            child: const Text('Escalate'),
+          ),
+        ],
+      ),
+    );
+  }
 }
+

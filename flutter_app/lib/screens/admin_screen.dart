@@ -71,15 +71,18 @@ class AdminScreen extends StatelessWidget {
                     (u) => Padding(
                       padding: const EdgeInsets.symmetric(vertical: 6),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.between,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(u['email']!, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
-                              Text(u['team']!, style: const TextStyle(fontSize: 10, color: AssistIQTheme.onSurfaceVariant)),
-                            ],
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(u['email']!, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+                                Text(u['team']!, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 10, color: AssistIQTheme.onSurfaceVariant)),
+                              ],
+                            ),
                           ),
+                          const SizedBox(width: 8),
                           Container(
                             padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                             decoration: BoxDecoration(color: AssistIQTheme.surfaceContainerHigh, borderRadius: BorderRadius.circular(4)),

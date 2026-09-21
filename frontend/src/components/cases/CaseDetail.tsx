@@ -101,9 +101,13 @@ export const CaseDetail: React.FC<CaseDetailProps> = ({ caseItem, onCaseUpdated 
 
   const handleReopen = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (reopenReason.trim().length < 5) {
+      alert('Please provide a reason with at least 5 characters.');
+      return;
+    }
     setActionLoading(true);
     try {
-      const updated = await reopenCaseApi(caseItem.id, reopenReason);
+      const updated = await reopenCaseApi(caseItem.id, reopenReason.trim(), caseItem.version);
       setReopenOpen(false);
       setReopenReason('');
       onCaseUpdated(updated);
@@ -204,13 +208,22 @@ export const CaseDetail: React.FC<CaseDetailProps> = ({ caseItem, onCaseUpdated 
           )}
 
           {caseItem.status === 'Resolved' && (
-            <button
-              onClick={() => handleStatusChange('Closed')}
-              disabled={actionLoading}
-              className="px-3.5 py-1.5 bg-surface-container hover:bg-surface-container-highest text-on-surface font-mono text-xs font-bold rounded-lg transition-all duration-200 press-tactile"
-            >
-              Close Case
-            </button>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => handleStatusChange('Closed')}
+                disabled={actionLoading}
+                className="px-3.5 py-1.5 bg-primary hover:bg-primary-container text-on-primary font-mono text-xs font-bold rounded-lg transition-all duration-200 press-tactile shadow-xs"
+              >
+                Confirm Fix & Close
+              </button>
+              <button
+                onClick={() => handleStatusChange('Assigned')}
+                disabled={actionLoading}
+                className="px-3.5 py-1.5 bg-secondary/15 hover:bg-secondary/25 text-secondary border border-secondary/30 font-mono text-xs font-bold rounded-lg transition-all duration-200 press-tactile"
+              >
+                Reject Fix (Still Broken)
+              </button>
+            </div>
           )}
 
           {caseItem.status === 'Closed' && (
@@ -233,6 +246,7 @@ export const CaseDetail: React.FC<CaseDetailProps> = ({ caseItem, onCaseUpdated 
           )}
         </div>
       </div>
+
 
       {/* 24/7 SLA Countdown & Risk Banner */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs font-mono">

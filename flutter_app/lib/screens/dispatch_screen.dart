@@ -54,16 +54,22 @@ class _DispatchScreenState extends State<DispatchScreen> {
     setState(() => _isSweeping = true);
     try {
       await ApiClient.post('/scheduler/sweep');
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('The Sweep background scheduler evaluated all open cases!')),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('The Sweep background scheduler evaluated all open cases!')),
+        );
+      }
       await _loadAlerts();
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Sweep failed: $e')),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Sweep failed: $e')),
+        );
+      }
     } finally {
-      setState(() => _isSweeping = false);
+      if (mounted) {
+        setState(() => _isSweeping = false);
+      }
     }
   }
 
@@ -81,10 +87,14 @@ class _DispatchScreenState extends State<DispatchScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.between,
+          Wrap(
+            alignment: WrapAlignment.spaceBetween,
+            crossAxisAlignment: WrapCrossAlignment.center,
+            spacing: 8,
+            runSpacing: 8,
             children: [
               const Row(
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   Icon(Icons.notifications_active, color: AssistIQTheme.primary),
                   SizedBox(width: 8),
@@ -136,28 +146,35 @@ class _DispatchScreenState extends State<DispatchScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.between,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Row(
-                              children: [
-                                Container(
-                                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                                  decoration: BoxDecoration(
-                                    color: isAck ? AssistIQTheme.primary : AssistIQTheme.error,
-                                    borderRadius: BorderRadius.circular(4),
+                            Expanded(
+                              child: Row(
+                                children: [
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                                    decoration: BoxDecoration(
+                                      color: isAck ? AssistIQTheme.primary : AssistIQTheme.error,
+                                      borderRadius: BorderRadius.circular(4),
+                                    ),
+                                    child: Text(
+                                      ev.triggerType,
+                                      style: const TextStyle(color: Colors.white, fontSize: 9, fontWeight: FontWeight.bold),
+                                    ),
                                   ),
-                                  child: Text(
-                                    ev.triggerType,
-                                    style: const TextStyle(color: Colors.white, fontSize: 9, fontWeight: FontWeight.bold),
+                                  const SizedBox(width: 8),
+                                  Expanded(
+                                    child: Text(
+                                      '#${ev.caseRef ?? ''} — ${ev.caseTitle ?? ''}',
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                                    ),
                                   ),
-                                ),
-                                const SizedBox(width: 8),
-                                Text(
-                                  '#${ev.caseRef ?? ''} — ${ev.caseTitle ?? ''}',
-                                  style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
+                            const SizedBox(width: 8),
                             if (!isAck)
                               TextButton(
                                 onPressed: () => _acknowledge(ev.id),

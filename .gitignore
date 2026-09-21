@@ -74,3 +74,10 @@ uploads/
 *~
 .DS_Store
 Thumbs.db
+
+# Binaries & Bundles
+AssistIQ-Desktop/
+frontend/dist-desktop/
+flutter_app/android/app/build/
+flutter_app/android/build/
+*.png

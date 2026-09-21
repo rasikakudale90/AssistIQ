@@ -68,7 +68,7 @@ class _CaseIntakeSheetState extends State<CaseIntakeSheet> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Row(
-              mainAxisAlignment: MainAxisAlignment.between,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const Row(
                   children: [
@@ -180,7 +180,7 @@ class _CaseIntakeSheetState extends State<CaseIntakeSheet> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.between,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
                           '${_createdCase!.referenceNumber}: ${_createdCase!.title}',

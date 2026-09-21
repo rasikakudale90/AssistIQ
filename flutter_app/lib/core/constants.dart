@@ -2,7 +2,7 @@ class AppConstants {
   // Use http://10.0.2.2:8000 for Android Emulator, http://localhost:8000 for Web/Desktop/iOS
   static const String apiBaseUrl = String.fromEnvironment(
     'API_BASE_URL',
-    defaultValue: 'http://localhost:8000/api/v1',
+    defaultValue: 'http://192.168.0.197:8000/api/v1',
   );
 
   static const String demoPassword = 'Password123!@#';

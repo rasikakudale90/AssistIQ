@@ -165,7 +165,7 @@ export const InsightsView: React.FC = () => {
             <div className="liquid-glass-interactive p-4.5 rounded-xl border border-outline-variant/30 shadow-xs flex flex-col justify-between space-y-2.5 card-3d">
               <div className="flex items-center justify-between text-[11px] font-mono text-on-surface-variant uppercase font-bold">
                 <span>24/7 SLA RATE</span>
-                {insights.sla_compliance_rate_percent >= 90 ? (
+                {(insights.sla_compliance_rate_percent ?? 100) >= 90 ? (
                   <span className="px-2 py-0.5 rounded-full bg-primary-container text-on-primary-container font-mono text-[9px] font-bold shadow-xs">
                     OPTIMAL
                   </span>
@@ -177,9 +177,9 @@ export const InsightsView: React.FC = () => {
               </div>
               <div>
                 <div className={`font-headline text-2xl font-bold ${
-                  insights.sla_compliance_rate_percent >= 90 ? 'text-primary' : 'text-error'
+                  (insights.sla_compliance_rate_percent ?? 100) >= 90 ? 'text-primary' : 'text-error'
                 }`}>
-                  {insights.sla_compliance_rate_percent}%
+                  {insights.sla_compliance_rate_percent ?? 100}%
                 </div>
                 <div className="font-sans text-xs text-on-surface-variant mt-0.5">
                   Target: 95.0%
@@ -188,7 +188,7 @@ export const InsightsView: React.FC = () => {
               <div className="w-full bg-surface-container-highest/60 h-2 rounded-full overflow-hidden p-0.5 border border-outline-variant/20">
                 <div
                   className="bg-primary h-full rounded-full transition-all duration-700"
-                  style={{ width: `${Math.min(100, insights.sla_compliance_rate_percent)}%` }}
+                  style={{ width: `${Math.min(100, insights.sla_compliance_rate_percent ?? 100)}%` }}
                 />
               </div>
             </div>
@@ -201,16 +201,16 @@ export const InsightsView: React.FC = () => {
               </div>
               <div>
                 <div className="font-headline text-2xl font-bold text-on-surface">
-                  {insights.avg_resolution_minutes > 60
-                    ? `${(insights.avg_resolution_minutes / 60).toFixed(1)}h`
-                    : `${insights.avg_resolution_minutes}m`}
+                  {(insights.avg_resolution_minutes || (insights.avg_resolution_hours ? Math.round(insights.avg_resolution_hours * 60) : 0)) > 60
+                    ? `${(((insights.avg_resolution_minutes || (insights.avg_resolution_hours ? insights.avg_resolution_hours * 60 : 0))) / 60).toFixed(1)}h`
+                    : `${insights.avg_resolution_minutes || (insights.avg_resolution_hours ? Math.round(insights.avg_resolution_hours * 60) : 0)}m`}
                 </div>
                 <div className="font-sans text-xs text-on-surface-variant mt-0.5">
-                  Resolution compliance: <strong className="text-on-surface">{insights.resolve_compliance_rate_percent}%</strong>
+                  Resolution compliance: <strong className="text-on-surface">{insights.resolve_compliance_rate_percent ?? 100}%</strong>
                 </div>
               </div>
               <div className="font-mono text-[10px] text-on-surface-variant border-t border-outline-variant/20 pt-2">
-                First-response: <strong>{insights.response_compliance_rate_percent}%</strong>
+                First-response: <strong>{insights.response_compliance_rate_percent ?? 100}%</strong>
               </div>
             </div>
 
@@ -236,6 +236,51 @@ export const InsightsView: React.FC = () => {
             </div>
           </div>
 
+          {/* Subsystem & Category Volume Distribution */}
+          <div className="liquid-glass rounded-xl p-5 border border-outline-variant/30 shadow-sm space-y-4">
+            <div className="flex items-center justify-between border-b border-outline-variant/20 pb-3">
+              <div className="flex items-center gap-2">
+                <span className="material-symbols-outlined text-primary text-[20px]">account_tree</span>
+                <h2 className="font-headline text-base font-bold text-on-surface">
+                  Category & Subsystem Volume Distribution
+                </h2>
+              </div>
+              <span className="font-mono text-xs text-on-surface-variant uppercase font-bold">
+                {insights.total_cases} TOTAL DOCKETS
+              </span>
+            </div>
+
+            <div className="space-y-3.5">
+              {Object.entries(insights.cases_by_category || insights.volume_by_category || {}).length > 0 ? (
+                Object.entries(insights.cases_by_category || insights.volume_by_category || {}).map(([cat, count], idx) => {
+                  const pct = insights.total_cases > 0 ? Math.round((count / insights.total_cases) * 100) : 0;
+                  const barColors = ['bg-primary', 'bg-secondary', 'bg-tertiary', 'bg-secondary-container', 'bg-primary-container'];
+                  const currentColor = barColors[idx % barColors.length];
+                  return (
+                    <div key={cat} className="space-y-1.5 font-sans">
+                      <div className="flex justify-between items-baseline text-xs">
+                        <span className="font-semibold text-on-surface">{cat}</span>
+                        <span className="font-mono text-[11px] text-on-surface-variant">
+                          {count} cases ({pct}%)
+                        </span>
+                      </div>
+                      <div className="w-full bg-surface-container-highest/60 h-2.5 rounded-full overflow-hidden p-0.5 border border-outline-variant/20">
+                        <div
+                          className={`${currentColor} h-full rounded-full transition-all duration-700`}
+                          style={{ width: `${pct}%` }}
+                        />
+                      </div>
+                    </div>
+                  );
+                })
+              ) : (
+                <p className="text-xs text-on-surface-variant italic font-mono py-2">
+                  No category distribution recorded for this cycle.
+                </p>
+              )}
+            </div>
+          </div>
+
           {/* Team Performance Table */}
           <div className="liquid-glass rounded-xl p-5 border border-outline-variant/30 shadow-sm space-y-3.5">
             <div className="flex items-center gap-2">
@@ -257,25 +302,28 @@ export const InsightsView: React.FC = () => {
                 </thead>
                 <tbody>
                   {insights.team_metrics && insights.team_metrics.length > 0 ? (
-                    insights.team_metrics.map((tm) => (
-                      <tr key={tm.team_id} className="border-b border-outline-variant/20 hover:bg-surface-container/40 transition-colors">
-                        <td className="py-3 px-3 font-bold text-on-surface">{tm.team_name}</td>
-                        <td className="py-3 px-3">{tm.assigned_count}</td>
-                        <td className="py-3 px-3 text-primary font-bold">{tm.resolved_count}</td>
-                        <td className="py-3 px-3">
-                          {tm.breach_count > 0 ? (
-                            <span className="text-error font-bold bg-error-container/50 px-2 py-0.5 rounded">{tm.breach_count}</span>
-                          ) : (
-                            <span className="text-primary font-semibold">0</span>
-                          )}
-                        </td>
-                        <td className="py-3 px-3">
-                          {tm.avg_resolution_minutes > 60
-                            ? `${(tm.avg_resolution_minutes / 60).toFixed(1)}h`
-                            : `${tm.avg_resolution_minutes}m`}
-                        </td>
-                      </tr>
-                    ))
+                    insights.team_metrics.map((tm) => {
+                      const resMinutes = tm.avg_resolution_minutes || (tm.avg_resolution_hours ? Math.round(tm.avg_resolution_hours * 60) : 0);
+                      return (
+                        <tr key={tm.team_id} className="border-b border-outline-variant/20 hover:bg-surface-container/40 transition-colors">
+                          <td className="py-3 px-3 font-bold text-on-surface">{tm.team_name}</td>
+                          <td className="py-3 px-3">{tm.assigned_count}</td>
+                          <td className="py-3 px-3 text-primary font-bold">{tm.resolved_count}</td>
+                          <td className="py-3 px-3">
+                            {tm.breach_count > 0 ? (
+                              <span className="text-error font-bold bg-error-container/50 px-2 py-0.5 rounded">{tm.breach_count}</span>
+                            ) : (
+                              <span className="text-primary font-semibold">0</span>
+                            )}
+                          </td>
+                          <td className="py-3 px-3">
+                            {resMinutes > 60
+                              ? `${(resMinutes / 60).toFixed(1)}h`
+                              : `${resMinutes}m`}
+                          </td>
+                        </tr>
+                      );
+                    })
                   ) : (
                     <tr>
                       <td colSpan={5} className="py-6 text-center text-on-surface-variant italic font-sans">
@@ -292,3 +340,4 @@ export const InsightsView: React.FC = () => {
     </div>
   );
 };
+

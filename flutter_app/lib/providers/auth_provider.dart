@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import '../core/api_client.dart';
 import '../core/constants.dart';
@@ -45,8 +44,8 @@ class AuthProvider extends ChangeNotifier {
       final uri = Uri.parse('${AppConstants.apiBaseUrl}/auth/login');
       final res = await http.post(
         uri,
-        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-        body: {'username': email, 'password': password},
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({'email': email, 'password': password}),
       );
 
       if (res.statusCode >= 200 && res.statusCode < 300) {
@@ -57,6 +56,35 @@ class AuthProvider extends ChangeNotifier {
         _user = User.fromJson(userRes);
       } else {
         throw Exception('Login failed: ${res.body}');
+      }
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> signup(String email, String password, String role, String site) async {
+    _isLoading = true;
+    notifyListeners();
+
+    try {
+      final uri = Uri.parse('${AppConstants.apiBaseUrl}/auth/signup');
+      final res = await http.post(
+        uri,
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          'email': email,
+          'password': password,
+          'role': role,
+          'site': site,
+        }),
+      );
+
+      if (res.statusCode >= 200 && res.statusCode < 300) {
+        await login(email, password);
+      } else {
+        final err = jsonDecode(res.body);
+        throw Exception(err['message'] ?? err['detail'] ?? 'Registration failed');
       }
     } finally {
       _isLoading = false;

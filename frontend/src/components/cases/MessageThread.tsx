@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
-import { Message, CommunicationDraft } from '../../api/types';
-import { listMessagesApi, postMessageApi, uploadAttachmentApi, getAttachmentDownloadUrl } from '../../api/messages';
+import { Message, CommunicationDraft, Attachment } from '../../api/types';
+import { listMessagesApi, postMessageApi, listAttachmentsApi, uploadAttachmentApi, downloadAttachmentBlob } from '../../api/messages';
 import { createDraftApi, sendDraftApi } from '../../api/ai';
 
 interface MessageThreadProps {
@@ -12,6 +12,7 @@ interface MessageThreadProps {
 export const MessageThread: React.FC<MessageThreadProps> = ({ caseId, onMessageSent }) => {
   const { user } = useAuth();
   const [messages, setMessages] = useState<Message[]>([]);
+  const [attachments, setAttachments] = useState<Attachment[]>([]);
   const [loading, setLoading] = useState(true);
   const [body, setBody] = useState('');
   const [visibility, setVisibility] = useState<'requester_visible' | 'internal_only'>('requester_visible');
@@ -26,15 +27,20 @@ export const MessageThread: React.FC<MessageThreadProps> = ({ caseId, onMessageS
   const [draftSubject, setDraftSubject] = useState('');
   const [draftLoading, setDraftLoading] = useState(false);
 
-  // File Upload
+  // File Upload & Download States
   const [uploadingFile, setUploadingFile] = useState(false);
+  const [downloadingId, setDownloadingId] = useState<string | null>(null);
 
   const isStaff = user && user.role !== 'Requester';
 
-  const loadMessages = async () => {
+  const loadData = async () => {
     try {
-      const data = await listMessagesApi(caseId);
-      setMessages(data);
+      const [msgs, atts] = await Promise.all([
+        listMessagesApi(caseId).catch(() => []),
+        listAttachmentsApi(caseId).catch(() => []),
+      ]);
+      setMessages(msgs);
+      setAttachments(atts);
     } catch {
       // Handled
     } finally {
@@ -43,8 +49,9 @@ export const MessageThread: React.FC<MessageThreadProps> = ({ caseId, onMessageS
   };
 
   useEffect(() => {
-    loadMessages();
+    loadData();
   }, [caseId]);
+
 
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -58,7 +65,7 @@ export const MessageThread: React.FC<MessageThreadProps> = ({ caseId, onMessageS
         visibility: isStaff ? visibility : 'requester_visible',
       });
       setBody('');
-      await loadMessages();
+      await loadData();
       if (onMessageSent) onMessageSent();
     } catch (err: any) {
       setError(err.response?.data?.message || 'Failed to post message');
@@ -92,7 +99,7 @@ export const MessageThread: React.FC<MessageThreadProps> = ({ caseId, onMessageS
       });
       setDraftModalOpen(false);
       setGeneratedDraft(null);
-      await loadMessages();
+      await loadData();
       if (onMessageSent) onMessageSent();
     } catch (err: any) {
       alert(err.response?.data?.message || 'Failed to send AI draft');
@@ -108,14 +115,26 @@ export const MessageThread: React.FC<MessageThreadProps> = ({ caseId, onMessageS
     setUploadingFile(true);
     try {
       await uploadAttachmentApi(caseId, file);
-      await loadMessages();
+      await loadData();
     } catch (err: any) {
-      alert(err.response?.data?.message || 'Failed to upload attachment');
+      alert(err.response?.data?.message || 'Failed to upload attachment (10MB limit, allowed formats: images, pdf, docx, txt, log)');
     } finally {
       setUploadingFile(false);
       e.target.value = '';
     }
   };
+
+  const handleDownloadAttachment = async (att: Attachment) => {
+    setDownloadingId(att.id);
+    try {
+      await downloadAttachmentBlob(caseId, att.id, att.file_name);
+    } catch (err: any) {
+      alert(err.response?.data?.message || 'Failed to download attachment');
+    } finally {
+      setDownloadingId(null);
+    }
+  };
+
 
   return (
     <div className="space-y-4">
@@ -144,7 +163,7 @@ export const MessageThread: React.FC<MessageThreadProps> = ({ caseId, onMessageS
       </div>
 
       {/* Messages List */}
-      <div className="space-y-3 max-h-[400px] overflow-y-auto pr-1">
+      <div className="space-y-3 max-h-[380px] overflow-y-auto pr-1">
         {loading ? (
           <div className="text-center py-6 font-mono text-xs text-on-surface-variant">
             Loading messages...
@@ -194,32 +213,46 @@ export const MessageThread: React.FC<MessageThreadProps> = ({ caseId, onMessageS
                 <p className="text-xs text-on-surface font-sans leading-relaxed whitespace-pre-wrap">
                   {m.body}
                 </p>
-
-                {/* Attachments */}
-                {m.attachments && m.attachments.length > 0 && (
-                  <div className="pt-2 border-t border-outline-variant/20 flex flex-wrap gap-2">
-                    {m.attachments.map((att) => (
-                      <a
-                        key={att.id}
-                        href={att.download_url || getAttachmentDownloadUrl(caseId, att.id)}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="inline-flex items-center gap-1 px-2 py-1 bg-surface-container rounded border border-outline-variant/30 text-[11px] font-mono text-primary hover:underline"
-                      >
-                        <span className="material-symbols-outlined text-[14px]">attachment</span>
-                        <span>{att.file_name}</span>
-                        <span className="text-on-surface-variant text-[9px]">
-                          ({Math.round(att.file_size / 1024)} KB)
-                        </span>
-                      </a>
-                    ))}
-                  </div>
-                )}
               </div>
             );
           })
         )}
       </div>
+
+      {/* Case Attachments Tray */}
+      {attachments.length > 0 && (
+        <div className="p-3.5 liquid-glass rounded-lg border border-outline-variant/30 space-y-2">
+          <div className="flex items-center justify-between text-xs font-mono">
+            <span className="font-bold text-on-surface flex items-center gap-1.5">
+              <span className="material-symbols-outlined text-[16px] text-primary">attachment</span>
+              Attached Documents & Telemetry ({attachments.length})
+            </span>
+            <span className="text-[10px] text-on-surface-variant">
+              {Math.round(attachments.reduce((sum, a) => sum + (a.file_size || 0), 0) / 1024)} KB total
+            </span>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {attachments.map((att) => (
+              <button
+                key={att.id}
+                type="button"
+                onClick={() => handleDownloadAttachment(att)}
+                disabled={downloadingId === att.id}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 liquid-glass-interactive rounded-md border border-outline-variant/40 text-xs font-mono text-primary font-bold transition-all shadow-xs"
+              >
+                <span className="material-symbols-outlined text-[14px]">
+                  {downloadingId === att.id ? 'sync' : 'download'}
+                </span>
+                <span className="truncate max-w-[160px]">{att.file_name}</span>
+                <span className="text-on-surface-variant text-[10px] font-normal">
+                  ({Math.round(att.file_size / 1024)} KB)
+                </span>
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
 
       {/* Post Message Input Form */}
       <form onSubmit={handleSendMessage} className="space-y-2 pt-2 border-t border-outline-variant/30">

@@ -153,4 +153,21 @@ class CaseProvider extends ChangeNotifier {
       'visibility': visibility,
     });
   }
+
+  Future<void> reopenCase(String caseId, String reason) async {
+    final res = await ApiClient.post('/cases/$caseId/reopen', body: {
+      'reason': reason,
+    });
+    final updated = CaseModel.fromJson(res);
+    _selectedCase = updated;
+    await fetchCases();
+  }
+
+  Future<void> escalateCase(String caseId, String reason) async {
+    await ApiClient.post('/cases/$caseId/escalate', body: {
+      'reason': reason,
+      'target_role': 'TeamLead',
+    });
+    await fetchCases();
+  }
 }

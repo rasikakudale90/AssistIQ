@@ -136,7 +136,7 @@ export async function updateCasePriorityApi(
   };
 }
 
-export async function reopenCaseApi(caseId: string, reason: string, version: number = 1): Promise<Case> {
+export async function reopenCaseApi(caseId: string, reason: string, version: number): Promise<Case> {
   const res = await apiClient.post<any>(`/cases/${caseId}/reopen`, {
     reason,
     version,

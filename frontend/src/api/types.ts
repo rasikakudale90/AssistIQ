@@ -218,25 +218,38 @@ export interface DashboardStats {
 export interface OperationalInsights {
   time_window: '7d' | '30d' | '90d' | 'all';
   total_cases: number;
+  open_cases?: number;
   resolved_cases: number;
+  closed_cases?: number;
   reopened_cases: number;
-  breached_cases: number;
+  breached_cases?: number;
   reopen_rate_percent: number;
-  avg_resolution_minutes: number;
+  avg_first_response_hours?: number | null;
+  avg_first_response_minutes?: number | null;
+  avg_resolution_hours?: number | null;
+  avg_resolution_minutes?: number | null;
   sla_compliance_rate_percent: number;
   response_compliance_rate_percent: number;
   resolve_compliance_rate_percent: number;
-  volume_by_category: Record<string, number>;
-  volume_by_priority: Record<string, number>;
-  volume_by_status: Record<string, number>;
-  volume_by_site: Record<string, number>;
+  cases_by_category?: Record<string, number>;
+  cases_by_priority?: Record<string, number>;
+  cases_by_status?: Record<string, number>;
+  cases_by_site?: Record<string, number>;
+  cases_by_team?: Record<string, number>;
+  volume_by_category?: Record<string, number>;
+  volume_by_priority?: Record<string, number>;
+  volume_by_status?: Record<string, number>;
+  volume_by_site?: Record<string, number>;
   team_metrics: Array<{
     team_id: string;
     team_name: string;
     assigned_count: number;
     resolved_count: number;
     breach_count: number;
-    avg_resolution_minutes: number;
+    avg_resolution_hours?: number;
+    avg_resolution_minutes?: number;
   }>;
+  ai_narration?: string;
   ai_narrative?: string;
 }
+

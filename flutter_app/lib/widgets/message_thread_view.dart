@@ -60,7 +60,7 @@ class _MessageThreadViewState extends State<MessageThreadView> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
-          mainAxisAlignment: MainAxisAlignment.between,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
               'COMMUNICATION THREAD (${_messages.length})',
@@ -116,7 +116,7 @@ class _MessageThreadViewState extends State<MessageThreadView> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.between,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Row(
                           children: [
