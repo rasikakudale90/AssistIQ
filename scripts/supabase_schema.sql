@@ -84,9 +84,10 @@ CREATE TABLE slas (
 CREATE TABLE messages (
     id VARCHAR(36) PRIMARY KEY,
     case_id VARCHAR(36) NOT NULL REFERENCES cases(id) ON DELETE CASCADE,
-    sender_id VARCHAR(36) NOT NULL REFERENCES users(id) ON DELETE RESTRICT,
+    author_id VARCHAR(36) REFERENCES users(id) ON DELETE SET NULL,
     body TEXT NOT NULL,
-    visibility VARCHAR(50) NOT NULL DEFAULT 'Public',
+    visibility VARCHAR(50) NOT NULL DEFAULT 'requester_visible',
+    ai_generated BOOLEAN NOT NULL DEFAULT FALSE,
     idempotency_key VARCHAR(100),
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
@@ -199,9 +200,9 @@ UPDATE teams SET lead_id = 'usr-admin-001' WHERE id = 'team-003';
 
 -- 4. Seed Representative Tickets & SLAs
 INSERT INTO cases (id, reference_number, type, title, description, status, priority, requester_id, owner_id, team_id, site, service_id, version, created_at, updated_at) VALUES
-('case-001', 'INC-2026-0001', 'Incident', 'Primary VPN Gateway Connectivity Drop', 'Unable to connect to Tokyo VPN gateway following the weekend firewall update. Blocking finance department.', 'Assigned', 'Critical', 'usr-req-001', 'usr-op-001', 'team-002', 'HQ-North', 'VPN-Service', 1, NOW() - INTERVAL '3 hours', NOW()),
-('case-002', 'REQ-2026-0002', 'ServiceRequest', 'Developer Laptop Provisioning Request', 'New Senior Frontend Engineer joining next Monday. Standard macOS M3 Max setup with Docker & IDEs needed.', 'New', 'Medium', 'usr-req-001', NULL, 'team-001', 'HQ-North', 'Hardware-Provisioning', 1, NOW() - INTERVAL '5 hours', NOW()),
-('case-003', 'INC-2026-0003', 'Incident', 'SSO Login Failure for Production Database Console', 'Receiving 403 Forbidden when authenticating into Supabase DB Console with corporate Google OAuth.', 'InAssessment', 'High', 'usr-req-001', 'usr-lead-001', 'team-003', 'HQ-North', 'Identity-SSO', 1, NOW() - INTERVAL '1 hour', NOW());
+('case-001', 'INC-2026-0001', 'Incident', 'Primary VPN Gateway Connectivity Drop', 'Unable to connect to Tokyo VPN gateway following the weekend firewall update. Blocking finance department.', 'Assigned', 'P1', 'usr-req-001', 'usr-op-001', 'team-002', 'HQ-North', 'VPN-Service', 1, NOW() - INTERVAL '3 hours', NOW()),
+('case-002', 'REQ-2026-0002', 'Service Request', 'Developer Laptop Provisioning Request', 'New Senior Frontend Engineer joining next Monday. Standard macOS M3 Max setup with Docker & IDEs needed.', 'New', 'P3', 'usr-req-001', NULL, 'team-001', 'HQ-North', 'Hardware-Provisioning', 1, NOW() - INTERVAL '5 hours', NOW()),
+('case-003', 'INC-2026-0003', 'Incident', 'SSO Login Failure for Production Database Console', 'Receiving 403 Forbidden when authenticating into Supabase DB Console with corporate Google OAuth.', 'InAssessment', 'P2', 'usr-req-001', 'usr-lead-001', 'team-003', 'HQ-North', 'Identity-SSO', 1, NOW() - INTERVAL '1 hour', NOW());
 
 INSERT INTO slas (id, case_id, response_deadline, resolution_deadline, responded_at, is_response_breached, is_resolution_breached, created_at, updated_at) VALUES
 ('sla-001', 'case-001', NOW() - INTERVAL '2 hours', NOW() + INTERVAL '1 hour', NOW() - INTERVAL '2 hours 45 minutes', FALSE, FALSE, NOW() - INTERVAL '3 hours', NOW()),
