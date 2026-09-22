@@ -44,8 +44,8 @@ class AuthService:
                 code="EMAIL_ALREADY_EXISTS",
             )
 
-        # In local development, auto-verify for convenience unless specified
-        is_verified = True if settings.ENVIRONMENT == "local" else False
+        # Auto-verify in local development or if email provider is not configured
+        is_verified = True if (settings.ENVIRONMENT == "local" or not settings.BREVO_API_KEY) else False
 
         user = User(
             email=data.email.lower(),
@@ -86,8 +86,8 @@ class AuthService:
         if not user or not user.password_hash or not verify_password(data.password, user.password_hash):
             raise UnauthorizedException("Invalid email or password")
 
-        # In production, require email verification for password accounts (SRS §3.3a)
-        if settings.ENVIRONMENT in ["staging", "production"] and not user.email_verified:
+        # In production, require email verification if email provider is configured
+        if settings.ENVIRONMENT in ["staging", "production"] and settings.BREVO_API_KEY and not user.email_verified:
             raise UnauthorizedException("Please verify your email address before logging in.")
 
         access_token = create_access_token(subject=user.id, role=user.role.value)
