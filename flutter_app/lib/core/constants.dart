@@ -5,7 +5,7 @@ class AppConstants {
     if (_overrideBaseUrl.isNotEmpty) return _overrideBaseUrl;
     return const String.fromEnvironment(
       'API_BASE_URL',
-      defaultValue: 'http://10.122.120.196:8000/api/v1',
+      defaultValue: 'https://assistiq-si1f.onrender.com/api/v1',
     );
   }
 

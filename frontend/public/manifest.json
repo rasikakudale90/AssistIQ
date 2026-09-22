@@ -1,0 +1,22 @@
+{
+  "name": "AssistIQ Helpdesk",
+  "short_name": "AssistIQ",
+  "description": "Enterprise AI-Assisted IT Helpdesk & Field Operations",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fff8f2",
+  "theme_color": "#535c32",
+  "icons": [
+    {
+      "src": "/icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/favicon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}

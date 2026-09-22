@@ -36,6 +36,22 @@ class UserRole(str, enum.Enum):
     MANAGER = "Manager"
     ADMINISTRATOR = "Administrator"
 
+    @classmethod
+    def _missing_(cls, value):
+        if isinstance(value, str):
+            clean = value.replace("_", "").replace(" ", "").lower()
+            mapping = {
+                "requester": cls.REQUESTER,
+                "operator": cls.OPERATOR,
+                "teamlead": cls.TEAM_LEAD,
+                "lead": cls.TEAM_LEAD,
+                "manager": cls.MANAGER,
+                "admin": cls.ADMINISTRATOR,
+                "administrator": cls.ADMINISTRATOR,
+            }
+            return mapping.get(clean)
+        return None
+
 
 class AuthProvider(str, enum.Enum):
     PASSWORD = "password"
