@@ -1,4 +1,32 @@
 import enum
+from sqlalchemy.types import TypeDecorator, String
+
+
+class SafeEnumType(TypeDecorator):
+    impl = String(50)
+    cache_ok = True
+
+    def __init__(self, enum_cls, length: int = 50, *args, **kwargs):
+        super().__init__(length=length, *args, **kwargs)
+        self.enum_cls = enum_cls
+
+    def process_bind_param(self, value, dialect):
+        if value is None:
+            return None
+        if isinstance(value, self.enum_cls):
+            return value.value
+        return str(value)
+
+    def process_result_value(self, value, dialect):
+        if value is None:
+            return None
+        try:
+            return self.enum_cls(value)
+        except Exception:
+            if hasattr(self.enum_cls, "_missing_"):
+                return self.enum_cls._missing_(value)
+            return None
+
 
 
 class UserRole(str, enum.Enum):
@@ -93,6 +121,16 @@ class Priority(str, enum.Enum):
 class MessageVisibility(str, enum.Enum):
     REQUESTER_VISIBLE = "requester_visible"
     INTERNAL_ONLY = "internal_only"
+
+    @classmethod
+    def _missing_(cls, value):
+        if isinstance(value, str):
+            val_lower = value.lower()
+            if val_lower in ["public", "requester_visible", "requester", "all"]:
+                return cls.REQUESTER_VISIBLE
+            if val_lower in ["internal_only", "internal", "private", "staff"]:
+                return cls.INTERNAL_ONLY
+        return None
 
 
 class ConfidenceLevel(str, enum.Enum):

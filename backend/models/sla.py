@@ -12,7 +12,7 @@ from sqlalchemy import (
 from sqlalchemy.orm import relationship
 
 from backend.db.session import Base
-from backend.models.enums import Priority
+from backend.models.enums import Priority, SafeEnumType
 
 
 def generate_uuid() -> str:
@@ -29,7 +29,7 @@ class SLA(Base):
     id = Column(String(36), primary_key=True, default=generate_uuid)
     case_id = Column(String(36), ForeignKey("cases.id", ondelete="CASCADE"), unique=True, nullable=False, index=True)
     priority = Column(
-        SQLEnum(Priority, values_callable=lambda obj: [e.value for e in obj]),
+        SafeEnumType(Priority, length=10),
         nullable=False,
     )
     # 24/7 elapsed wall-clock time deadlines (SRS §4.3)

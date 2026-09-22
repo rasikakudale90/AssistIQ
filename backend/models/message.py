@@ -14,7 +14,7 @@ from sqlalchemy import (
 from sqlalchemy.orm import relationship
 
 from backend.db.session import Base
-from backend.models.enums import MessageVisibility
+from backend.models.enums import MessageVisibility, SafeEnumType
 
 
 def generate_uuid() -> str:
@@ -33,7 +33,7 @@ class Message(Base):
     author_id = Column(String(36), ForeignKey("users.id", ondelete="SET NULL"), nullable=True, index=True)
     body = Column(Text, nullable=False)
     visibility = Column(
-        SQLEnum(MessageVisibility, values_callable=lambda obj: [e.value for e in obj]),
+        SafeEnumType(MessageVisibility, length=50),
         default=MessageVisibility.REQUESTER_VISIBLE,
         nullable=False,
         index=True,

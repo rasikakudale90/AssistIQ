@@ -13,7 +13,7 @@ from sqlalchemy import (
 from sqlalchemy.orm import relationship
 
 from backend.db.session import Base
-from backend.models.enums import CaseType, CaseStatus, Priority, CaseRelationshipType
+from backend.models.enums import CaseType, CaseStatus, Priority, CaseRelationshipType, SafeEnumType
 
 
 def generate_uuid() -> str:
@@ -30,7 +30,7 @@ class Case(Base):
     id = Column(String(36), primary_key=True, default=generate_uuid)
     reference_number = Column(String(50), unique=True, nullable=False, index=True)
     type = Column(
-        SQLEnum(CaseType, values_callable=lambda obj: [e.value for e in obj]),
+        SafeEnumType(CaseType, length=50),
         default=CaseType.INCIDENT,
         nullable=False,
         index=True,
@@ -38,13 +38,13 @@ class Case(Base):
     title = Column(String(200), nullable=False, index=True)
     description = Column(Text, nullable=False)  # Immutable original description
     status = Column(
-        SQLEnum(CaseStatus, values_callable=lambda obj: [e.value for e in obj]),
+        SafeEnumType(CaseStatus, length=50),
         default=CaseStatus.NEW,
         nullable=False,
         index=True,
     )
     priority = Column(
-        SQLEnum(Priority, values_callable=lambda obj: [e.value for e in obj]),
+        SafeEnumType(Priority, length=10),
         default=Priority.P3,
         nullable=False,
         index=True,

@@ -13,7 +13,7 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 
 from backend.db.session import Base
-from backend.models.enums import UserRole, AuthProvider, AvailabilityStatus
+from backend.models.enums import UserRole, AuthProvider, AvailabilityStatus, SafeEnumType
 
 
 def generate_uuid() -> str:
@@ -50,13 +50,13 @@ class User(Base):
     email = Column(String(255), unique=True, nullable=False, index=True)
     password_hash = Column(String(255), nullable=True)  # Nullable for OAuth-only signups
     auth_provider = Column(
-        SQLEnum(AuthProvider, values_callable=lambda obj: [e.value for e in obj]),
+        SafeEnumType(AuthProvider, length=50),
         default=AuthProvider.PASSWORD,
         nullable=False,
     )
     oauth_subject_id = Column(String(255), unique=True, nullable=True, index=True)
     role = Column(
-        SQLEnum(UserRole, values_callable=lambda obj: [e.value for e in obj]),
+        SafeEnumType(UserRole, length=50),
         default=UserRole.REQUESTER,
         nullable=False,
         index=True,
@@ -64,7 +64,7 @@ class User(Base):
     team_id = Column(String(36), ForeignKey("teams.id", ondelete="SET NULL"), nullable=True, index=True)
     site = Column(String(100), nullable=True)  # Feeds smart assignment (location matching)
     availability_status = Column(
-        SQLEnum(AvailabilityStatus, values_callable=lambda obj: [e.value for e in obj]),
+        SafeEnumType(AvailabilityStatus, length=50),
         default=AvailabilityStatus.AVAILABLE,
         nullable=False,
     )
