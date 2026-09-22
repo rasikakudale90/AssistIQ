@@ -10,6 +10,7 @@ interface DownloadInfo {
     size_mb: number;
     download_url: string;
     lan_download_url: string;
+    direct_url?: string;
     platform: string;
   };
   android: {
@@ -18,6 +19,8 @@ interface DownloadInfo {
     size_mb: number;
     download_url: string;
     lan_download_url: string;
+    direct_url?: string;
+    qr_url?: string;
     platform: string;
   };
   ios: {
@@ -37,6 +40,9 @@ export const ClientInstallModal: React.FC<ClientInstallModalProps> = ({ isOpen, 
   const [info, setInfo] = useState<DownloadInfo | null>(null);
   const [pwaPrompt, setPwaPrompt] = useState<any>(null);
 
+  const fallbackCloudApk = "https://zmohmutvxwafpwvjdazf.supabase.co/storage/v1/object/public/assistiq-downloads/AssistIQ-Mobile.apk";
+  const fallbackCloudExe = "https://github.com/rasikakudale90/AssistIQ/releases/download/v1.0.0/AssistIQ-Helpdesk-Setup.exe";
+
   useEffect(() => {
     if (isOpen) {
       apiClient
@@ -44,23 +50,27 @@ export const ClientInstallModal: React.FC<ClientInstallModalProps> = ({ isOpen, 
         .then((res) => setInfo(res.data))
         .catch(() => {
           // Fallback defaults
+          const isLocal = !window.location.hostname || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
           setInfo({
             version: '1.0.0',
             local_ip: window.location.hostname || '127.0.0.1',
             desktop: {
               available: true,
               filename: 'AssistIQ-Helpdesk-Setup.exe',
-              size_mb: 112.8,
+              size_mb: 108.0,
               download_url: '/api/v1/downloads/desktop',
               lan_download_url: `http://${window.location.hostname || '127.0.0.1'}:8000/api/v1/downloads/desktop`,
+              direct_url: fallbackCloudExe,
               platform: 'Windows 10/11 (64-bit)',
             },
             android: {
               available: true,
               filename: 'AssistIQ-Mobile.apk',
-              size_mb: 70.4,
+              size_mb: 18.5,
               download_url: '/api/v1/downloads/android',
               lan_download_url: `http://${window.location.hostname || '127.0.0.1'}:8000/api/v1/downloads/android`,
+              direct_url: fallbackCloudApk,
+              qr_url: isLocal ? `http://${window.location.hostname || '127.0.0.1'}:8000/api/v1/downloads/android` : fallbackCloudApk,
               platform: 'Android 10+ (ARM64/x86)',
             },
             ios: {
@@ -94,9 +104,11 @@ export const ClientInstallModal: React.FC<ClientInstallModalProps> = ({ isOpen, 
   };
 
   const getAndroidDownloadUrl = () => {
-    if (info?.android.lan_download_url) return info.android.lan_download_url;
-    const host = window.location.hostname || '127.0.0.1';
-    return `http://${host}:8000/api/v1/downloads/android`;
+    if (info?.android.qr_url) return info.android.qr_url;
+    if (info?.android.direct_url) return info.android.direct_url;
+    const isLocal = !window.location.hostname || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+    if (isLocal && info?.android.lan_download_url) return info.android.lan_download_url;
+    return fallbackCloudApk;
   };
 
   const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(
@@ -201,7 +213,7 @@ export const ClientInstallModal: React.FC<ClientInstallModalProps> = ({ isOpen, 
               </div>
 
               <a
-                href={info?.desktop.download_url || '/api/v1/downloads/desktop'}
+                href={info?.desktop.download_url || info?.desktop.direct_url || fallbackCloudExe}
                 download="AssistIQ-Helpdesk-Setup.exe"
                 className="w-full sm:w-auto px-5 py-2.5 bg-primary hover:bg-primary/90 text-on-primary font-mono text-xs font-bold rounded-xl shadow-md press-tactile transition-all flex items-center justify-center gap-2 shrink-0"
               >
@@ -260,7 +272,7 @@ export const ClientInstallModal: React.FC<ClientInstallModalProps> = ({ isOpen, 
                   </p>
                   <div className="flex flex-col gap-1.5 text-[11px] font-mono text-on-surface-variant pt-1">
                     <span className="px-2 py-0.5 bg-surface-container rounded border border-outline-variant/20 inline-block w-fit">
-                      📦 Size: ~{info?.android.size_mb || 50.2} MB
+                      📦 Size: ~{info?.android.size_mb || 18.5} MB
                     </span>
                     <span className="px-2 py-0.5 bg-surface-container rounded border border-outline-variant/20 inline-block w-fit">
                       📱 Target: Android 10+ (ARM64)
@@ -269,7 +281,7 @@ export const ClientInstallModal: React.FC<ClientInstallModalProps> = ({ isOpen, 
                 </div>
 
                 <a
-                  href={info?.android.download_url || '/api/v1/downloads/android'}
+                  href={info?.android.download_url || info?.android.direct_url || fallbackCloudApk}
                   download="AssistIQ-Mobile.apk"
                   className="w-full px-4 py-2.5 bg-secondary hover:bg-secondary/90 text-on-secondary font-mono text-xs font-bold rounded-xl shadow-md press-tactile transition-all flex items-center justify-center gap-2"
                 >
