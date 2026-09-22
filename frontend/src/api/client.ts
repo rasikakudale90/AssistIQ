@@ -8,11 +8,18 @@ const isDesktopOrFile =
 
 const envApiUrl = (import.meta as any).env?.VITE_API_URL;
 
+const isLocalhost =
+  typeof window !== 'undefined' &&
+  (window.location.hostname === 'localhost' ||
+    window.location.hostname === '127.0.0.1');
+
 const API_BASE = envApiUrl
   ? envApiUrl
   : isDesktopOrFile
     ? 'http://127.0.0.1:8000/api/v1'
-    : '/api/v1';
+    : isLocalhost
+      ? '/api/v1'
+      : 'https://assistiq-si1f.onrender.com/api/v1';
 
 export const apiClient = axios.create({
   baseURL: API_BASE,
