@@ -13,16 +13,45 @@ class AuthProvider(str, enum.Enum):
     PASSWORD = "password"
     GOOGLE = "google"
 
+    @classmethod
+    def _missing_(cls, value):
+        if isinstance(value, str):
+            val_lower = value.lower()
+            if val_lower in ["local", "password", "pwd", "email"]:
+                return cls.PASSWORD
+            if val_lower in ["google", "oauth", "oidc"]:
+                return cls.GOOGLE
+        return None
+
 
 class AvailabilityStatus(str, enum.Enum):
     AVAILABLE = "available"
     AWAY = "away"
     OFFLINE = "offline"
 
+    @classmethod
+    def _missing_(cls, value):
+        if isinstance(value, str):
+            val_lower = value.lower()
+            for member in cls:
+                if member.value == val_lower:
+                    return member
+        return None
+
 
 class CaseType(str, enum.Enum):
     INCIDENT = "Incident"
     SERVICE_REQUEST = "Service Request"
+
+    @classmethod
+    def _missing_(cls, value):
+        if isinstance(value, str):
+            val_clean = value.replace(" ", "").replace("_", "").lower()
+            if "incident" in val_clean:
+                return cls.INCIDENT
+            if "servicerequest" in val_clean or "request" in val_clean:
+                return cls.SERVICE_REQUEST
+        return None
 
 
 class CaseStatus(str, enum.Enum):
@@ -43,6 +72,22 @@ class Priority(str, enum.Enum):
     P2 = "P2"  # High (1 hr response / 8 hr resolution)
     P3 = "P3"  # Medium (4 hr response / 72 hr resolution)
     P4 = "P4"  # Low (24 hr response / 120 hr resolution)
+
+    @classmethod
+    def _missing_(cls, value):
+        if isinstance(value, str):
+            mapping = {
+                "critical": cls.P1,
+                "high": cls.P2,
+                "medium": cls.P3,
+                "low": cls.P4,
+                "p1": cls.P1,
+                "p2": cls.P2,
+                "p3": cls.P3,
+                "p4": cls.P4,
+            }
+            return mapping.get(value.lower())
+        return None
 
 
 class MessageVisibility(str, enum.Enum):
