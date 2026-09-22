@@ -187,11 +187,11 @@ INSERT INTO teams (id, name, description, created_at) VALUES
 ('team-003', 'Systems & Cloud Operations', 'Identity, AWS/GCP infrastructure, SSO, and server access', NOW());
 
 INSERT INTO users (id, email, password_hash, auth_provider, role, team_id, site, availability_status, email_verified, created_at, updated_at) VALUES
-('usr-admin-001', 'admin@assistiq.local', '$argon2id$v=19$m=19456,t=2,p=1$Qml6c2p0OTRzZ3V0b3dycg$u7VwB6p6uC4ZtD7uY2wU9z1a8+k0jL9b8G9f2k0L1mM', 'local', 'Administrator', 'team-003', 'HQ-North', 'Available', TRUE, NOW(), NOW()),
-('usr-mgr-001', 'manager@assistiq.local', '$argon2id$v=19$m=19456,t=2,p=1$Qml6c2p0OTRzZ3V0b3dycg$u7VwB6p6uC4ZtD7uY2wU9z1a8+k0jL9b8G9f2k0L1mM', 'local', 'Manager', 'team-001', 'HQ-North', 'Available', TRUE, NOW(), NOW()),
-('usr-lead-001', 'lead@assistiq.local', '$argon2id$v=19$m=19456,t=2,p=1$Qml6c2p0OTRzZ3V0b3dycg$u7VwB6p6uC4ZtD7uY2wU9z1a8+k0jL9b8G9f2k0L1mM', 'local', 'TeamLead', 'team-001', 'HQ-North', 'Available', TRUE, NOW(), NOW()),
-('usr-op-001', 'operator@assistiq.local', '$argon2id$v=19$m=19456,t=2,p=1$Qml6c2p0OTRzZ3V0b3dycg$u7VwB6p6uC4ZtD7uY2wU9z1a8+k0jL9b8G9f2k0L1mM', 'local', 'Operator', 'team-001', 'HQ-North', 'Available', TRUE, NOW(), NOW()),
-('usr-req-001', 'requester@assistiq.local', '$argon2id$v=19$m=19456,t=2,p=1$Qml6c2p0OTRzZ3V0b3dycg$u7VwB6p6uC4ZtD7uY2wU9z1a8+k0jL9b8G9f2k0L1mM', 'local', 'Requester', NULL, 'HQ-North', 'Available', TRUE, NOW(), NOW());
+('usr-admin-001', 'admin@assistiq.local', '$argon2id$v=19$m=19456,t=2,p=1$KcUYozTGGANgzFlLaU2J0Q$4ChXiSRmd6Tk4blO28WQaEb7fGtTfSEVYYHrkNvHRIo', 'password', 'Administrator', 'team-003', 'HQ-North', 'Available', TRUE, NOW(), NOW()),
+('usr-mgr-001', 'manager@assistiq.local', '$argon2id$v=19$m=19456,t=2,p=1$KcUYozTGGANgzFlLaU2J0Q$4ChXiSRmd6Tk4blO28WQaEb7fGtTfSEVYYHrkNvHRIo', 'password', 'Manager', 'team-001', 'HQ-North', 'Available', TRUE, NOW(), NOW()),
+('usr-lead-001', 'lead@assistiq.local', '$argon2id$v=19$m=19456,t=2,p=1$KcUYozTGGANgzFlLaU2J0Q$4ChXiSRmd6Tk4blO28WQaEb7fGtTfSEVYYHrkNvHRIo', 'password', 'TeamLead', 'team-001', 'HQ-North', 'Available', TRUE, NOW(), NOW()),
+('usr-op-001', 'operator@assistiq.local', '$argon2id$v=19$m=19456,t=2,p=1$KcUYozTGGANgzFlLaU2J0Q$4ChXiSRmd6Tk4blO28WQaEb7fGtTfSEVYYHrkNvHRIo', 'password', 'Operator', 'team-001', 'HQ-North', 'Available', TRUE, NOW(), NOW()),
+('usr-req-001', 'requester@assistiq.local', '$argon2id$v=19$m=19456,t=2,p=1$KcUYozTGGANgzFlLaU2J0Q$4ChXiSRmd6Tk4blO28WQaEb7fGtTfSEVYYHrkNvHRIo', 'password', 'Requester', NULL, 'HQ-North', 'Available', TRUE, NOW(), NOW());
 
 UPDATE teams SET lead_id = 'usr-lead-001' WHERE id = 'team-001';
 UPDATE teams SET lead_id = 'usr-mgr-001' WHERE id = 'team-002';

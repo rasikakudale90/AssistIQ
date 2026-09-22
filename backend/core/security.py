@@ -24,7 +24,10 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
     """Verifies a plain password against its hash."""
     if not hashed_password:
         return False
-    return pwd_context.verify(plain_password, hashed_password)
+    try:
+        return pwd_context.verify(plain_password, hashed_password)
+    except Exception:
+        return False
 
 
 def create_access_token(subject: str, role: str, expires_delta: Optional[timedelta] = None) -> str:
