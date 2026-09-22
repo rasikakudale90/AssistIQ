@@ -11,7 +11,7 @@ __pycache__/
 *.so
 .Python
 develop-eggs/
-downloads/
+/downloads/
 eggs/
 .eggs/
 parts/
