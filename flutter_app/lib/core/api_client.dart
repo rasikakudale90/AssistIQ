@@ -4,6 +4,22 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'constants.dart';
 
 class ApiClient {
+  static Future<String> getBaseUrl() async {
+    final prefs = await SharedPreferences.getInstance();
+    final saved = prefs.getString('custom_api_base_url');
+    if (saved != null && saved.isNotEmpty) {
+      AppConstants.setBaseUrl(saved);
+      return saved;
+    }
+    return AppConstants.apiBaseUrl;
+  }
+
+  static Future<void> setBaseUrl(String url) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('custom_api_base_url', url);
+    AppConstants.setBaseUrl(url);
+  }
+
   static Future<String?> getToken() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString('access_token');
@@ -39,27 +55,33 @@ class ApiClient {
     if (queryParams != null && queryParams.isNotEmpty) {
       uri = uri.replace(queryParameters: queryParams);
     }
-    final response = await http.get(uri, headers: await _headers());
+    final response = await http
+        .get(uri, headers: await _headers())
+        .timeout(const Duration(seconds: 4));
     return _processResponse(response);
   }
 
   static Future<dynamic> post(String path, {dynamic body}) async {
     final uri = Uri.parse('${AppConstants.apiBaseUrl}$path');
-    final response = await http.post(
-      uri,
-      headers: await _headers(),
-      body: body != null ? jsonEncode(body) : null,
-    );
+    final response = await http
+        .post(
+          uri,
+          headers: await _headers(),
+          body: body != null ? jsonEncode(body) : null,
+        )
+        .timeout(const Duration(seconds: 6));
     return _processResponse(response);
   }
 
   static Future<dynamic> patch(String path, {dynamic body}) async {
     final uri = Uri.parse('${AppConstants.apiBaseUrl}$path');
-    final response = await http.patch(
-      uri,
-      headers: await _headers(),
-      body: body != null ? jsonEncode(body) : null,
-    );
+    final response = await http
+        .patch(
+          uri,
+          headers: await _headers(),
+          body: body != null ? jsonEncode(body) : null,
+        )
+        .timeout(const Duration(seconds: 4));
     return _processResponse(response);
   }
 

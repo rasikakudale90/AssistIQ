@@ -21,226 +21,401 @@ class _CaseIntakeSheetState extends State<CaseIntakeSheet> {
   String _caseType = 'Incident';
 
   bool _isSubmitting = false;
+  String? _errorMessage;
   CaseModel? _createdCase;
   AITriageResultModel? _triageResult;
 
+  static const Map<String, Map<String, dynamic>> _severityInfo = {
+    'P1': {
+      'label': 'P1 — Critical',
+      'sla': '15m Response • 4h Resolve SLA',
+      'desc': 'Immediate critical stoppage / severe hazard. Unusable core operational equipment.',
+      'color': AssistIQTheme.error,
+    },
+    'P2': {
+      'label': 'P2 — High',
+      'sla': '1h Response • 8h Resolve SLA',
+      'desc': 'Major component impairment. Heavy performance loss with limited workaround.',
+      'color': AssistIQTheme.secondary,
+    },
+    'P3': {
+      'label': 'P3 — Medium',
+      'sla': '4h Response • 72h Resolve SLA',
+      'desc': 'Normal operational issue with viable workaround. Routine incident.',
+      'color': AssistIQTheme.primary,
+    },
+    'P4': {
+      'label': 'P4 — Low',
+      'sla': '24h Response • 120h Resolve SLA',
+      'desc': 'Minor cosmetic issue, general inquiry, or standard non-blocking service request.',
+      'color': AssistIQTheme.tertiary,
+    },
+  };
+
   Future<void> _submitDocket() async {
-    if (_titleCtrl.text.trim().isEmpty || _descCtrl.text.trim().isEmpty) return;
-    setState(() => _isSubmitting = true);
+    final title = _titleCtrl.text.trim();
+    final desc = _descCtrl.text.trim();
+
+    if (title.length < 3) {
+      setState(() => _errorMessage = 'Docket Title must be at least 3 characters.');
+      return;
+    }
+    if (desc.length < 5) {
+      setState(() => _errorMessage = 'Problem statement must be at least 5 characters.');
+      return;
+    }
+
+    setState(() {
+      _isSubmitting = true;
+      _errorMessage = null;
+    });
 
     try {
       final caseProv = Provider.of<CaseProvider>(context, listen: false);
       final newCase = await caseProv.createCase(
-        title: _titleCtrl.text.trim(),
-        description: _descCtrl.text.trim(),
+        title: title,
+        description: desc,
         caseType: _caseType,
         category: _category,
         priority: _priority,
         site: _siteCtrl.text.trim(),
       );
 
+      if (!mounted) return;
       setState(() => _createdCase = newCase);
 
       final triage = await caseProv.getTriage(newCase.id);
-      setState(() => _triageResult = triage);
+      if (mounted) {
+        setState(() => _triageResult = triage);
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _errorMessage = e.toString().replaceAll('Exception: ', '');
+        });
+      }
     } finally {
-      setState(() => _isSubmitting = false);
+      if (mounted) {
+        setState(() => _isSubmitting = false);
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.only(
-        left: 20,
-        right: 20,
-        top: 20,
-        bottom: MediaQuery.of(context).viewInsets.bottom + 20,
-      ),
-      constraints: const BoxConstraints(maxHeight: 650),
-      decoration: const BoxDecoration(
-        color: AssistIQTheme.surface,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-      ),
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    final bottomInset = MediaQuery.of(context).viewInsets.bottom;
+    final sev = _severityInfo[_priority] ?? _severityInfo['P3']!;
+    final Color sevColor = sev['color'] as Color;
+
+    return SafeArea(
+      child: Padding(
+        padding: EdgeInsets.only(bottom: bottomInset),
+        child: Container(
+          decoration: const BoxDecoration(
+            color: AssistIQTheme.surface,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+          ),
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisSize: MainAxisSize.min,
               children: [
-                const Row(
+                // Header Bar
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Icon(Icons.psychology, color: AssistIQTheme.primary),
-                    SizedBox(width: 8),
-                    Text(
-                      'NEW DOCKET // AI TRIAGE INTAKE',
-                      style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 0.8),
+                    const Row(
+                      children: [
+                        Icon(Icons.psychology, color: AssistIQTheme.primary, size: 20),
+                        SizedBox(width: 8),
+                        Text(
+                          'NEW DOCKET // AI TRIAGE INTAKE',
+                          style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 0.8),
+                        ),
+                      ],
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.close, size: 20),
+                      onPressed: () => Navigator.pop(context),
                     ),
                   ],
                 ),
-                IconButton(
-                  icon: const Icon(Icons.close),
-                  onPressed: () => Navigator.pop(context),
-                ),
-              ],
-            ),
-            const Divider(),
-            const SizedBox(height: 10),
+                const Divider(),
+                const SizedBox(height: 8),
 
-            if (_createdCase == null) ...[
-              TextField(
-                controller: _titleCtrl,
-                decoration: const InputDecoration(
-                  labelText: 'DOCKET TITLE / SUMMARY',
-                  labelStyle: TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
-                  filled: true,
-                  fillColor: Colors.white,
-                  border: OutlineInputBorder(),
-                  contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-                ),
-              ),
-              const SizedBox(height: 10),
-
-              TextField(
-                controller: _descCtrl,
-                maxLines: 4,
-                decoration: const InputDecoration(
-                  labelText: 'STATEMENT & SYMPTOMS',
-                  labelStyle: TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
-                  filled: true,
-                  fillColor: Colors.white,
-                  border: OutlineInputBorder(),
-                  contentPadding: EdgeInsets.all(10),
-                ),
-              ),
-              const SizedBox(height: 10),
-
-              Row(
-                children: [
-                  Expanded(
-                    child: DropdownButtonFormField<String>(
-                      value: _category,
-                      decoration: const InputDecoration(
-                        labelText: 'CATEGORY',
-                        border: OutlineInputBorder(),
-                        filled: true,
-                        fillColor: Colors.white,
-                        contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-                      ),
-                      items: ['Hardware', 'Network', 'Software', 'Industrial Control', 'Security']
-                          .map((c) => DropdownMenuItem(value: c, child: Text(c, style: const TextStyle(fontSize: 12))))
-                          .toList(),
-                      onChanged: (val) => setState(() => _category = val!),
+                if (_errorMessage != null) ...[
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFFFECEB),
+                      border: Border.all(color: AssistIQTheme.error.withValues(alpha: 0.4)),
+                      borderRadius: BorderRadius.circular(6),
                     ),
-                  ),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: DropdownButtonFormField<String>(
-                      value: _priority,
-                      decoration: const InputDecoration(
-                        labelText: 'SEVERITY',
-                        border: OutlineInputBorder(),
-                        filled: true,
-                        fillColor: Colors.white,
-                        contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-                      ),
-                      items: ['P1', 'P2', 'P3', 'P4']
-                          .map((p) => DropdownMenuItem(value: p, child: Text(p, style: const TextStyle(fontSize: 12))))
-                          .toList(),
-                      onChanged: (val) => setState(() => _priority = val!),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 16),
-
-              ElevatedButton.icon(
-                onPressed: _isSubmitting ? null : _submitDocket,
-                icon: const Icon(Icons.psychology, size: 18),
-                label: Text(_isSubmitting ? 'ANALYZING & SUBMITTING...' : 'SUBMIT & RUN AI TRIAGE'),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AssistIQTheme.primary,
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(vertical: 14),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
-                ),
-              ),
-            ] else ...[
-              // Post-Creation AI Triage Review Card (Matching Stitch Screen 1 & 2)
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(color: const Color(0x33C7C7B9)),
-                  borderRadius: BorderRadius.circular(6),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    child: Row(
                       children: [
-                        Text(
-                          '${_createdCase!.referenceNumber}: ${_createdCase!.title}',
-                          style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                          decoration: BoxDecoration(
-                            color: AssistIQTheme.primary,
-                            borderRadius: BorderRadius.circular(4),
-                          ),
+                        const Icon(Icons.error_outline, color: AssistIQTheme.error, size: 16),
+                        const SizedBox(width: 8),
+                        Expanded(
                           child: Text(
-                            _createdCase!.status,
-                            style: const TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold),
+                            _errorMessage!,
+                            style: const TextStyle(fontSize: 11, color: AssistIQTheme.error, fontWeight: FontWeight.bold),
                           ),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 10),
+                  ),
+                  const SizedBox(height: 10),
+                ],
 
-                    if (_triageResult != null) ...[
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text(
-                            'AI TRIAGE ASSESSMENT [SRS §5.2]',
-                            style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: AssistIQTheme.primary),
+                if (_createdCase == null) ...[
+                  TextField(
+                    controller: _titleCtrl,
+                    decoration: const InputDecoration(
+                      labelText: 'DOCKET TITLE / SUMMARY',
+                      labelStyle: TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
+                      filled: true,
+                      fillColor: Colors.white,
+                      border: OutlineInputBorder(),
+                      contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+
+                  TextField(
+                    controller: _descCtrl,
+                    maxLines: 3,
+                    decoration: const InputDecoration(
+                      labelText: 'DESCRIPTION',
+                      labelStyle: TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
+                      filled: true,
+                      fillColor: Colors.white,
+                      border: OutlineInputBorder(),
+                      contentPadding: EdgeInsets.all(10),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+
+                  Row(
+                    children: [
+                      Expanded(
+                        child: DropdownButtonFormField<String>(
+                          value: _caseType,
+                          decoration: const InputDecoration(
+                            labelText: 'TYPE',
+                            labelStyle: TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
+                            border: OutlineInputBorder(),
+                            filled: true,
+                            fillColor: Colors.white,
+                            contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                           ),
-                          Text(
-                            'CONFIDENCE: ${(_triageResult!.confidenceScore * 100).toInt()}%',
-                            style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: AssistIQTheme.primaryContainer),
+                          items: ['Incident', 'ServiceRequest']
+                              .map((t) => DropdownMenuItem(value: t, child: Text(t == 'ServiceRequest' ? 'Service Req' : t, style: const TextStyle(fontSize: 12))))
+                              .toList(),
+                          onChanged: (val) => setState(() => _caseType = val!),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: DropdownButtonFormField<String>(
+                          value: _category,
+                          decoration: const InputDecoration(
+                            labelText: 'CATEGORY',
+                            labelStyle: TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
+                            border: OutlineInputBorder(),
+                            filled: true,
+                            fillColor: Colors.white,
+                            contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                          ),
+                          items: ['Hardware', 'Network', 'Software', 'Industrial Control', 'Security', 'Access Control']
+                              .map((c) => DropdownMenuItem(value: c, child: Text(c, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 12))))
+                              .toList(),
+                          onChanged: (val) => setState(() => _category = val!),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+
+                  // Severity Selector with full SLA descriptions
+                  DropdownButtonFormField<String>(
+                    value: _priority,
+                    decoration: const InputDecoration(
+                      labelText: 'INITIAL SEVERITY / SLA TARGET',
+                      labelStyle: TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
+                      border: OutlineInputBorder(),
+                      filled: true,
+                      fillColor: Colors.white,
+                      contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                    ),
+                    items: _severityInfo.entries.map((entry) {
+                      return DropdownMenuItem<String>(
+                        value: entry.key,
+                        child: Row(
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                              decoration: BoxDecoration(
+                                color: entry.value['color'] as Color,
+                                borderRadius: BorderRadius.circular(4),
+                              ),
+                              child: Text(
+                                entry.key,
+                                style: const TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            Text(
+                              '${entry.value['label']} (${entry.value['sla']})',
+                              style: const TextStyle(fontSize: 12),
+                            ),
+                          ],
+                        ),
+                      );
+                    }).toList(),
+                    onChanged: (val) => setState(() => _priority = val!),
+                  ),
+                  const SizedBox(height: 8),
+
+                  // Severity Description Card
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: sevColor.withValues(alpha: 0.08),
+                      border: Border.all(color: sevColor.withValues(alpha: 0.3)),
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Icon(Icons.info_outline, size: 16, color: sevColor),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                '${sev['label']}: ${sev['sla']}',
+                                style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: sevColor),
+                              ),
+                              const SizedBox(height: 2),
+                              Text(
+                                sev['desc'] as String,
+                                style: const TextStyle(fontSize: 10, color: AssistIQTheme.onSurfaceVariant, height: 1.3),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 14),
+
+                  ElevatedButton.icon(
+                    onPressed: _isSubmitting ? null : _submitDocket,
+                    icon: _isSubmitting
+                        ? const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white))
+                        : const Icon(Icons.psychology, size: 18),
+                    label: Text(_isSubmitting ? 'ANALYZING & SUBMITTING...' : 'SUBMIT & RUN AI TRIAGE'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AssistIQTheme.primary,
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+                    ),
+                  ),
+                ] else ...[
+                  // Post-Creation AI Triage Review Card
+                  Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(color: const Color(0x33C7C7B9)),
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: Text(
+                                '${_createdCase!.referenceNumber}: ${_createdCase!.title}',
+                                style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            const SizedBox(width: 6),
+                            Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                              decoration: BoxDecoration(
+                                color: AssistIQTheme.primary,
+                                borderRadius: BorderRadius.circular(4),
+                              ),
+                              child: Text(
+                                _createdCase!.status,
+                                style: const TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 10),
+
+                        if (_triageResult != null) ...[
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text(
+                                'AI TRIAGE ASSESSMENT [SRS §5.2]',
+                                style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: AssistIQTheme.primary),
+                              ),
+                              Text(
+                                'CONFIDENCE: ${(_triageResult!.confidenceScore * 100).toInt()}%',
+                                style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: AssistIQTheme.primaryContainer),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 8),
+
+                          Text('Recommended Category: ${_triageResult!.predictedCategory}', style: const TextStyle(fontSize: 12)),
+                          Text('Predicted Priority: [${_triageResult!.predictedPriority}]', style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: AssistIQTheme.secondary)),
+                          const SizedBox(height: 8),
+
+                          if (_triageResult!.supportingFactors.isNotEmpty) ...[
+                            const Text('Supporting Telemetry Factors:', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: AssistIQTheme.tertiary)),
+                            ..._triageResult!.supportingFactors.map((f) => Text('• $f', style: const TextStyle(fontSize: 11))),
+                          ],
+                        ] else ...[
+                          const Padding(
+                            padding: EdgeInsets.symmetric(vertical: 8),
+                            child: Row(
+                              children: [
+                                SizedBox(width: 14, height: 14, child: CircularProgressIndicator(strokeWidth: 2)),
+                                SizedBox(width: 8),
+                                Text('Running AI Triage Analysis...', style: TextStyle(fontSize: 11, fontStyle: FontStyle.italic)),
+                              ],
+                            ),
                           ),
                         ],
-                      ),
-                      const SizedBox(height: 8),
-
-                      Text('Recommended Category: ${_triageResult!.predictedCategory}', style: const TextStyle(fontSize: 12)),
-                      Text('Predicted Priority: [${_triageResult!.predictedPriority}]', style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: AssistIQTheme.secondary)),
-                      const SizedBox(height: 8),
-
-                      if (_triageResult!.supportingFactors.isNotEmpty) ...[
-                        const Text('Supporting Telemetry Factors:', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: AssistIQTheme.tertiary)),
-                        ..._triageResult!.supportingFactors.map((f) => Text('• $f', style: const TextStyle(fontSize: 11))),
                       ],
-                    ],
-                  ],
-                ),
-              ),
-              const SizedBox(height: 12),
+                    ),
+                  ),
+                  const SizedBox(height: 12),
 
-              ElevatedButton(
-                onPressed: () => Navigator.pop(context),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AssistIQTheme.primary,
-                  foregroundColor: Colors.white,
-                ),
-                child: const Text('GO TO WORKBENCH'),
-              ),
-            ],
-          ],
+                  ElevatedButton(
+                    onPressed: () => Navigator.pop(context),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AssistIQTheme.primary,
+                      foregroundColor: Colors.white,
+                    ),
+                    child: const Text('GO TO WORKBENCH'),
+                  ),
+                ],
+              ],
+            ),
+          ),
         ),
       ),
     );

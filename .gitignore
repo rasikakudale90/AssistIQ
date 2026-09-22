@@ -80,4 +80,7 @@ AssistIQ-Desktop/
 frontend/dist-desktop/
 flutter_app/android/app/build/
 flutter_app/android/build/
-*.png
+*.exe
+!frontend/public/**
+!frontend/build/**
+!flutter_app/assets/**

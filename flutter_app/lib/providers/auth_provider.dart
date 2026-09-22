@@ -1,6 +1,4 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import '../core/api_client.dart';
 import '../core/constants.dart';
 import '../models/user.dart';
@@ -22,6 +20,7 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
 
     try {
+      await ApiClient.getBaseUrl();
       final token = await ApiClient.getToken();
       if (token != null) {
         final res = await ApiClient.get('/auth/me');
@@ -41,22 +40,25 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
 
     try {
-      final uri = Uri.parse('${AppConstants.apiBaseUrl}/auth/login');
-      final res = await http.post(
-        uri,
-        headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({'email': email, 'password': password}),
-      );
+      await ApiClient.getBaseUrl();
+      final data = await ApiClient.post('/auth/login', body: {
+        'email': email.trim(),
+        'password': password.trim(),
+      });
 
-      if (res.statusCode >= 200 && res.statusCode < 300) {
-        final data = jsonDecode(res.body);
-        await ApiClient.saveTokens(data['access_token'], data['refresh_token']);
-        
+      if (data != null && data['access_token'] != null) {
+        await ApiClient.saveTokens(data['access_token'], data['refresh_token'] ?? '');
         final userRes = await ApiClient.get('/auth/me');
         _user = User.fromJson(userRes);
       } else {
-        throw Exception('Login failed: ${res.body}');
+        throw Exception('Invalid response received from server.');
       }
+    } catch (e) {
+      final msg = e.toString().replaceAll('Exception: ', '');
+      if (msg.contains('SocketException') || msg.contains('TimeoutException') || msg.contains('Connection refused') || msg.contains('Failed host lookup')) {
+        throw Exception('Cannot connect to server at ${AppConstants.apiBaseUrl}. Please verify your PC and phone are on the same Wi-Fi network.');
+      }
+      rethrow;
     } finally {
       _isLoading = false;
       notifyListeners();
@@ -68,24 +70,21 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
 
     try {
-      final uri = Uri.parse('${AppConstants.apiBaseUrl}/auth/signup');
-      final res = await http.post(
-        uri,
-        headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({
-          'email': email,
-          'password': password,
-          'role': role,
-          'site': site,
-        }),
-      );
+      await ApiClient.getBaseUrl();
+      await ApiClient.post('/auth/signup', body: {
+        'email': email.trim(),
+        'password': password.trim(),
+        'role': role,
+        'site': site,
+      });
 
-      if (res.statusCode >= 200 && res.statusCode < 300) {
-        await login(email, password);
-      } else {
-        final err = jsonDecode(res.body);
-        throw Exception(err['message'] ?? err['detail'] ?? 'Registration failed');
+      await login(email, password);
+    } catch (e) {
+      final msg = e.toString().replaceAll('Exception: ', '');
+      if (msg.contains('SocketException') || msg.contains('TimeoutException') || msg.contains('Connection refused')) {
+        throw Exception('Cannot connect to server at ${AppConstants.apiBaseUrl}. Please check Wi-Fi connection.');
       }
+      rethrow;
     } finally {
       _isLoading = false;
       notifyListeners();

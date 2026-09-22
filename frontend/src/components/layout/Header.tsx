@@ -4,6 +4,7 @@ import { useAuth } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
 import { DashboardStats } from '../../api/types';
 import { getDashboardStatsApi } from '../../api/insights';
+import { ClientInstallModal } from '../downloads/ClientInstallModal';
 
 export const Header: React.FC = () => {
   const { user, logout } = useAuth();
@@ -13,6 +14,7 @@ export const Header: React.FC = () => {
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isInstallModalOpen, setIsInstallModalOpen] = useState(false);
 
   useEffect(() => {
     if (user && user.role !== 'Requester') {
@@ -57,9 +59,11 @@ export const Header: React.FC = () => {
               onClick={() => navigate('/')}
               className="flex items-center gap-2.5 cursor-pointer select-none min-w-0 group"
             >
-              <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-on-primary font-headline font-bold text-base shadow-sm group-hover:scale-105 transition-transform duration-200">
-                AI
-              </div>
+              <img
+                src="./favicon.png"
+                alt="AssistIQ Logo"
+                className="w-8 h-8 rounded-lg shadow-sm object-cover border border-outline-variant/30 group-hover:scale-105 transition-transform duration-200"
+              />
               <div className="flex flex-col min-w-0">
                 <span className="font-mono text-[9px] text-primary tracking-widest uppercase font-semibold">
                   MW-OS // HELPDESK
@@ -89,8 +93,21 @@ export const Header: React.FC = () => {
             </div>
           )}
 
-          {/* Right: Notification Bell, Theme Toggle & User Profile */}
+          {/* Right: Get Apps, Notification Bell, Theme Toggle & User Profile */}
           <div className="flex items-center gap-2 sm:gap-2.5 flex-shrink-0">
+            {/* Get Apps Trigger (Desktop & Mobile) */}
+            <button
+              type="button"
+              onClick={() => setIsInstallModalOpen(true)}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg liquid-glass-interactive hover:bg-surface-container/60 text-on-surface hover:text-primary transition-all duration-200 border border-outline-variant/30 press-tactile text-xs font-mono group shadow-xs"
+              title="Download & Install Desktop / Android Apps"
+            >
+              <span className="material-symbols-outlined text-[18px] text-primary group-hover:scale-110 transition-transform">
+                download_for_offline
+              </span>
+              <span className="hidden sm:inline font-bold">Get Apps</span>
+            </button>
+
             {/* 1. Top-Right Notification Bell */}
             <div className="relative">
               <button
@@ -226,6 +243,19 @@ export const Header: React.FC = () => {
                     </div>
                   </div>
 
+                  <div className="py-1 border-b border-outline-variant/20">
+                    <button
+                      onClick={() => {
+                        setIsInstallModalOpen(true);
+                        setShowUserMenu(false);
+                      }}
+                      className="w-full text-left px-3.5 py-2 text-xs text-on-surface hover:bg-surface-container/60 flex items-center gap-2 font-mono font-medium transition-colors press-tactile"
+                    >
+                      <span className="material-symbols-outlined text-[16px] text-primary">install_desktop</span>
+                      Install Desktop & Mobile
+                    </button>
+                  </div>
+
                   <div className="pt-1">
                     <button
                       onClick={() => {
@@ -259,9 +289,11 @@ export const Header: React.FC = () => {
             {/* Drawer Header */}
             <div className="h-16 px-5 flex items-center justify-between border-b border-outline-variant/30 bg-surface-container/60">
               <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-on-primary font-headline font-bold text-sm shadow-xs">
-                  AI
-                </div>
+                <img
+                  src="./favicon.png"
+                  alt="AssistIQ Logo"
+                  className="w-8 h-8 rounded-lg shadow-xs object-cover border border-outline-variant/30"
+                />
                 <div>
                   <span className="font-mono text-[9px] text-primary uppercase font-bold tracking-wider block">
                     NAVIGATION MENU
@@ -272,49 +304,40 @@ export const Header: React.FC = () => {
                 </div>
               </div>
               <button
+                type="button"
                 onClick={() => setMobileMenuOpen(false)}
-                className="w-8 h-8 rounded-lg hover:bg-surface-container-highest flex items-center justify-center text-on-surface-variant transition-all duration-200 press-tactile"
+                className="p-1.5 rounded-lg hover:bg-surface-container text-on-surface-variant hover:text-on-surface flex items-center justify-center transition-colors press-tactile"
+                aria-label="Close navigation menu"
               >
                 <span className="material-symbols-outlined text-[20px]">close</span>
               </button>
             </div>
 
-            {/* User Info Card */}
-            <div className="p-4 border-b border-outline-variant/30 bg-surface-container-lowest/60 mx-3 my-3 rounded-xl">
-              <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-full bg-primary flex items-center justify-center text-on-primary font-bold text-sm shadow-xs">
-                  {user.role[0]}
-                </div>
-                <div className="min-w-0">
-                  <strong className="block text-xs font-mono text-on-surface truncate">
-                    {user.email}
-                  </strong>
-                  <div className="flex items-center gap-1.5 mt-0.5 font-mono text-[10px]">
-                    <span className="px-1.5 py-0.2 bg-primary/10 text-primary font-bold rounded">
-                      {user.role}
-                    </span>
-                    {user.site && (
-                      <span className="text-on-surface-variant truncate">
-                        • {user.site}
-                      </span>
-                    )}
-                  </div>
-                </div>
-              </div>
-            </div>
-
             {/* Navigation Links */}
-            <div className="flex-1 px-3 py-2 space-y-1.5 overflow-y-auto font-mono text-xs">
+            <div className="flex-1 overflow-y-auto p-4 space-y-1 font-mono text-xs">
               <button
                 onClick={() => handleNavClick('/')}
                 className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left hover:bg-surface-container/60 text-on-surface transition-colors press-tactile"
               >
-                <span className="material-symbols-outlined text-primary text-[20px]">table_rows</span>
+                <span className="material-symbols-outlined text-primary text-[20px]">dashboard</span>
                 <div>
-                  <span className="font-bold block">{isStaff ? 'IT Workbench' : 'My Support Requests'}</span>
-                  <span className="text-[10px] text-on-surface-variant font-sans">Queue & ticket management</span>
+                  <span className="font-bold block">Support Dockets</span>
+                  <span className="text-[10px] text-on-surface-variant font-sans">Active queue & status tracking</span>
                 </div>
               </button>
+
+              {isStaff && (
+                <button
+                  onClick={() => handleNavClick('/dispatch')}
+                  className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left hover:bg-surface-container/60 text-on-surface transition-colors press-tactile"
+                >
+                  <span className="material-symbols-outlined text-secondary text-[20px]">tune</span>
+                  <div>
+                    <span className="font-bold block">Dispatch Center</span>
+                    <span className="text-[10px] text-on-surface-variant font-sans">Queue triage & SLA control</span>
+                  </div>
+                </button>
+              )}
 
               {isManagerOrAdmin && (
                 <button
@@ -352,6 +375,23 @@ export const Header: React.FC = () => {
                   </div>
                 </button>
               )}
+
+              {/* Install Desktop & Mobile Apps Drawer Action */}
+              <div className="pt-2 border-t border-outline-variant/20 mt-2">
+                <button
+                  onClick={() => {
+                    setIsInstallModalOpen(true);
+                    setMobileMenuOpen(false);
+                  }}
+                  className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left bg-surface-container-low hover:bg-surface-container text-on-surface border border-outline-variant/30 transition-colors press-tactile"
+                >
+                  <span className="material-symbols-outlined text-primary text-[20px]">download_for_offline</span>
+                  <div>
+                    <span className="font-bold block text-on-surface">Get Desktop & Mobile Apps</span>
+                    <span className="text-[10px] text-on-surface-variant font-sans">Windows EXE, Android APK & QR code</span>
+                  </div>
+                </button>
+              </div>
             </div>
 
             {/* Drawer Footer Sign Out */}
@@ -370,6 +410,12 @@ export const Header: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* In-App App Installation Hub Modal */}
+      <ClientInstallModal
+        isOpen={isInstallModalOpen}
+        onClose={() => setIsInstallModalOpen(false)}
+      />
     </>
   );
 };

@@ -1,13 +1,13 @@
 from datetime import datetime
 from typing import Any, Dict, List, Optional
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import BaseModel, Field, ConfigDict, model_validator
 
 from backend.models.enums import CaseType, CaseStatus, Priority
 from backend.schemas.auth import UserResponse
 
 
 class CaseCreate(BaseModel):
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(extra="ignore")
 
     type: CaseType = Field(CaseType.INCIDENT, description="Case type: Incident or Service Request")
     title: str = Field(..., min_length=3, max_length=200, description="Short summary of issue or request")
@@ -15,6 +15,16 @@ class CaseCreate(BaseModel):
     priority: Optional[Priority] = Field(Priority.P3, description="Initial priority (defaults to P3)")
     site: Optional[str] = Field(None, max_length=100, description="User's site or office location")
     service_id: Optional[str] = Field(None, max_length=100, description="Associated IT service catalog ID")
+
+    @model_validator(mode="before")
+    @classmethod
+    def normalize_fields(cls, data: Any) -> Any:
+        if isinstance(data, dict):
+            if "case_type" in data and "type" not in data:
+                data["type"] = data["case_type"]
+            if "category" in data and "service_id" not in data:
+                data["service_id"] = data["category"]
+        return data
 
 
 class CaseUpdate(BaseModel):

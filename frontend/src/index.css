@@ -113,10 +113,38 @@
   color: #c7c7b9 !important;
 }
 
+.dark .text-primary {
+  color: #c1cc97 !important;
+}
+
+.dark .text-secondary {
+  color: #fe8760 !important;
+}
+
+.dark .text-tertiary {
+  color: #f0bf5c !important;
+}
+
+.dark .border-outline-variant\/20,
 .dark .border-outline-variant\/30,
 .dark .border-outline-variant\/40,
 .dark .border-outline-variant\/50 {
   border-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+.dark .border-primary\/20,
+.dark .border-primary\/30,
+.dark .border-primary\/40 {
+  border-color: rgba(193, 204, 151, 0.35) !important;
+}
+
+.dark .bg-primary\/10 {
+  background-color: rgba(193, 204, 151, 0.12) !important;
+}
+
+.dark .bg-primary\/15,
+.dark .bg-primary\/20 {
+  background-color: rgba(193, 204, 151, 0.22) !important;
 }
 
 .dark .liquid-glass {

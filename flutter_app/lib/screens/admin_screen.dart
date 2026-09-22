@@ -99,9 +99,9 @@ class AdminScreen extends StatelessWidget {
           const SizedBox(height: 16),
 
           // System Architecture Overview
-          Card(
+          const Card(
             color: AssistIQTheme.surfaceContainerLow,
-            child: const Padding(
+            child: Padding(
               padding: EdgeInsets.all(16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

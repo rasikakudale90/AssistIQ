@@ -87,7 +87,9 @@ class CaseProvider extends ChangeNotifier {
     final res = await ApiClient.post('/cases', body: {
       'title': title,
       'description': description,
+      'type': caseType,
       'case_type': caseType,
+      'service_id': category,
       'category': category,
       'priority': priority,
       'site': site,

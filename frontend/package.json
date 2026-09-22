@@ -10,7 +10,8 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "desktop": "electron .",
-    "dist:win": "tsc && vite build && electron-builder --win --dir"
+    "dist:win": "tsc && vite build && electron-builder --win --dir",
+    "dist:installer": "tsc && vite build && electron-builder --win nsis"
   },
   "build": {
     "appId": "com.assistiq.helpdesk",
@@ -23,7 +24,17 @@
       "electron/**/*"
     ],
     "win": {
-      "target": "dir"
+      "icon": "build/icon.ico",
+      "target": [
+        "nsis"
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "AssistIQ Helpdesk"
     }
   },
   "dependencies": {

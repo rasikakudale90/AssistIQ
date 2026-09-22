@@ -8,6 +8,7 @@ function createWindow() {
     minWidth: 1024,
     minHeight: 700,
     title: 'AssistIQ — AI-Assisted IT Helpdesk Console',
+    icon: path.join(__dirname, '../public/icon.png'),
     backgroundColor: '#131315',
     autoHideMenuBar: true,
     webPreferences: {
@@ -16,11 +17,15 @@ function createWindow() {
     },
   });
 
-  // Load the live Vite dev server url or production build
-  const devUrl = 'http://localhost:5173';
-  mainWindow.loadURL(devUrl).catch(() => {
+  // Load the live Vite dev server url in development or local file in production
+  if (app.isPackaged) {
     mainWindow.loadFile(path.join(__dirname, '../dist/index.html'));
-  });
+  } else {
+    const devUrl = 'http://localhost:5173';
+    mainWindow.loadURL(devUrl).catch(() => {
+      mainWindow.loadFile(path.join(__dirname, '../dist/index.html'));
+    });
+  }
 }
 
 app.whenReady().then(() => {

@@ -1,6 +1,14 @@
 import axios from 'axios';
 
-const API_BASE = '/api/v1';
+const isDesktopOrFile =
+  typeof window !== 'undefined' &&
+  (window.location.protocol === 'file:' ||
+    window.navigator.userAgent.includes('Electron') ||
+    window.location.hostname === '');
+
+const API_BASE = isDesktopOrFile
+  ? ((import.meta as any).env?.VITE_API_URL || 'http://127.0.0.1:8000/api/v1')
+  : '/api/v1';
 
 export const apiClient = axios.create({
   baseURL: API_BASE,

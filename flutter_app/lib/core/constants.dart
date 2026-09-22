@@ -1,9 +1,24 @@
 class AppConstants {
-  // Use http://10.0.2.2:8000 for Android Emulator, http://localhost:8000 for Web/Desktop/iOS
-  static const String apiBaseUrl = String.fromEnvironment(
-    'API_BASE_URL',
-    defaultValue: 'http://192.168.0.197:8000/api/v1',
-  );
+  static String _overrideBaseUrl = '';
+
+  static String get apiBaseUrl {
+    if (_overrideBaseUrl.isNotEmpty) return _overrideBaseUrl;
+    return const String.fromEnvironment(
+      'API_BASE_URL',
+      defaultValue: 'http://10.122.120.196:8000/api/v1',
+    );
+  }
+
+  static void setBaseUrl(String url) {
+    var clean = url.trim();
+    if (clean.endsWith('/')) {
+      clean = clean.substring(0, clean.length - 1);
+    }
+    if (!clean.endsWith('/api/v1')) {
+      clean = '$clean/api/v1';
+    }
+    _overrideBaseUrl = clean;
+  }
 
   static const String demoPassword = 'Password123!@#';
 

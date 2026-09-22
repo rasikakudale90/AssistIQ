@@ -8,9 +8,11 @@ from backend.core.config import settings
 connect_args = {}
 if settings.DATABASE_URL.startswith("sqlite"):
     connect_args = {"check_same_thread": False}
-# Format DATABASE_URL for psycopg v3 if plain postgresql:// is provided
+# Format DATABASE_URL for psycopg v3 if plain postgresql:// or postgres:// is provided
 db_url = settings.DATABASE_URL
-if db_url.startswith("postgresql://"):
+if db_url.startswith("postgres://"):
+    db_url = db_url.replace("postgres://", "postgresql+psycopg://", 1)
+elif db_url.startswith("postgresql://"):
     db_url = db_url.replace("postgresql://", "postgresql+psycopg://", 1)
 
 engine = create_engine(

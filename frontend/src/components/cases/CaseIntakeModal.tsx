@@ -115,14 +115,14 @@ export const CaseIntakeModal: React.FC<CaseIntakeModalProps> = ({ isOpen, onClos
 
             <div>
               <label className="block font-mono text-xs font-semibold text-on-surface-variant uppercase mb-1.5 tracking-wider">
-                Detailed Statement / Symptoms
+                Description
               </label>
               <textarea
                 required
                 rows={4}
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                placeholder="Describe exact symptoms, error codes, affected hardware, and immediate impact..."
+                placeholder="Describe the issue, symptoms, affected equipment, or service request details..."
                 className="w-full px-3.5 py-2.5 bg-surface-container-lowest/80 border border-outline-variant/40 rounded-lg text-sm text-on-surface input-liquid focus:outline-none"
               />
             </div>
@@ -189,6 +189,58 @@ export const CaseIntakeModal: React.FC<CaseIntakeModalProps> = ({ isOpen, onClos
                 />
               </div>
             </div>
+
+            {/* Severity Guidance Card */}
+            {(() => {
+              const guide = {
+                P1: {
+                  label: 'P1 — Critical Severity',
+                  sla: '15m First Response • 4h 24/7 Resolution SLA',
+                  desc: 'Immediate critical operational stoppage or severe hazard. Core production equipment completely offline.',
+                  badgeClass: 'bg-error text-on-error',
+                  borderClass: 'border-error/40 bg-error-container/15 text-on-surface',
+                },
+                P2: {
+                  label: 'P2 — High Severity',
+                  sla: '1h First Response • 8h 24/7 Resolution SLA',
+                  desc: 'Major system impairment with severe performance loss and limited or complex workarounds.',
+                  badgeClass: 'bg-secondary text-on-secondary',
+                  borderClass: 'border-secondary/40 bg-secondary-container/15 text-on-surface',
+                },
+                P3: {
+                  label: 'P3 — Medium Severity (Default)',
+                  sla: '4h First Response • 72h 24/7 Resolution SLA',
+                  desc: 'Standard operational issue or routine malfunction where functional workarounds exist.',
+                  badgeClass: 'bg-primary text-on-primary',
+                  borderClass: 'border-primary/40 bg-primary-container/15 text-on-surface',
+                },
+                P4: {
+                  label: 'P4 — Low Severity',
+                  sla: '24h First Response • 120h 24/7 Resolution SLA',
+                  desc: 'Minor cosmetic issue, general procedural inquiry, or non-blocking standard service request.',
+                  badgeClass: 'bg-tertiary text-on-tertiary',
+                  borderClass: 'border-tertiary/40 bg-tertiary-container/15 text-on-surface',
+                },
+              }[priority];
+
+              return (
+                <div className={`p-3 rounded-lg border text-xs flex items-start gap-2.5 transition-all ${guide.borderClass}`}>
+                  <span className="material-symbols-outlined text-[18px] text-primary shrink-0 mt-0.5">info</span>
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2">
+                      <span className={`px-2 py-0.5 rounded font-mono text-[10px] font-bold ${guide.badgeClass}`}>
+                        {priority}
+                      </span>
+                      <span className="font-headline font-bold text-xs">{guide.label}</span>
+                      <span className="text-[11px] font-mono text-primary font-semibold">({guide.sla})</span>
+                    </div>
+                    <p className="text-[11px] text-on-surface-variant leading-relaxed">
+                      {guide.desc}
+                    </p>
+                  </div>
+                </div>
+              );
+            })()}
 
             <div className="flex justify-end gap-2.5 pt-4 border-t border-outline-variant/30">
               <button

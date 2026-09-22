@@ -110,11 +110,27 @@
   * Configured local Wi-Fi API gateway (`http://192.168.0.197:8000/api/v1`).
   * Automated compilation and streaming installation directly onto connected Android physical device (`BE4DOBD6LBEEBMLJ`).
 
+### Phase 11.1: Docket Intake Engine, Severity Descriptions & Non-Overflow Polish
+* **"Submit & AI Triage" Full-Stack Pipeline Fix**:
+  * Resolved backend Pydantic schema rejection by adding `@model_validator(mode="before")` in [`backend/schemas/case.py`](file:///e:/AssistIQ/backend/schemas/case.py) to dynamically normalize `case_type`/`type` and `category`/`service_id` aliases with `extra="ignore"`.
+  * Updated Flutter client payload in [`CaseProvider.createCase`](file:///e:/AssistIQ/flutter_app/lib/providers/case_provider.dart) to cleanly dispatch standard schema keys.
+  * Added validation & full try/catch error surfacing in [`CaseIntakeSheet`](file:///e:/AssistIQ/flutter_app/lib/screens/case_intake_sheet.dart) ensuring minimum field lengths (title ≥ 3 chars, description ≥ 5 chars) and displaying error banners on network or server exceptions.
+* **Rich Severity Descriptions & 24/7 SLA Target Guidelines**:
+  * Added real-time dynamic severity guideline cards on both Flutter ([`CaseIntakeSheet`](file:///e:/AssistIQ/flutter_app/lib/screens/case_intake_sheet.dart)) and React Web ([`CaseIntakeModal`](file:///e:/AssistIQ/frontend/src/components/cases/CaseIntakeModal.tsx)).
+  * Detailed breakdown with color-coded badges:
+    * **P1 — Critical**: Immediate operational stoppage / severe hazard. (15m Response • 4h Resolve SLA)
+    * **P2 — High**: Major component impairment with limited workaround. (1h Response • 8h Resolve SLA)
+    * **P3 — Medium**: Standard operational issue with viable workaround. (4h Response • 72h Resolve SLA)
+    * **P4 — Low**: Minor cosmetic anomaly or standard service request. (24h Response • 120h Resolve SLA)
+* **Comprehensive Layout Overflow & Keyboard Inset Fixes**:
+  * Eliminated hardcoded height constraints from bottom sheets, wrapping modal views in `SafeArea` + dynamic `EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom)` for keyboard entry without pixel clipping.
+  * Constrained top-header user email blocks with ellipsis to prevent horizontal AppBar overflow on narrow displays.
+
 ---
 
 ## 🧪 Test Suite Status
 * **Backend**: **50 tests passed (100% pass rate)** (`pytest backend/tests`).
-* **Frontend Web**: TypeScript compilation passed with `0` errors; Vite production build passes in ~4.6s.
+* **Frontend Web**: TypeScript compilation passed with `0` errors; Vite production build passes cleanly (`dist/assets/`).
 * **Flutter Mobile**: `flutter analyze` completed with `0` errors and `0` warnings.
 * **Physical Device**: Streamed install confirmed successful on device `BE4DOBD6LBEEBMLJ` (Android 15).
 
@@ -124,4 +140,5 @@
 1. User Acceptance Testing & workflow refinements on physical mobile & web clients.
 2. Production deployment orchestration (Docker Compose & cloud deployment pipeline).
 3. Additional automated end-to-end integration tests for WebSocket real-time live push updates.
+
 
