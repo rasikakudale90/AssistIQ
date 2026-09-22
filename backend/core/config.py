@@ -75,20 +75,20 @@ class Settings(BaseSettings):
         if not self.JWT_SECRET_KEY or len(self.JWT_SECRET_KEY) < 16:
             missing_vars.append("JWT_SECRET_KEY (must be at least 16 characters)")
 
-        # In production/staging, enforce strict credentials
+        # In production/staging, enforce critical keys and warn on optional provider keys
         if self.ENVIRONMENT in ["staging", "production"]:
             if not self.GEMINI_API_KEY:
-                missing_vars.append("GEMINI_API_KEY")
-            if not self.GOOGLE_OAUTH_CLIENT_ID:
-                missing_vars.append("GOOGLE_OAUTH_CLIENT_ID")
-            if not self.GOOGLE_OAUTH_CLIENT_SECRET:
-                missing_vars.append("GOOGLE_OAUTH_CLIENT_SECRET")
+                # If Gemini key is missing, warn or log instead of hard crashing
+                print("⚠️ [Config Warning] GEMINI_API_KEY is not set. AI provider will use fallback mode.")
+
+            if not self.GOOGLE_OAUTH_CLIENT_ID or not self.GOOGLE_OAUTH_CLIENT_SECRET:
+                print("⚠️ [Config Warning] Google OAuth credentials not configured. Password auth will be active.")
+
             if not self.BREVO_API_KEY:
-                missing_vars.append("BREVO_API_KEY")
-            if not self.SUPABASE_URL:
-                missing_vars.append("SUPABASE_URL")
-            if not self.SUPABASE_SERVICE_ROLE_KEY:
-                missing_vars.append("SUPABASE_SERVICE_ROLE_KEY")
+                print("⚠️ [Config Warning] Brevo API key not configured. Auto-verified password signup will be active.")
+
+            if not self.SUPABASE_URL or not self.SUPABASE_SERVICE_ROLE_KEY:
+                print("⚠️ [Config Warning] Supabase storage keys not configured. Local storage fallback will be active.")
 
         if missing_vars:
             error_message = (
