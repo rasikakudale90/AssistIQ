@@ -6,9 +6,13 @@ const isDesktopOrFile =
     window.navigator.userAgent.includes('Electron') ||
     window.location.hostname === '');
 
-const API_BASE = isDesktopOrFile
-  ? ((import.meta as any).env?.VITE_API_URL || 'http://127.0.0.1:8000/api/v1')
-  : '/api/v1';
+const envApiUrl = (import.meta as any).env?.VITE_API_URL;
+
+const API_BASE = envApiUrl
+  ? envApiUrl
+  : isDesktopOrFile
+    ? 'http://127.0.0.1:8000/api/v1'
+    : '/api/v1';
 
 export const apiClient = axios.create({
   baseURL: API_BASE,
