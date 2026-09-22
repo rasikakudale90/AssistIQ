@@ -56,7 +56,7 @@ from backend.services.sla_service import SLAService
 
 def seed_demo_data(db: Session) -> None:
     print("🌱 [AssistIQ Seeder] Creating tables if not existing...")
-    Base.metadata.create_all(bind=engine)
+    Base.metadata.create_all(bind=db.get_bind())
     print("🌱 [AssistIQ Seeder] Starting database seeding...")
 
     # Default password hash for all demo users: Password123!@#

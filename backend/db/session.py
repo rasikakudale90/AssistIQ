@@ -8,11 +8,19 @@ from backend.core.config import settings
 connect_args = {}
 if settings.DATABASE_URL.startswith("sqlite"):
     connect_args = {"check_same_thread": False}
+else:
+    # Automatically add sslmode=require and pooler support for remote PostgreSQL (Supabase / Render)
+    if "sslmode=" not in settings.DATABASE_URL:
+        connect_args["sslmode"] = "require"
+    if "pooler.supabase.com" in settings.DATABASE_URL or ":6543" in settings.DATABASE_URL:
+        connect_args["prepare_threshold"] = None
+    connect_args["connect_timeout"] = 5
+
 # Format DATABASE_URL for psycopg v3 if plain postgresql:// or postgres:// is provided
 db_url = settings.DATABASE_URL
 if db_url.startswith("postgres://"):
     db_url = db_url.replace("postgres://", "postgresql+psycopg://", 1)
-elif db_url.startswith("postgresql://"):
+elif db_url.startswith("postgresql://") and not db_url.startswith("postgresql+psycopg://"):
     db_url = db_url.replace("postgresql://", "postgresql+psycopg://", 1)
 
 engine = create_engine(
