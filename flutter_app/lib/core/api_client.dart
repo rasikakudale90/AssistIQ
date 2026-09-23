@@ -57,7 +57,7 @@ class ApiClient {
     }
     final response = await http
         .get(uri, headers: await _headers())
-        .timeout(const Duration(seconds: 4));
+        .timeout(const Duration(seconds: 15));
     return _processResponse(response);
   }
 
@@ -69,7 +69,7 @@ class ApiClient {
           headers: await _headers(),
           body: body != null ? jsonEncode(body) : null,
         )
-        .timeout(const Duration(seconds: 6));
+        .timeout(const Duration(seconds: 15));
     return _processResponse(response);
   }
 
@@ -81,7 +81,7 @@ class ApiClient {
           headers: await _headers(),
           body: body != null ? jsonEncode(body) : null,
         )
-        .timeout(const Duration(seconds: 4));
+        .timeout(const Duration(seconds: 15));
     return _processResponse(response);
   }
 
@@ -96,11 +96,19 @@ class ApiClient {
       } catch (_) {
         errorBody = response.body;
       }
-      throw Exception(
-        errorBody is Map && errorBody.containsKey('message')
-            ? errorBody['message']
-            : 'HTTP Error ${response.statusCode}: $errorBody',
-      );
+      String errorMsg = 'HTTP Error ${response.statusCode}';
+      if (errorBody is Map) {
+        if (errorBody.containsKey('message') && errorBody['message'] != null) {
+          errorMsg = errorBody['message'].toString();
+        } else if (errorBody.containsKey('detail') && errorBody['detail'] != null) {
+          errorMsg = errorBody['detail'].toString();
+        } else {
+          errorMsg = errorBody.toString();
+        }
+      } else if (errorBody is String && errorBody.isNotEmpty) {
+        errorMsg = errorBody;
+      }
+      throw Exception(errorMsg);
     }
   }
 }

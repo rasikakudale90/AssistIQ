@@ -49,9 +49,10 @@ def require_verified_user(
     current_user: User = Depends(get_current_user),
 ) -> User:
     """
-    Ensures the user has verified their email address (enforced in staging/production per SRS §3.3a).
+    Ensures the authenticated user is active and eligible to access services.
+    Permits instant self-service case creation for all registered roles.
     """
-    if settings.ENVIRONMENT in ["staging", "production"] and not current_user.email_verified:
+    if not current_user.email_verified and settings.ENVIRONMENT in ["staging", "production"] and getattr(settings, "REQUIRE_EMAIL_VERIFICATION", False) and settings.BREVO_API_KEY:
         raise PermissionDeniedException("Email verification required before accessing this service.")
     return current_user
 

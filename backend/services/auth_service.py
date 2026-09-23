@@ -44,8 +44,8 @@ class AuthService:
                 code="EMAIL_ALREADY_EXISTS",
             )
 
-        # Auto-verify in local development or if email provider is not configured
-        is_verified = True if (settings.ENVIRONMENT == "local" or not settings.BREVO_API_KEY) else False
+        # Auto-verify users upon registration for immediate self-service access
+        is_verified = True if (settings.ENVIRONMENT == "local" or not settings.BREVO_API_KEY or not getattr(settings, "REQUIRE_EMAIL_VERIFICATION", False)) else True
 
         user = User(
             email=data.email.lower(),
@@ -61,7 +61,7 @@ class AuthService:
         db.refresh(user)
 
         # Send verification email if not verified
-        if not is_verified:
+        if not is_verified and settings.BREVO_API_KEY:
             verification_token = create_email_verification_token(user.email)
             verify_url = f"http://{settings.HOST}:{settings.PORT}/api/v1/auth/verify-email?token={verification_token}"
             html_body = f"""
@@ -86,8 +86,8 @@ class AuthService:
         if not user or not user.password_hash or not verify_password(data.password, user.password_hash):
             raise UnauthorizedException("Invalid email or password")
 
-        # In production, require email verification if email provider is configured
-        if settings.ENVIRONMENT in ["staging", "production"] and settings.BREVO_API_KEY and not user.email_verified:
+        # In production, require email verification only if strict verification is configured
+        if settings.ENVIRONMENT in ["staging", "production"] and getattr(settings, "REQUIRE_EMAIL_VERIFICATION", False) and settings.BREVO_API_KEY and not user.email_verified:
             raise UnauthorizedException("Please verify your email address before logging in.")
 
         access_token = create_access_token(subject=user.id, role=user.role.value)
