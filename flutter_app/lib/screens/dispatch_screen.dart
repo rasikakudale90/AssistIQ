@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../core/theme.dart';
 import '../core/api_client.dart';
@@ -82,66 +83,96 @@ class _DispatchScreenState extends State<DispatchScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Wrap(
-            alignment: WrapAlignment.spaceBetween,
-            crossAxisAlignment: WrapCrossAlignment.center,
-            spacing: 8,
-            runSpacing: 8,
-            children: [
-              const Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(Icons.notifications_active, color: AssistIQTheme.primary),
-                  SizedBox(width: 8),
-                  Text(
-                    'DISPATCH & ESCALATION ALERTS',
-                    style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, letterSpacing: 0.8),
-                  ),
-                ],
-              ),
-              ElevatedButton.icon(
-                onPressed: _isSweeping ? null : _triggerSweep,
-                icon: const Icon(Icons.bolt, size: 16),
-                label: Text(_isSweeping ? 'RUNNING...' : 'TRIGGER SWEEP'),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AssistIQTheme.primary,
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+    return AmbientBackground(
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Wrap(
+              alignment: WrapAlignment.spaceBetween,
+              crossAxisAlignment: WrapCrossAlignment.center,
+              spacing: 8,
+              runSpacing: 8,
+              children: [
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(6),
+                      decoration: BoxDecoration(
+                        color: AssistIQTheme.primaryContainer.withValues(alpha: 0.15),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: const Icon(Icons.notifications_active, color: AssistIQTheme.primary, size: 20),
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      'DISPATCH & ESCALATION ALERTS',
+                      style: GoogleFonts.outfit(fontSize: 13, fontWeight: FontWeight.bold, letterSpacing: 0.6, color: AssistIQTheme.onSurface),
+                    ),
+                  ],
                 ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 12),
+                ElevatedButton.icon(
+                  onPressed: _isSweeping ? null : _triggerSweep,
+                  icon: const Icon(Icons.bolt, size: 16),
+                  label: Text(_isSweeping ? 'RUNNING...' : 'TRIGGER SWEEP'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AssistIQTheme.primary,
+                    foregroundColor: Colors.white,
+                    elevation: 2,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                    textStyle: GoogleFonts.inter(fontWeight: FontWeight.bold, fontSize: 11, letterSpacing: 0.5),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 14),
 
-          if (_isLoading)
-            const Center(child: Padding(padding: EdgeInsets.all(32), child: CircularProgressIndicator()))
-          else if (_events.isEmpty)
-            Container(
-              padding: const EdgeInsets.all(24),
-              decoration: BoxDecoration(color: AssistIQTheme.surfaceContainerLow, borderRadius: BorderRadius.circular(6)),
-              child: const Center(
-                child: Text('No active escalations. All SLA timers healthy!', style: TextStyle(fontSize: 12, fontStyle: FontStyle.italic)),
-              ),
-            )
-          else
-            ListView.separated(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: _events.length,
-              separatorBuilder: (_, __) => const SizedBox(height: 8),
-              itemBuilder: (context, index) {
-                final ev = _events[index];
-                final isAck = ev.acknowledgedAt != null;
+            if (_isLoading)
+              const Center(child: Padding(padding: EdgeInsets.all(32), child: CircularProgressIndicator()))
+            else if (_events.isEmpty)
+              Container(
+                padding: const EdgeInsets.all(28),
+                decoration: AssistIQTheme.liquidGlassDecoration(radius: 16),
+                child: Center(
+                  child: Column(
+                    children: [
+                      const Icon(Icons.verified, size: 36, color: AssistIQTheme.primary),
+                      const SizedBox(height: 10),
+                      Text(
+                        'All SLA Timers Healthy',
+                        style: GoogleFonts.outfit(fontSize: 14, fontWeight: FontWeight.bold, color: AssistIQTheme.onSurface),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        'No pending dispatch escalations or breached thresholds.',
+                        style: GoogleFonts.inter(fontSize: 12, color: AssistIQTheme.onSurfaceVariant),
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            else
+              ListView.separated(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: _events.length,
+                separatorBuilder: (_, __) => const SizedBox(height: 10),
+                itemBuilder: (context, index) {
+                  final ev = _events[index];
+                  final isAck = ev.acknowledgedAt != null;
 
-                return Card(
-                  color: isAck ? Colors.white : const Color(0xFFFFECEB),
-                  child: Padding(
-                    padding: const EdgeInsets.all(12),
+                  return Container(
+                    decoration: AssistIQTheme.liquidGlassDecoration(
+                      radius: 14,
+                      baseColor: isAck ? Colors.white.withValues(alpha: 0.88) : const Color(0xFFFFF0EE).withValues(alpha: 0.95),
+                      border: Border.all(
+                        color: isAck ? const Color(0x3377786C) : AssistIQTheme.error.withValues(alpha: 0.4),
+                      ),
+                    ),
+                    padding: const EdgeInsets.all(14),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -152,14 +183,14 @@ class _DispatchScreenState extends State<DispatchScreen> {
                               child: Row(
                                 children: [
                                   Container(
-                                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                                    padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2.5),
                                     decoration: BoxDecoration(
                                       color: isAck ? AssistIQTheme.primary : AssistIQTheme.error,
-                                      borderRadius: BorderRadius.circular(4),
+                                      borderRadius: BorderRadius.circular(6),
                                     ),
                                     child: Text(
                                       ev.triggerType,
-                                      style: const TextStyle(color: Colors.white, fontSize: 9, fontWeight: FontWeight.bold),
+                                      style: GoogleFonts.jetBrainsMono(color: Colors.white, fontSize: 9, fontWeight: FontWeight.bold),
                                     ),
                                   ),
                                   const SizedBox(width: 8),
@@ -168,7 +199,7 @@ class _DispatchScreenState extends State<DispatchScreen> {
                                       '#${ev.caseRef ?? ''} — ${ev.caseTitle ?? ''}',
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
-                                      style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                                      style: GoogleFonts.inter(fontSize: 13, fontWeight: FontWeight.bold, color: AssistIQTheme.onSurface),
                                     ),
                                   ),
                                 ],
@@ -178,26 +209,37 @@ class _DispatchScreenState extends State<DispatchScreen> {
                             if (!isAck)
                               TextButton(
                                 onPressed: () => _acknowledge(ev.id),
-                                child: const Text('Acknowledge', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
+                                style: TextButton.styleFrom(
+                                  backgroundColor: AssistIQTheme.secondary.withValues(alpha: 0.12),
+                                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+                                ),
+                                child: Text('Acknowledge', style: GoogleFonts.inter(fontSize: 11, fontWeight: FontWeight.bold, color: AssistIQTheme.secondary)),
                               )
                             else
-                              const Text('✓ Acknowledged', style: TextStyle(fontSize: 10, color: AssistIQTheme.primary, fontWeight: FontWeight.bold)),
+                              Text('✓ Acknowledged', style: GoogleFonts.inter(fontSize: 11, color: AssistIQTheme.primary, fontWeight: FontWeight.bold)),
                           ],
                         ),
-                        const SizedBox(height: 6),
-                        Text(ev.reason, style: const TextStyle(fontSize: 12)),
-                        const SizedBox(height: 6),
-                        Text(
-                          'Target Role: ${ev.notifiedRole} | Created: ${ev.createdAt.length >= 16 ? ev.createdAt.substring(0, 16) : ev.createdAt}',
-                          style: const TextStyle(fontSize: 10, color: AssistIQTheme.onSurfaceVariant),
+                        const SizedBox(height: 8),
+                        Text(ev.reason, style: GoogleFonts.inter(fontSize: 12, height: 1.4, color: AssistIQTheme.onSurface)),
+                        const SizedBox(height: 8),
+                        Row(
+                          children: [
+                            const Icon(Icons.group_outlined, size: 14, color: AssistIQTheme.onSurfaceVariant),
+                            const SizedBox(width: 4),
+                            Text(
+                              'Target: ${ev.notifiedRole} • ${ev.createdAt.length >= 16 ? ev.createdAt.substring(0, 16) : ev.createdAt}',
+                              style: GoogleFonts.jetBrainsMono(fontSize: 10, color: AssistIQTheme.onSurfaceVariant),
+                            ),
+                          ],
                         ),
                       ],
                     ),
-                  ),
-                );
-              },
-            ),
-        ],
+                  );
+                },
+              ),
+          ],
+        ),
       ),
     );
   }

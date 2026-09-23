@@ -40,8 +40,9 @@ export const ClientInstallModal: React.FC<ClientInstallModalProps> = ({ isOpen, 
   const [info, setInfo] = useState<DownloadInfo | null>(null);
   const [pwaPrompt, setPwaPrompt] = useState<any>(null);
 
-  const fallbackCloudApk = "https://zmohmutvxwafpwvjdazf.supabase.co/storage/v1/object/public/assistiq-downloads/AssistIQ-Mobile.apk";
-  const fallbackCloudExe = "https://github.com/rasikakudale90/AssistIQ/releases/download/v1.0.0/AssistIQ-Helpdesk-Setup.exe";
+  const fallbackCloudApk = "https://zmohmutvxwafpwvjdazf.supabase.co/storage/v1/object/public/assistiq-downloads/AssistIQ-Mobile.apk?v=1.0.1";
+  const fallbackCloudExe = "https://github.com/rasikakudale90/AssistIQ/releases/download/v1.0.0/AssistIQ-Helpdesk-Setup.exe?v=1.0.1";
+  const githubReleaseApk = "https://github.com/rasikakudale90/AssistIQ/releases/download/v1.0.0/AssistIQ-Mobile.apk";
 
   useEffect(() => {
     if (isOpen) {
@@ -52,7 +53,7 @@ export const ClientInstallModal: React.FC<ClientInstallModalProps> = ({ isOpen, 
           // Fallback defaults
           const isLocal = !window.location.hostname || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
           setInfo({
-            version: '1.0.0',
+            version: '1.0.1',
             local_ip: window.location.hostname || '127.0.0.1',
             desktop: {
               available: true,
@@ -104,16 +105,16 @@ export const ClientInstallModal: React.FC<ClientInstallModalProps> = ({ isOpen, 
   };
 
   const getAndroidDownloadUrl = () => {
-    if (info?.android.qr_url) return info.android.qr_url;
-    if (info?.android.direct_url) return info.android.direct_url;
     const isLocal = !window.location.hostname || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
     if (isLocal && info?.android.lan_download_url) return info.android.lan_download_url;
+    if (info?.android.direct_url) return info.android.direct_url;
+    if (info?.android.qr_url) return info.android.qr_url;
     return fallbackCloudApk;
   };
 
-  const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(
+  const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encodeURIComponent(
     getAndroidDownloadUrl()
-  )}&margin=10&color=111827&bgcolor=ffffff`;
+  )}&margin=8&color=1e1b17&bgcolor=ffffff`;
 
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto bg-inverse-surface/60 backdrop-blur-md flex items-center justify-center p-4 animate-fadeIn">
@@ -280,14 +281,25 @@ export const ClientInstallModal: React.FC<ClientInstallModalProps> = ({ isOpen, 
                   </div>
                 </div>
 
-                <a
-                  href={info?.android.download_url || info?.android.direct_url || fallbackCloudApk}
-                  download="AssistIQ-Mobile.apk"
-                  className="w-full px-4 py-2.5 bg-secondary hover:bg-secondary/90 text-on-secondary font-mono text-xs font-bold rounded-xl shadow-md press-tactile transition-all flex items-center justify-center gap-2"
-                >
-                  <span className="material-symbols-outlined text-[18px]">download</span>
-                  <span>Download .APK</span>
-                </a>
+                <div className="flex flex-col gap-2">
+                  <a
+                    href={info?.android.download_url || info?.android.direct_url || fallbackCloudApk}
+                    download="AssistIQ-Mobile.apk"
+                    className="w-full px-4 py-2.5 bg-secondary hover:bg-secondary/90 text-on-secondary font-mono text-xs font-bold rounded-xl shadow-md press-tactile transition-all flex items-center justify-center gap-2"
+                  >
+                    <span className="material-symbols-outlined text-[18px]">download</span>
+                    <span>Download .APK (Cloud Direct)</span>
+                  </a>
+                  <a
+                    href={githubReleaseApk}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="w-full px-3 py-1.5 bg-surface-container hover:bg-surface-container-high text-on-surface font-mono text-[11px] font-semibold rounded-lg border border-outline-variant/40 transition-all flex items-center justify-center gap-1.5 text-center"
+                  >
+                    <span className="material-symbols-outlined text-[14px]">public</span>
+                    <span>GitHub Release Mirror</span>
+                  </a>
+                </div>
               </div>
             </div>
 

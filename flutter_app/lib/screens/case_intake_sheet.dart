@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../core/theme.dart';
 import '../models/case_model.dart';
@@ -111,27 +112,47 @@ class _CaseIntakeSheetState extends State<CaseIntakeSheet> {
       child: Padding(
         padding: EdgeInsets.only(bottom: bottomInset),
         child: Container(
-          decoration: const BoxDecoration(
-            color: AssistIQTheme.surface,
-            borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+          decoration: AssistIQTheme.liquidGlassElevatedDecoration(
+            radius: 24,
+            baseColor: Colors.white.withValues(alpha: 0.96),
           ),
           child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               mainAxisSize: MainAxisSize.min,
               children: [
+                // Drag handle bar
+                Center(
+                  child: Container(
+                    width: 36,
+                    height: 4,
+                    decoration: BoxDecoration(
+                      color: AssistIQTheme.outlineVariant.withValues(alpha: 0.6),
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 12),
+
                 // Header Bar
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Row(
+                    Row(
                       children: [
-                        Icon(Icons.psychology, color: AssistIQTheme.primary, size: 20),
-                        SizedBox(width: 8),
+                        Container(
+                          padding: const EdgeInsets.all(6),
+                          decoration: BoxDecoration(
+                            color: AssistIQTheme.primaryContainer.withValues(alpha: 0.15),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: const Icon(Icons.psychology, color: AssistIQTheme.primary, size: 20),
+                        ),
+                        const SizedBox(width: 10),
                         Text(
                           'NEW DOCKET // AI TRIAGE INTAKE',
-                          style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 0.8),
+                          style: GoogleFonts.outfit(fontSize: 13, fontWeight: FontWeight.bold, letterSpacing: 0.6, color: AssistIQTheme.onSurface),
                         ),
                       ],
                     ),
@@ -141,7 +162,7 @@ class _CaseIntakeSheetState extends State<CaseIntakeSheet> {
                     ),
                   ],
                 ),
-                const Divider(),
+                const Divider(color: Color(0x2277786C)),
                 const SizedBox(height: 8),
 
                 if (_errorMessage != null) ...[

@@ -12,8 +12,8 @@ BACKEND_DIR = Path(__file__).resolve().parent.parent
 PROJECT_ROOT = BACKEND_DIR.parent
 
 # Cloud Public CDN/Storage URLs
-CLOUD_ANDROID_APK_URL = "https://zmohmutvxwafpwvjdazf.supabase.co/storage/v1/object/public/assistiq-downloads/AssistIQ-Mobile.apk"
-CLOUD_DESKTOP_EXE_URL = "https://github.com/rasikakudale90/AssistIQ/releases/download/v1.0.0/AssistIQ-Helpdesk-Setup.exe"
+CLOUD_ANDROID_APK_URL = "https://zmohmutvxwafpwvjdazf.supabase.co/storage/v1/object/public/assistiq-downloads/AssistIQ-Mobile.apk?v=1.0.1"
+CLOUD_DESKTOP_EXE_URL = "https://github.com/rasikakudale90/AssistIQ/releases/download/v1.0.0/AssistIQ-Helpdesk-Setup.exe?v=1.0.1"
 
 
 def get_local_ip() -> str:

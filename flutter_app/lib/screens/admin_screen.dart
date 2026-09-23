@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../core/theme.dart';
 import '../providers/auth_provider.dart';
@@ -19,25 +20,38 @@ class AdminScreen extends StatelessWidget {
       {'email': 'admin@assistiq.local', 'role': 'Administrator', 'team': 'System Administration'},
     ];
 
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          // User Profile Card
-          if (user != null)
-            Card(
-              color: Colors.white,
-              child: Padding(
+    return AmbientBackground(
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            // User Profile Card
+            if (user != null)
+              Container(
+                decoration: AssistIQTheme.liquidGlassElevatedDecoration(radius: 16),
                 padding: const EdgeInsets.all(16),
                 child: Row(
                   children: [
-                    CircleAvatar(
-                      radius: 24,
-                      backgroundColor: AssistIQTheme.primary,
-                      child: Text(
-                        user.email[0].toUpperCase(),
-                        style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+                    Container(
+                      width: 48,
+                      height: 48,
+                      decoration: BoxDecoration(
+                        color: AssistIQTheme.primary,
+                        borderRadius: BorderRadius.circular(14),
+                        boxShadow: [
+                          BoxShadow(
+                            color: AssistIQTheme.primary.withValues(alpha: 0.3),
+                            blurRadius: 10,
+                            offset: const Offset(0, 4),
+                          ),
+                        ],
+                      ),
+                      child: Center(
+                        child: Text(
+                          user.email[0].toUpperCase(),
+                          style: GoogleFonts.outfit(color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold),
+                        ),
                       ),
                     ),
                     const SizedBox(width: 14),
@@ -45,27 +59,44 @@ class AdminScreen extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(user.email, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
+                          Text(user.email, style: GoogleFonts.outfit(fontSize: 15, fontWeight: FontWeight.bold, color: AssistIQTheme.onSurface)),
                           const SizedBox(height: 2),
-                          Text('Role: ${user.role} | Active & Verified', style: const TextStyle(fontSize: 11, color: AssistIQTheme.primary, fontWeight: FontWeight.bold)),
+                          Row(
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                                decoration: BoxDecoration(
+                                  color: AssistIQTheme.primaryContainer.withValues(alpha: 0.15),
+                                  borderRadius: BorderRadius.circular(4),
+                                ),
+                                child: Text(user.role, style: GoogleFonts.jetBrainsMono(fontSize: 10, color: AssistIQTheme.primary, fontWeight: FontWeight.bold)),
+                              ),
+                              const SizedBox(width: 6),
+                              Text('• Active & Verified', style: GoogleFonts.inter(fontSize: 11, color: AssistIQTheme.primary, fontWeight: FontWeight.w600)),
+                            ],
+                          ),
                         ],
                       ),
                     ),
                   ],
                 ),
               ),
-            ),
-          const SizedBox(height: 16),
+            const SizedBox(height: 16),
 
-          // User Directory & RBAC Table
-          Card(
-            color: Colors.white,
-            child: Padding(
+            // User Directory & RBAC Table
+            Container(
+              decoration: AssistIQTheme.liquidGlassDecoration(radius: 16),
               padding: const EdgeInsets.all(16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('RBAC USER DIRECTORY', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 0.8)),
+                  Row(
+                    children: [
+                      const Icon(Icons.manage_accounts, size: 18, color: AssistIQTheme.primary),
+                      const SizedBox(width: 8),
+                      Text('RBAC USER DIRECTORY', style: GoogleFonts.outfit(fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 0.6, color: AssistIQTheme.onSurface)),
+                    ],
+                  ),
                   const SizedBox(height: 12),
                   ...users.map(
                     (u) => Padding(
@@ -77,16 +108,19 @@ class AdminScreen extends StatelessWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(u['email']!, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
-                                Text(u['team']!, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 10, color: AssistIQTheme.onSurfaceVariant)),
+                                Text(u['email']!, overflow: TextOverflow.ellipsis, style: GoogleFonts.inter(fontSize: 12, fontWeight: FontWeight.bold, color: AssistIQTheme.onSurface)),
+                                Text(u['team']!, overflow: TextOverflow.ellipsis, style: GoogleFonts.inter(fontSize: 10, color: AssistIQTheme.onSurfaceVariant)),
                               ],
                             ),
                           ),
                           const SizedBox(width: 8),
                           Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                            decoration: BoxDecoration(color: AssistIQTheme.surfaceContainerHigh, borderRadius: BorderRadius.circular(4)),
-                            child: Text(u['role']!, style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: AssistIQTheme.primary)),
+                            padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
+                            decoration: BoxDecoration(
+                              color: AssistIQTheme.surfaceContainerHigh,
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            child: Text(u['role']!, style: GoogleFonts.jetBrainsMono(fontSize: 10, fontWeight: FontWeight.bold, color: AssistIQTheme.primary)),
                           ),
                         ],
                       ),
@@ -95,28 +129,35 @@ class AdminScreen extends StatelessWidget {
                 ],
               ),
             ),
-          ),
-          const SizedBox(height: 16),
+            const SizedBox(height: 16),
 
-          // System Architecture Overview
-          const Card(
-            color: AssistIQTheme.surfaceContainerLow,
-            child: Padding(
-              padding: EdgeInsets.all(16),
+            // System Architecture Overview
+            Container(
+              decoration: AssistIQTheme.liquidGlassDecoration(
+                radius: 16,
+                baseColor: AssistIQTheme.surfaceContainerLow.withValues(alpha: 0.9),
+              ),
+              padding: const EdgeInsets.all(16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('SYSTEM SPECIFICATION', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: AssistIQTheme.primary)),
-                  SizedBox(height: 6),
-                  Text('• Backend: FastAPI (Python 3.14) with in-process APScheduler Sweep', style: TextStyle(fontSize: 11)),
-                  Text('• Database: PostgreSQL 16 + pg_trgm similarity search', style: TextStyle(fontSize: 11)),
-                  Text('• AI Provider: Google Gemini 2.5 Flash', style: TextStyle(fontSize: 11)),
-                  Text('• Client: Flutter Multi-Target (Android, iOS, Web, Windows, macOS, Linux)', style: TextStyle(fontSize: 11)),
+                  Row(
+                    children: [
+                      const Icon(Icons.memory, size: 18, color: AssistIQTheme.primary),
+                      const SizedBox(width: 8),
+                      Text('SYSTEM SPECIFICATION', style: GoogleFonts.outfit(fontSize: 11, fontWeight: FontWeight.bold, color: AssistIQTheme.primary, letterSpacing: 0.5)),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  Text('• Backend: FastAPI (Python 3.14) with APScheduler Background Sweep', style: GoogleFonts.inter(fontSize: 11, color: AssistIQTheme.onSurface, height: 1.4)),
+                  Text('• Database: PostgreSQL 16 + pg_trgm similarity search (Supabase)', style: GoogleFonts.inter(fontSize: 11, color: AssistIQTheme.onSurface, height: 1.4)),
+                  Text('• AI Provider: Google Gemini 2.5 Flash Triage Engine', style: GoogleFonts.inter(fontSize: 11, color: AssistIQTheme.onSurface, height: 1.4)),
+                  Text('• Client: Flutter Multi-Target (Android, iOS, Web, Windows)', style: GoogleFonts.inter(fontSize: 11, color: AssistIQTheme.onSurface, height: 1.4)),
                 ],
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

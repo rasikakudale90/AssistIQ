@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../core/theme.dart';
 import '../models/message_model.dart';
@@ -62,9 +63,15 @@ class _MessageThreadViewState extends State<MessageThreadView> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              'COMMUNICATION THREAD (${_messages.length})',
-              style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 0.8),
+            Row(
+              children: [
+                const Icon(Icons.forum_outlined, size: 16, color: AssistIQTheme.primary),
+                const SizedBox(width: 6),
+                Text(
+                  'COMMUNICATION THREAD (${_messages.length})',
+                  style: GoogleFonts.outfit(fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 0.6, color: AssistIQTheme.onSurface),
+                ),
+              ],
             ),
             IconButton(
               icon: const Icon(Icons.refresh, size: 18),
@@ -80,16 +87,13 @@ class _MessageThreadViewState extends State<MessageThreadView> {
           const Center(child: Padding(padding: EdgeInsets.all(20), child: CircularProgressIndicator()))
         else if (_messages.isEmpty)
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(18),
             width: double.infinity,
-            decoration: BoxDecoration(
-              color: AssistIQTheme.surfaceContainerLow,
-              borderRadius: BorderRadius.circular(6),
-            ),
-            child: const Center(
+            decoration: AssistIQTheme.liquidGlassDecoration(radius: 12),
+            child: Center(
               child: Text(
                 'No messages recorded yet.',
-                style: TextStyle(fontSize: 12, fontStyle: FontStyle.italic, color: AssistIQTheme.onSurfaceVariant),
+                style: GoogleFonts.inter(fontSize: 12, fontStyle: FontStyle.italic, color: AssistIQTheme.onSurfaceVariant),
               ),
             ),
           )
@@ -105,12 +109,12 @@ class _MessageThreadViewState extends State<MessageThreadView> {
 
               return Container(
                 padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: isInternal ? const Color(0xFFFFF9E6) : Colors.white,
+                decoration: AssistIQTheme.liquidGlassDecoration(
+                  radius: 12,
+                  baseColor: isInternal ? const Color(0xFFFFF8E7).withValues(alpha: 0.95) : Colors.white.withValues(alpha: 0.9),
                   border: Border.all(
-                    color: isInternal ? const Color(0xFFE6C663) : const Color(0x33C7C7B9),
+                    color: isInternal ? AssistIQTheme.tertiaryContainer.withValues(alpha: 0.4) : const Color(0x3377786C),
                   ),
-                  borderRadius: BorderRadius.circular(6),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -122,46 +126,46 @@ class _MessageThreadViewState extends State<MessageThreadView> {
                           children: [
                             Text(
                               m.senderEmail ?? 'Operator',
-                              style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
+                              style: GoogleFonts.inter(fontSize: 11, fontWeight: FontWeight.bold, color: AssistIQTheme.onSurface),
                             ),
                             const SizedBox(width: 6),
                             if (isInternal)
                               Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
+                                padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
                                 decoration: BoxDecoration(
                                   color: AssistIQTheme.tertiaryContainer,
-                                  borderRadius: BorderRadius.circular(3),
+                                  borderRadius: BorderRadius.circular(4),
                                 ),
-                                child: const Text(
+                                child: Text(
                                   'INTERNAL',
-                                  style: TextStyle(fontSize: 9, color: Colors.white, fontWeight: FontWeight.bold),
+                                  style: GoogleFonts.jetBrainsMono(fontSize: 8, color: Colors.white, fontWeight: FontWeight.bold),
                                 ),
                               ),
                             if (m.aiGenerated)
                               Container(
                                 margin: const EdgeInsets.only(left: 4),
-                                padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
+                                padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
                                 decoration: BoxDecoration(
                                   color: AssistIQTheme.primaryContainer,
-                                  borderRadius: BorderRadius.circular(3),
+                                  borderRadius: BorderRadius.circular(4),
                                 ),
-                                child: const Text(
+                                child: Text(
                                   'AI DRAFT',
-                                  style: TextStyle(fontSize: 9, color: Colors.white, fontWeight: FontWeight.bold),
+                                  style: GoogleFonts.jetBrainsMono(fontSize: 8, color: Colors.white, fontWeight: FontWeight.bold),
                                 ),
                               ),
                           ],
                         ),
                         Text(
                           m.createdAt.length >= 16 ? m.createdAt.substring(11, 16) : '',
-                          style: const TextStyle(fontSize: 10, color: AssistIQTheme.onSurfaceVariant),
+                          style: GoogleFonts.jetBrainsMono(fontSize: 10, color: AssistIQTheme.onSurfaceVariant),
                         ),
                       ],
                     ),
                     const SizedBox(height: 6),
                     Text(
                       m.body,
-                      style: const TextStyle(fontSize: 13, height: 1.4),
+                      style: GoogleFonts.inter(fontSize: 12, height: 1.4, color: AssistIQTheme.onSurface),
                     ),
                   ],
                 ),
@@ -181,7 +185,7 @@ class _MessageThreadViewState extends State<MessageThreadView> {
                 onChanged: (val) => setState(() => _visibility = val!),
                 activeColor: AssistIQTheme.primary,
               ),
-              const Text('Public Note', style: TextStyle(fontSize: 12)),
+              Text('Public Note', style: GoogleFonts.inter(fontSize: 12, color: AssistIQTheme.onSurface)),
               const SizedBox(width: 12),
               Radio<String>(
                 value: 'internal_only',
@@ -189,7 +193,7 @@ class _MessageThreadViewState extends State<MessageThreadView> {
                 onChanged: (val) => setState(() => _visibility = val!),
                 activeColor: AssistIQTheme.tertiary,
               ),
-              const Text('Internal Only', style: TextStyle(fontSize: 12, color: AssistIQTheme.tertiary)),
+              Text('Internal Only', style: GoogleFonts.inter(fontSize: 12, color: AssistIQTheme.tertiary, fontWeight: FontWeight.bold)),
             ],
           ),
 
@@ -200,18 +204,27 @@ class _MessageThreadViewState extends State<MessageThreadView> {
               child: TextField(
                 controller: _msgController,
                 maxLines: 3,
-                style: const TextStyle(fontSize: 13),
+                style: GoogleFonts.inter(fontSize: 13, color: AssistIQTheme.onSurface),
                 decoration: InputDecoration(
                   hintText: _visibility == 'internal_only'
                       ? 'Add internal investigation notes...'
                       : 'Write a response to the requester...',
+                  hintStyle: GoogleFonts.inter(fontSize: 12, color: AssistIQTheme.outline),
                   filled: true,
-                  fillColor: _visibility == 'internal_only' ? const Color(0xFFFFFBEF) : Colors.white,
+                  fillColor: _visibility == 'internal_only' ? const Color(0xFFFFFBEF) : Colors.white.withValues(alpha: 0.9),
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(6),
-                    borderSide: const BorderSide(color: AssistIQTheme.outlineVariant),
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: const BorderSide(color: Color(0x3377786C)),
                   ),
-                  contentPadding: const EdgeInsets.all(10),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: const BorderSide(color: Color(0x3377786C)),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: const BorderSide(color: AssistIQTheme.primary, width: 1.5),
+                  ),
+                  contentPadding: const EdgeInsets.all(12),
                 ),
               ),
             ),
@@ -221,8 +234,9 @@ class _MessageThreadViewState extends State<MessageThreadView> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: AssistIQTheme.primary,
                 foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+                elevation: 2,
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
               ),
               child: _isSending
                   ? const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white))
