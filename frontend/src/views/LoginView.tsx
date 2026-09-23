@@ -76,7 +76,7 @@ export const LoginView: React.FC = () => {
       <div className="mt-6 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="liquid-glass-elevated py-7 px-7 shadow-2xl rounded-2xl border border-outline-variant/40 space-y-5">
           {/* Sign In vs Register Tabs */}
-          <div className="grid grid-cols-2 gap-1 bg-surface-container-lowest/80 backdrop-blur-md p-1 rounded-xl border border-outline-variant/30 text-xs font-mono shadow-xs">
+          <div className="grid grid-cols-2 gap-1 bg-surface-container-low p-1 rounded-xl border border-outline-variant/30 text-xs font-mono shadow-xs">
             <button
               type="button"
               onClick={() => {
@@ -86,7 +86,7 @@ export const LoginView: React.FC = () => {
               className={`py-2 rounded-lg font-bold transition-all press-tactile ${
                 authMode === 'signin'
                   ? 'bg-primary text-on-primary shadow-sm'
-                  : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container/40'
+                  : 'text-outline hover:text-on-surface hover:bg-surface-container/50'
               }`}
             >
               SIGN IN
@@ -101,7 +101,7 @@ export const LoginView: React.FC = () => {
               className={`py-2 rounded-lg font-bold transition-all press-tactile ${
                 authMode === 'register'
                   ? 'bg-primary text-on-primary shadow-sm'
-                  : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container/40'
+                  : 'text-outline hover:text-on-surface hover:bg-surface-container/50'
               }`}
             >
               REGISTER ACCOUNT
