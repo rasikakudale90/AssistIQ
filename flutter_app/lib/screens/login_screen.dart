@@ -298,7 +298,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     fontSize: 11,
                                     fontWeight: FontWeight.bold,
                                     letterSpacing: 0.5,
-                                    color: _authTab == 0 ? Colors.white : AssistIQTheme.onSurfaceVariant,
+                                    color: _authTab == 0 ? AssistIQTheme.onPrimary : AssistIQTheme.onSurfaceVariant,
                                   ),
                                 ),
                               ),
@@ -335,7 +335,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     fontSize: 11,
                                     fontWeight: FontWeight.bold,
                                     letterSpacing: 0.5,
-                                    color: _authTab == 1 ? Colors.white : AssistIQTheme.onSurfaceVariant,
+                                    color: _authTab == 1 ? AssistIQTheme.onPrimary : AssistIQTheme.onSurfaceVariant,
                                   ),
                                 ),
                               ),
@@ -482,12 +482,13 @@ class _LoginScreenState extends State<LoginScreen> {
                         Expanded(
                           child: DropdownButtonFormField<String>(
                             value: _regRole,
+                            dropdownColor: AssistIQTheme.surfaceContainerLowest,
                             decoration: AssistIQTheme.liquidInputDecoration(
                               labelText: 'INITIAL ROLE',
                             ),
                             style: GoogleFonts.inter(fontSize: 12, color: AssistIQTheme.onSurface),
                             items: ['Requester', 'Operator', 'TeamLead', 'Manager', 'Administrator']
-                                .map((r) => DropdownMenuItem(value: r, child: Text(r, style: GoogleFonts.inter(fontSize: 12))))
+                                .map((r) => DropdownMenuItem(value: r, child: Text(r, style: GoogleFonts.inter(fontSize: 12, color: AssistIQTheme.onSurface))))
                                 .toList(),
                             onChanged: (val) => setState(() => _regRole = val!),
                           ),

@@ -208,7 +208,7 @@ export const LoginView: React.FC = () => {
                   <select
                     value={regRole}
                     onChange={(e) => setRegRole(e.target.value as UserRole)}
-                    className="w-full px-3 py-2 bg-surface-container-lowest/80 border border-outline-variant/40 rounded-xl text-xs text-on-surface font-mono input-liquid focus:outline-none"
+                    className="w-full px-3 py-2 bg-surface-container-lowest border border-outline-variant/40 rounded-xl text-xs text-on-surface font-mono input-liquid focus:outline-none"
                   >
                     <option value="Requester">Requester</option>
                     <option value="Operator">Operator</option>
@@ -227,7 +227,7 @@ export const LoginView: React.FC = () => {
                     value={regSite}
                     onChange={(e) => setRegSite(e.target.value)}
                     placeholder="e.g. Main Facility"
-                    className="w-full px-3 py-2 bg-surface-container-lowest/80 border border-outline-variant/40 rounded-xl text-xs text-on-surface font-mono input-liquid focus:outline-none"
+                    className="w-full px-3 py-2 bg-surface-container-lowest border border-outline-variant/40 rounded-xl text-xs text-on-surface font-mono input-liquid focus:outline-none"
                   />
                 </div>
               </div>

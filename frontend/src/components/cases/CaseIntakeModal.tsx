@@ -135,7 +135,7 @@ export const CaseIntakeModal: React.FC<CaseIntakeModalProps> = ({ isOpen, onClos
                 <select
                   value={caseType}
                   onChange={(e) => setCaseType(e.target.value as CaseType)}
-                  className="w-full px-2.5 py-2 bg-surface-container-lowest/80 border border-outline-variant/40 rounded-lg text-xs text-on-surface input-liquid focus:outline-none"
+                  className="w-full px-2.5 py-2 bg-surface-container-lowest border border-outline-variant/40 rounded-lg text-xs text-on-surface input-liquid focus:outline-none"
                 >
                   <option value="Incident">Incident</option>
                   <option value="ServiceRequest">Service Request</option>
@@ -149,7 +149,7 @@ export const CaseIntakeModal: React.FC<CaseIntakeModalProps> = ({ isOpen, onClos
                 <select
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
-                  className="w-full px-2.5 py-2 bg-surface-container-lowest/80 border border-outline-variant/40 rounded-lg text-xs text-on-surface input-liquid focus:outline-none"
+                  className="w-full px-2.5 py-2 bg-surface-container-lowest border border-outline-variant/40 rounded-lg text-xs text-on-surface input-liquid focus:outline-none"
                 >
                   <option value="Hardware">Hardware</option>
                   <option value="Network">Network</option>
@@ -167,7 +167,7 @@ export const CaseIntakeModal: React.FC<CaseIntakeModalProps> = ({ isOpen, onClos
                 <select
                   value={priority}
                   onChange={(e) => setPriority(e.target.value as CasePriority)}
-                  className="w-full px-2.5 py-2 bg-surface-container-lowest/80 border border-outline-variant/40 rounded-lg text-xs text-on-surface font-mono input-liquid focus:outline-none"
+                  className="w-full px-2.5 py-2 bg-surface-container-lowest border border-outline-variant/40 rounded-lg text-xs text-on-surface font-mono input-liquid focus:outline-none"
                 >
                   <option value="P1">P1 - Critical (15m resp / 4h sla)</option>
                   <option value="P2">P2 - High (1h resp / 8h sla)</option>
@@ -185,7 +185,7 @@ export const CaseIntakeModal: React.FC<CaseIntakeModalProps> = ({ isOpen, onClos
                   value={site}
                   onChange={(e) => setSite(e.target.value)}
                   placeholder="e.g. Substation 4"
-                  className="w-full px-2.5 py-2 bg-surface-container-lowest/80 border border-outline-variant/40 rounded-lg text-xs text-on-surface input-liquid focus:outline-none"
+                  className="w-full px-2.5 py-2 bg-surface-container-lowest border border-outline-variant/40 rounded-lg text-xs text-on-surface input-liquid focus:outline-none"
                 />
               </div>
             </div>

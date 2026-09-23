@@ -114,7 +114,7 @@ class _CaseIntakeSheetState extends State<CaseIntakeSheet> {
         child: Container(
           decoration: AssistIQTheme.liquidGlassElevatedDecoration(
             radius: 24,
-            baseColor: Colors.white.withValues(alpha: 0.96),
+            baseColor: AssistIQTheme.surfaceContainerLowest,
           ),
           child: SingleChildScrollView(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
@@ -192,46 +192,71 @@ class _CaseIntakeSheetState extends State<CaseIntakeSheet> {
                 if (_createdCase == null) ...[
                   TextField(
                     controller: _titleCtrl,
-                    decoration: const InputDecoration(
+                    style: GoogleFonts.inter(fontSize: 13, color: AssistIQTheme.onSurface),
+                    decoration: InputDecoration(
                       labelText: 'DOCKET TITLE / SUMMARY',
-                      labelStyle: TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
+                      labelStyle: GoogleFonts.inter(fontSize: 11, fontWeight: FontWeight.bold, color: AssistIQTheme.onSurfaceVariant),
                       filled: true,
-                      fillColor: Colors.white,
-                      border: OutlineInputBorder(),
-                      contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                      fillColor: AssistIQTheme.surfaceContainerLowest,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: const BorderSide(color: Color(0x3377786C)),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: const BorderSide(color: Color(0x3377786C)),
+                      ),
+                      contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
                     ),
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 12),
 
                   TextField(
                     controller: _descCtrl,
                     maxLines: 3,
-                    decoration: const InputDecoration(
+                    style: GoogleFonts.inter(fontSize: 13, color: AssistIQTheme.onSurface),
+                    decoration: InputDecoration(
                       labelText: 'DESCRIPTION',
-                      labelStyle: TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
+                      labelStyle: GoogleFonts.inter(fontSize: 11, fontWeight: FontWeight.bold, color: AssistIQTheme.onSurfaceVariant),
                       filled: true,
-                      fillColor: Colors.white,
-                      border: OutlineInputBorder(),
-                      contentPadding: EdgeInsets.all(10),
+                      fillColor: AssistIQTheme.surfaceContainerLowest,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: const BorderSide(color: Color(0x3377786C)),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: const BorderSide(color: Color(0x3377786C)),
+                      ),
+                      contentPadding: const EdgeInsets.all(12),
                     ),
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 12),
 
                   Row(
                     children: [
                       Expanded(
                         child: DropdownButtonFormField<String>(
                           value: _caseType,
-                          decoration: const InputDecoration(
+                          dropdownColor: AssistIQTheme.surfaceContainerLowest,
+                          style: GoogleFonts.inter(fontSize: 12, color: AssistIQTheme.onSurface),
+                          decoration: InputDecoration(
                             labelText: 'TYPE',
-                            labelStyle: TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
-                            border: OutlineInputBorder(),
+                            labelStyle: GoogleFonts.inter(fontSize: 11, fontWeight: FontWeight.bold, color: AssistIQTheme.onSurfaceVariant),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: const BorderSide(color: Color(0x3377786C)),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: const BorderSide(color: Color(0x3377786C)),
+                            ),
                             filled: true,
-                            fillColor: Colors.white,
-                            contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                            fillColor: AssistIQTheme.surfaceContainerLowest,
+                            contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                           ),
                           items: ['Incident', 'ServiceRequest']
-                              .map((t) => DropdownMenuItem(value: t, child: Text(t == 'ServiceRequest' ? 'Service Req' : t, style: const TextStyle(fontSize: 12))))
+                              .map((t) => DropdownMenuItem(value: t, child: Text(t == 'ServiceRequest' ? 'Service Req' : t, style: GoogleFonts.inter(fontSize: 12, color: AssistIQTheme.onSurface))))
                               .toList(),
                           onChanged: (val) => setState(() => _caseType = val!),
                         ),
@@ -240,34 +265,52 @@ class _CaseIntakeSheetState extends State<CaseIntakeSheet> {
                       Expanded(
                         child: DropdownButtonFormField<String>(
                           value: _category,
-                          decoration: const InputDecoration(
+                          dropdownColor: AssistIQTheme.surfaceContainerLowest,
+                          style: GoogleFonts.inter(fontSize: 12, color: AssistIQTheme.onSurface),
+                          decoration: InputDecoration(
                             labelText: 'CATEGORY',
-                            labelStyle: TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
-                            border: OutlineInputBorder(),
+                            labelStyle: GoogleFonts.inter(fontSize: 11, fontWeight: FontWeight.bold, color: AssistIQTheme.onSurfaceVariant),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: const BorderSide(color: Color(0x3377786C)),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: const BorderSide(color: Color(0x3377786C)),
+                            ),
                             filled: true,
-                            fillColor: Colors.white,
-                            contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                            fillColor: AssistIQTheme.surfaceContainerLowest,
+                            contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                           ),
                           items: ['Hardware', 'Network', 'Software', 'Industrial Control', 'Security', 'Access Control']
-                              .map((c) => DropdownMenuItem(value: c, child: Text(c, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 12))))
+                              .map((c) => DropdownMenuItem(value: c, child: Text(c, maxLines: 1, overflow: TextOverflow.ellipsis, style: GoogleFonts.inter(fontSize: 12, color: AssistIQTheme.onSurface))))
                               .toList(),
                           onChanged: (val) => setState(() => _category = val!),
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 12),
 
                   // Severity Selector with full SLA descriptions
                   DropdownButtonFormField<String>(
                     value: _priority,
-                    decoration: const InputDecoration(
+                    dropdownColor: AssistIQTheme.surfaceContainerLowest,
+                    style: GoogleFonts.inter(fontSize: 12, color: AssistIQTheme.onSurface),
+                    decoration: InputDecoration(
                       labelText: 'INITIAL SEVERITY / SLA TARGET',
-                      labelStyle: TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
-                      border: OutlineInputBorder(),
+                      labelStyle: GoogleFonts.inter(fontSize: 11, fontWeight: FontWeight.bold, color: AssistIQTheme.onSurfaceVariant),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: const BorderSide(color: Color(0x3377786C)),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: const BorderSide(color: Color(0x3377786C)),
+                      ),
                       filled: true,
-                      fillColor: Colors.white,
-                      contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                      fillColor: AssistIQTheme.surfaceContainerLowest,
+                      contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                     ),
                     items: _severityInfo.entries.map((entry) {
                       return DropdownMenuItem<String>(
@@ -282,13 +325,13 @@ class _CaseIntakeSheetState extends State<CaseIntakeSheet> {
                               ),
                               child: Text(
                                 entry.key,
-                                style: const TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold),
+                                style: GoogleFonts.jetBrainsMono(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold),
                               ),
                             ),
                             const SizedBox(width: 8),
                             Text(
                               '${entry.value['label']} (${entry.value['sla']})',
-                              style: const TextStyle(fontSize: 12),
+                              style: GoogleFonts.inter(fontSize: 12, color: AssistIQTheme.onSurface),
                             ),
                           ],
                         ),
@@ -296,7 +339,7 @@ class _CaseIntakeSheetState extends State<CaseIntakeSheet> {
                     }).toList(),
                     onChanged: (val) => setState(() => _priority = val!),
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 10),
 
                   // Severity Description Card
                   Container(

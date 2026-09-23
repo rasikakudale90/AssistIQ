@@ -3,6 +3,14 @@
 @tailwind utilities;
 
 @layer base {
+  html {
+    color-scheme: light;
+  }
+
+  html.dark {
+    color-scheme: dark;
+  }
+
   html, body {
     width: 100%;
     min-height: 100%;
@@ -185,6 +193,29 @@
   border-color: #c1cc97 !important;
   border-top-color: #c1cc97 !important;
   box-shadow: 0 0 0 3px rgba(193, 204, 151, 0.2), inset 0 1px 1px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Global Select & Option Dropdown Dark/Light Rules */
+select {
+  background-color: #ffffff;
+  color: #1e1b17;
+}
+
+option {
+  background-color: #ffffff;
+  color: #1e1b17;
+}
+
+.dark select,
+.dark select option,
+.dark option {
+  background-color: #23201c !important;
+  color: #f7f0e7 !important;
+}
+
+.dark select:focus {
+  background-color: #292622 !important;
+  color: #f7f0e7 !important;
 }
 
 /* ==========================================================================
