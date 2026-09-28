@@ -6,17 +6,19 @@ import 'constants.dart';
 class ApiClient {
   static Future<String> getBaseUrl() async {
     final prefs = await SharedPreferences.getInstance();
-    final saved = prefs.getString('custom_api_base_url');
+    final saved = prefs.getString('custom_api_base_url_v2');
     if (saved != null && saved.isNotEmpty) {
       AppConstants.setBaseUrl(saved);
       return saved;
     }
+    // Remove stale legacy LAN cache if any
+    await prefs.remove('custom_api_base_url');
     return AppConstants.apiBaseUrl;
   }
 
   static Future<void> setBaseUrl(String url) async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('custom_api_base_url', url);
+    await prefs.setString('custom_api_base_url_v2', url);
     AppConstants.setBaseUrl(url);
   }
 

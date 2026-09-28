@@ -40,8 +40,8 @@ export const ClientInstallModal: React.FC<ClientInstallModalProps> = ({ isOpen, 
   const [info, setInfo] = useState<DownloadInfo | null>(null);
   const [pwaPrompt, setPwaPrompt] = useState<any>(null);
 
-  const fallbackCloudApk = "https://zmohmutvxwafpwvjdazf.supabase.co/storage/v1/object/public/assistiq-downloads/AssistIQ-Mobile.apk?v=1.0.1";
-  const fallbackCloudExe = "https://github.com/rasikakudale90/AssistIQ/releases/download/v1.0.0/AssistIQ-Helpdesk-Setup.exe?v=1.0.1";
+  const fallbackCloudApk = "https://zmohmutvxwafpwvjdazf.supabase.co/storage/v1/object/public/assistiq-downloads/AssistIQ-Mobile.apk?v=1.0.2";
+  const fallbackCloudExe = "https://github.com/rasikakudale90/AssistIQ/releases/download/v1.0.0/AssistIQ-Helpdesk-Setup.exe?v=1.0.2";
   const githubReleaseApk = "https://github.com/rasikakudale90/AssistIQ/releases/download/v1.0.0/AssistIQ-Mobile.apk";
 
   useEffect(() => {
