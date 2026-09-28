@@ -17,12 +17,23 @@ class AITriageResultModel {
 
   factory AITriageResultModel.fromJson(Map<String, dynamic> json) {
     return AITriageResultModel(
-      id: json['id'] as String,
-      predictedCategory: json['predicted_category'] as String? ?? 'General',
-      predictedPriority: json['predicted_priority'] as String? ?? 'P3',
-      confidenceScore: (json['confidence_score'] as num?)?.toDouble() ?? 0.8,
-      supportingFactors: (json['supporting_factors'] as List<dynamic>? ?? []).map((e) => e.toString()).toList(),
-      missingInfoQuestions: (json['missing_info_questions'] as List<dynamic>? ?? []).map((e) => e.toString()).toList(),
+      id: json['id'] as String? ?? '',
+      predictedCategory: json['suggested_category'] as String? ??
+          json['predicted_category'] as String? ??
+          'General',
+      predictedPriority: json['suggested_priority'] as String? ??
+          json['suggested_severity'] as String? ??
+          json['predicted_priority'] as String? ??
+          'P3',
+      confidenceScore: (json['confidence_score'] as num?)?.toDouble() ?? 0.85,
+      supportingFactors: (json['supporting_factors'] as List<dynamic>? ?? [])
+          .map((e) => e.toString())
+          .toList(),
+      missingInfoQuestions: (json['missing_info'] as List<dynamic>? ??
+              json['missing_info_questions'] as List<dynamic>? ??
+              [])
+          .map((e) => e.toString())
+          .toList(),
     );
   }
 }

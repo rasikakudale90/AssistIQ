@@ -39,7 +39,7 @@ class Settings(BaseSettings):
 
     # Google Gemini AI
     GEMINI_API_KEY: Optional[str] = None
-    GEMINI_MODEL: str = "gemini-2.5-flash"
+    GEMINI_MODEL: str = "gemini-3.8-flash"
 
     # Supabase Storage
     SUPABASE_URL: Optional[str] = None

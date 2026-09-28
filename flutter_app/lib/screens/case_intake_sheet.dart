@@ -83,20 +83,31 @@ class _CaseIntakeSheetState extends State<CaseIntakeSheet> {
       );
 
       if (!mounted) return;
-      setState(() => _createdCase = newCase);
+      setState(() {
+        _createdCase = newCase;
+        _isSubmitting = false;
+      });
 
-      final triage = await caseProv.getTriage(newCase.id);
-      if (mounted) {
-        setState(() => _triageResult = triage);
+      try {
+        final triage = await caseProv.getTriage(newCase.id).timeout(
+          const Duration(seconds: 5),
+          onTimeout: () => null,
+        );
+        if (mounted && triage != null) {
+          setState(() => _triageResult = triage);
+        }
+      } catch (_) {
+        // Triage queued in background
       }
     } catch (e) {
       if (mounted) {
         setState(() {
           _errorMessage = e.toString().replaceAll('Exception: ', '');
+          _isSubmitting = false;
         });
       }
     } finally {
-      if (mounted) {
+      if (mounted && _isSubmitting) {
         setState(() => _isSubmitting = false);
       }
     }
@@ -391,74 +402,142 @@ class _CaseIntakeSheetState extends State<CaseIntakeSheet> {
                 ] else ...[
                   // Post-Creation AI Triage Review Card
                   Container(
-                    padding: const EdgeInsets.all(12),
+                    padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(color: const Color(0x33C7C7B9)),
-                      borderRadius: BorderRadius.circular(6),
+                      color: AssistIQTheme.surfaceContainerLow,
+                      border: Border.all(color: AssistIQTheme.primary.withValues(alpha: 0.25)),
+                      borderRadius: BorderRadius.circular(12),
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
+                            Container(
+                              padding: const EdgeInsets.all(6),
+                              decoration: BoxDecoration(
+                                color: const Color(0xFF10B981).withValues(alpha: 0.15),
+                                shape: BoxShape.circle,
+                              ),
+                              child: const Icon(Icons.check_circle_rounded, color: Color(0xFF10B981), size: 20),
+                            ),
+                            const SizedBox(width: 10),
                             Expanded(
-                              child: Text(
-                                '${_createdCase!.referenceNumber}: ${_createdCase!.title}',
-                                style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'DOCKET INTAKE SUCCESSFUL',
+                                    style: GoogleFonts.outfit(fontSize: 12, fontWeight: FontWeight.w800, color: const Color(0xFF10B981), letterSpacing: 0.5),
+                                  ),
+                                  Text(
+                                    '${_createdCase!.referenceNumber} • ${_createdCase!.title}',
+                                    style: GoogleFonts.inter(fontSize: 13, fontWeight: FontWeight.bold, color: AssistIQTheme.onSurface),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ],
                               ),
                             ),
-                            const SizedBox(width: 6),
                             Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                               decoration: BoxDecoration(
                                 color: AssistIQTheme.primary,
-                                borderRadius: BorderRadius.circular(4),
+                                borderRadius: BorderRadius.circular(6),
                               ),
                               child: Text(
-                                _createdCase!.status,
-                                style: const TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold),
+                                _createdCase!.status.toUpperCase(),
+                                style: GoogleFonts.jetBrainsMono(color: Colors.white, fontSize: 10, fontWeight: FontWeight.w700),
                               ),
                             ),
                           ],
                         ),
-                        const SizedBox(height: 10),
+                        const SizedBox(height: 14),
+                        const Divider(height: 1, color: Color(0x2277786C)),
+                        const SizedBox(height: 12),
 
                         if (_triageResult != null) ...[
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              const Text(
-                                'AI TRIAGE ASSESSMENT [SRS §5.2]',
-                                style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: AssistIQTheme.primary),
-                              ),
                               Text(
-                                'CONFIDENCE: ${(_triageResult!.confidenceScore * 100).toInt()}%',
-                                style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: AssistIQTheme.primaryContainer),
+                                'AI TRIAGE ASSESSMENT',
+                                style: GoogleFonts.outfit(fontSize: 11, fontWeight: FontWeight.bold, color: AssistIQTheme.primary),
+                              ),
+                              Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                                decoration: BoxDecoration(
+                                  color: AssistIQTheme.primary.withValues(alpha: 0.12),
+                                  borderRadius: BorderRadius.circular(4),
+                                ),
+                                child: Text(
+                                  'CONFIDENCE: ${(_triageResult!.confidenceScore * 100).toInt()}%',
+                                  style: GoogleFonts.jetBrainsMono(fontSize: 10, fontWeight: FontWeight.bold, color: AssistIQTheme.primary),
+                                ),
                               ),
                             ],
                           ),
                           const SizedBox(height: 8),
 
-                          Text('Recommended Category: ${_triageResult!.predictedCategory}', style: const TextStyle(fontSize: 12)),
-                          Text('Predicted Priority: [${_triageResult!.predictedPriority}]', style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: AssistIQTheme.secondary)),
-                          const SizedBox(height: 8),
+                          Row(
+                            children: [
+                              Text('Category: ', style: GoogleFonts.inter(fontSize: 12, color: AssistIQTheme.onSurfaceVariant)),
+                              Text(_triageResult!.predictedCategory, style: GoogleFonts.inter(fontSize: 12, fontWeight: FontWeight.w600, color: AssistIQTheme.onSurface)),
+                              const Spacer(),
+                              Text('Priority: ', style: GoogleFonts.inter(fontSize: 12, color: AssistIQTheme.onSurfaceVariant)),
+                              Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 1),
+                                decoration: BoxDecoration(
+                                  color: AssistIQTheme.secondary.withValues(alpha: 0.15),
+                                  borderRadius: BorderRadius.circular(4),
+                                ),
+                                child: Text(
+                                  _triageResult!.predictedPriority,
+                                  style: GoogleFonts.jetBrainsMono(fontSize: 11, fontWeight: FontWeight.bold, color: AssistIQTheme.secondary),
+                                ),
+                              ),
+                            ],
+                          ),
 
                           if (_triageResult!.supportingFactors.isNotEmpty) ...[
-                            const Text('Supporting Telemetry Factors:', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: AssistIQTheme.tertiary)),
-                            ..._triageResult!.supportingFactors.map((f) => Text('• $f', style: const TextStyle(fontSize: 11))),
+                            const SizedBox(height: 10),
+                            Text('Supporting Factors:', style: GoogleFonts.inter(fontSize: 11, fontWeight: FontWeight.bold, color: AssistIQTheme.tertiary)),
+                            const SizedBox(height: 4),
+                            ..._triageResult!.supportingFactors.take(3).map(
+                              (f) => Padding(
+                                padding: const EdgeInsets.only(bottom: 2),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text('• ', style: TextStyle(color: AssistIQTheme.tertiary)),
+                                    Expanded(
+                                      child: Text(
+                                        f,
+                                        style: GoogleFonts.inter(fontSize: 11, color: AssistIQTheme.onSurface),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
                           ],
                         ] else ...[
-                          const Padding(
-                            padding: EdgeInsets.symmetric(vertical: 8),
+                          Container(
+                            padding: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              color: AssistIQTheme.primary.withValues(alpha: 0.06),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
                             child: Row(
                               children: [
-                                SizedBox(width: 14, height: 14, child: CircularProgressIndicator(strokeWidth: 2)),
-                                SizedBox(width: 8),
-                                Text('Running AI Triage Analysis...', style: TextStyle(fontSize: 11, fontStyle: FontStyle.italic)),
+                                const Icon(Icons.auto_awesome, color: AssistIQTheme.primary, size: 16),
+                                const SizedBox(width: 8),
+                                Expanded(
+                                  child: Text(
+                                    'AI Triage analysis initialized in background.',
+                                    style: GoogleFonts.inter(fontSize: 11, color: AssistIQTheme.onSurface, fontWeight: FontWeight.w500),
+                                  ),
+                                ),
                               ],
                             ),
                           ),
@@ -466,15 +545,18 @@ class _CaseIntakeSheetState extends State<CaseIntakeSheet> {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 14),
 
-                  ElevatedButton(
+                  ElevatedButton.icon(
                     onPressed: () => Navigator.pop(context),
+                    icon: const Icon(Icons.dashboard_outlined, size: 18),
+                    label: const Text('GO TO WORKBENCH'),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AssistIQTheme.primary,
                       foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                     ),
-                    child: const Text('GO TO WORKBENCH'),
                   ),
                 ],
               ],

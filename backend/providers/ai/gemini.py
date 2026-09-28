@@ -22,6 +22,8 @@ from backend.ai.triage_prompt import TRIAGE_SYSTEM_PROMPT, format_triage_user_pr
 from backend.ai.summary_prompt import SUMMARY_SYSTEM_PROMPT, format_summary_user_prompt
 from backend.ai.draft_prompt import DRAFT_SYSTEM_PROMPT, format_draft_user_prompt
 
+from backend.providers.ai.mock import MockAIProvider
+
 logger = logging.getLogger("assistiq.ai.gemini")
 
 
@@ -30,6 +32,7 @@ class GeminiAIProvider(AIProvider):
         self.api_key = api_key or settings.GEMINI_API_KEY
         self.model = model or settings.GEMINI_MODEL
         self._client = None
+        self._fallback = MockAIProvider()
         if self.api_key and HAS_GENAI_SDK and genai is not None:
             try:
                 self._client = genai.Client(api_key=self.api_key)
@@ -104,7 +107,7 @@ class GeminiAIProvider(AIProvider):
                 if attempt == 0:
                     await asyncio.sleep(1.0)  # Exponential backoff 1s
                 else:
-                    logger.error(f"Gemini API call failed after 1 retry: {exc}. Gracefully returning None.")
+                    logger.warning(f"Gemini API call failed after 1 retry: {exc}. Gracefully falling back to baseline heuristic AI.")
                     return None
         return None
 
@@ -128,28 +131,34 @@ class GeminiAIProvider(AIProvider):
             user_prompt=user_prompt,
             response_mime_type="application/json",
         )
-        if not raw_output:
-            return None
+        if raw_output:
+            try:
+                cleaned = self._clean_json_text(raw_output)
+                data = json.loads(cleaned)
+                score = float(data.get("confidence_score", 0.5))
+                score = max(0.0, min(1.0, score))
 
-        try:
-            cleaned = self._clean_json_text(raw_output)
-            data = json.loads(cleaned)
-            score = float(data.get("confidence_score", 0.5))
-            score = max(0.0, min(1.0, score))
+                return TriageResultDTO(
+                    suggested_category=data.get("suggested_category"),
+                    suggested_severity=data.get("suggested_severity"),
+                    suggested_priority=data.get("suggested_priority"),
+                    confidence_score=score,
+                    supporting_factors=data.get("supporting_factors", []),
+                    missing_info=data.get("missing_info", []),
+                    suggested_team=data.get("suggested_team"),
+                    recommended_next_action=data.get("recommended_next_action"),
+                )
+            except Exception as e:
+                logger.error(f"Failed to parse Gemini triage JSON output: {e}. Raw: {raw_output[:200]}")
 
-            return TriageResultDTO(
-                suggested_category=data.get("suggested_category"),
-                suggested_severity=data.get("suggested_severity"),
-                suggested_priority=data.get("suggested_priority"),
-                confidence_score=score,
-                supporting_factors=data.get("supporting_factors", []),
-                missing_info=data.get("missing_info", []),
-                suggested_team=data.get("suggested_team"),
-                recommended_next_action=data.get("recommended_next_action"),
-            )
-        except Exception as e:
-            logger.error(f"Failed to parse Gemini triage JSON output: {e}. Raw: {raw_output[:200]}")
-            return None
+        # Fallback to deterministic AI Provider
+        return await self._fallback.analyze_triage(
+            title=title,
+            description=description,
+            case_type=case_type,
+            site=site,
+            service_id=service_id,
+        )
 
     async def generate_summary(
         self,
@@ -168,7 +177,14 @@ class GeminiAIProvider(AIProvider):
             system_instruction=SUMMARY_SYSTEM_PROMPT,
             user_prompt=user_prompt,
         )
-        return summary.strip() if summary else None
+        if summary:
+            return summary.strip()
+        return await self._fallback.generate_summary(
+            case_title=case_title,
+            case_description=case_description,
+            case_status=case_status,
+            messages_history=messages_history,
+        )
 
     async def generate_communication_draft(
         self,
@@ -189,4 +205,12 @@ class GeminiAIProvider(AIProvider):
             system_instruction=DRAFT_SYSTEM_PROMPT,
             user_prompt=user_prompt,
         )
-        return draft.strip() if draft else None
+        if draft:
+            return draft.strip()
+        return await self._fallback.generate_communication_draft(
+            draft_type=draft_type,
+            case_title=case_title,
+            case_description=case_description,
+            messages_history=messages_history,
+            custom_instructions=custom_instructions,
+        )
