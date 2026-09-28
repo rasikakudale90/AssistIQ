@@ -39,9 +39,6 @@ class AppHeader extends StatelessWidget implements PreferredSizeWidget {
                 width: 38,
                 height: 38,
                 decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                    colors: [AssistIQTheme.primary, AssistIQTheme.primaryContainer],
-                  ),
                   borderRadius: BorderRadius.circular(10),
                   boxShadow: [
                     BoxShadow(
@@ -51,14 +48,16 @@ class AppHeader extends StatelessWidget implements PreferredSizeWidget {
                     ),
                   ],
                 ),
-                child: const Center(
-                  child: Text(
-                    'AI',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                      letterSpacing: -0.5,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Image.asset(
+                    'assets/images/app_logo.png',
+                    fit: BoxFit.cover,
+                    errorBuilder: (ctx, err, stack) => Container(
+                      color: AssistIQTheme.primary,
+                      child: const Center(
+                        child: Text('AI', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16)),
+                      ),
                     ),
                   ),
                 ),

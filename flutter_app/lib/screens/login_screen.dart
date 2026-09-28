@@ -192,12 +192,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   // Brand Header with Glowing Liquid Accent
                   Center(
                     child: Container(
-                      width: 52,
-                      height: 52,
+                      width: 60,
+                      height: 60,
                       decoration: BoxDecoration(
-                        gradient: const LinearGradient(
-                          colors: [AssistIQTheme.primary, AssistIQTheme.primaryContainer],
-                        ),
                         borderRadius: BorderRadius.circular(16),
                         boxShadow: [
                           BoxShadow(
@@ -207,10 +204,20 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ],
                       ),
-                      child: const Center(
-                        child: Text(
-                          'AI',
-                          style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold, letterSpacing: -0.5),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(16),
+                        child: Image.asset(
+                          'assets/images/app_logo.png',
+                          fit: BoxFit.cover,
+                          errorBuilder: (ctx, err, stack) => Container(
+                            color: AssistIQTheme.primary,
+                            child: const Center(
+                              child: Text(
+                                'AI',
+                                style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          ),
                         ),
                       ),
                     ),

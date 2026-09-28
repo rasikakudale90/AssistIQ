@@ -39,17 +39,17 @@ export const Header: React.FC = () => {
   return (
     <>
       <header className="fixed top-0 w-full z-50 liquid-glass border-b border-outline-variant/35 shadow-sm">
-        <div className="h-16 px-4 md:px-6 flex items-center justify-between gap-4 max-w-7xl mx-auto">
+        <div className="h-16 px-3 sm:px-4 md:px-6 flex items-center justify-between gap-2 sm:gap-4 max-w-7xl mx-auto">
           {/* Left: Hamburger Button & Brand */}
-          <div className="flex items-center gap-3 min-w-0">
+          <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0 min-w-0">
             {/* Hamburger Toggle Button */}
             <button
               type="button"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 -ml-1.5 rounded-lg hover:bg-surface-container text-on-surface-variant hover:text-on-surface flex items-center justify-center transition-all duration-200 press-tactile focus:outline-none"
+              className="p-1.5 sm:p-2 rounded-lg hover:bg-surface-container text-on-surface-variant hover:text-on-surface flex items-center justify-center transition-all duration-200 press-tactile focus:outline-none"
               aria-label="Toggle navigation menu"
             >
-              <span className="material-symbols-outlined text-[24px]">
+              <span className="material-symbols-outlined text-[22px] sm:text-[24px]">
                 {mobileMenuOpen ? 'close' : 'menu'}
               </span>
             </button>
@@ -57,19 +57,24 @@ export const Header: React.FC = () => {
             {/* Brand Identity */}
             <div
               onClick={() => navigate('/')}
-              className="flex items-center gap-2.5 cursor-pointer select-none min-w-0 group"
+              className="flex items-center gap-2 sm:gap-2.5 cursor-pointer select-none group flex-shrink-0"
             >
               <img
-                src="./favicon.png"
+                src="./icon.png"
                 alt="AssistIQ Logo"
-                className="w-8 h-8 rounded-lg shadow-sm object-cover border border-outline-variant/30 group-hover:scale-105 transition-transform duration-200"
+                className="w-8 h-8 rounded-lg shadow-sm object-cover border border-outline-variant/30 group-hover:scale-105 transition-transform duration-200 flex-shrink-0"
               />
-              <div className="flex flex-col min-w-0">
-                <span className="font-mono text-[9px] text-primary tracking-widest uppercase font-semibold">
+              <div className="flex flex-col">
+                <div className="flex items-center gap-1.5">
+                  <span className="font-headline text-sm sm:text-base font-bold text-on-surface whitespace-nowrap group-hover:text-primary transition-colors">
+                    AssistIQ
+                  </span>
+                  <span className="hidden md:inline-block font-mono text-[8px] text-primary tracking-widest uppercase font-semibold bg-primary/10 px-1.5 py-0.5 rounded">
+                    CONSOLE
+                  </span>
+                </div>
+                <span className="font-mono text-[8px] sm:text-[9px] text-primary tracking-widest uppercase font-semibold hidden xs:block">
                   MW-OS // HELPDESK
-                </span>
-                <span className="font-headline text-sm md:text-base font-bold text-on-surface truncate group-hover:text-primary transition-colors">
-                  AssistIQ Console
                 </span>
               </div>
             </div>
@@ -94,12 +99,12 @@ export const Header: React.FC = () => {
           )}
 
           {/* Right: Get Apps, Notification Bell, Theme Toggle & User Profile */}
-          <div className="flex items-center gap-2 sm:gap-2.5 flex-shrink-0">
+          <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
             {/* Get Apps Trigger (Desktop & Mobile) */}
             <button
               type="button"
               onClick={() => setIsInstallModalOpen(true)}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg liquid-glass-interactive hover:bg-surface-container/60 text-on-surface hover:text-primary transition-all duration-200 border border-outline-variant/30 press-tactile text-xs font-mono group shadow-xs"
+              className="flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1.5 rounded-lg liquid-glass-interactive hover:bg-surface-container/60 text-on-surface hover:text-primary transition-all duration-200 border border-outline-variant/30 press-tactile text-xs font-mono group shadow-xs"
               title="Download & Install Desktop / Android Apps"
             >
               <span className="material-symbols-outlined text-[18px] text-primary group-hover:scale-110 transition-transform">

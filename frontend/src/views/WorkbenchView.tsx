@@ -13,6 +13,7 @@ export const WorkbenchView: React.FC = () => {
   const [filterTab, setFilterTab] = useState<'ALL' | 'ACTIVE' | 'BREACHED' | 'UNASSIGNED'>('ALL');
   const [searchQuery, setSearchQuery] = useState('');
   const [intakeModalOpen, setIntakeModalOpen] = useState(false);
+  const [mobileTab, setMobileTab] = useState<'queue' | 'detail'>('queue');
 
   const isStaff = user && user.role !== 'Requester';
 
@@ -74,18 +75,18 @@ export const WorkbenchView: React.FC = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 md:px-6 py-6 space-y-6">
+    <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 py-4 sm:py-6 space-y-4 sm:space-y-6">
       {/* Workbench Header & Action Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 liquid-glass p-5 rounded-xl border border-outline-variant/35 shadow-sm card-3d">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 liquid-glass p-4 sm:p-5 rounded-xl border border-outline-variant/35 shadow-sm card-3d">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center text-primary shadow-xs">
+          <div className="w-10 h-10 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center text-primary shadow-xs flex-shrink-0">
             <span className="material-symbols-outlined text-[24px]">handyman</span>
           </div>
           <div>
-            <span className="font-mono text-[10px] text-primary uppercase font-bold tracking-wider block">
+            <span className="font-mono text-[9px] sm:text-[10px] text-primary uppercase font-bold tracking-wider block">
               MW-OS // IT BENCH
             </span>
-            <h1 className="font-headline text-lg font-bold text-on-surface">
+            <h1 className="font-headline text-base sm:text-lg font-bold text-on-surface">
               {isStaff ? 'Field Operations & Workshop IT Console' : 'My Support Requests'}
             </h1>
           </div>
@@ -94,7 +95,7 @@ export const WorkbenchView: React.FC = () => {
         <div className="flex items-center gap-2">
           <button
             onClick={() => setIntakeModalOpen(true)}
-            className="px-4 py-2.5 bg-primary hover:bg-primary-container text-on-primary font-mono text-xs font-bold rounded-lg shadow-sm transition-all duration-200 flex items-center gap-2 uppercase press-tactile"
+            className="w-full sm:w-auto px-4 py-2.5 bg-primary hover:bg-primary-container text-on-primary font-mono text-xs font-bold rounded-lg shadow-sm transition-all duration-200 flex items-center justify-center gap-2 uppercase press-tactile"
           >
             <span className="material-symbols-outlined text-[18px]">add_circle</span>
             <span>New Docket Intake</span>
@@ -102,16 +103,42 @@ export const WorkbenchView: React.FC = () => {
         </div>
       </div>
 
-      {/* Split-View Layout */}
+      {/* Mobile-Only Segmented Tab Switcher (< lg screens) */}
+      <div className="flex lg:hidden items-center p-1 liquid-glass rounded-xl border border-outline-variant/30 text-xs font-mono">
+        <button
+          onClick={() => setMobileTab('queue')}
+          className={`flex-1 py-2 rounded-lg font-bold transition-all press-tactile flex items-center justify-center gap-1.5 ${
+            mobileTab === 'queue'
+              ? 'bg-primary text-on-primary shadow-sm'
+              : 'text-on-surface-variant hover:text-on-surface'
+          }`}
+        >
+          <span className="material-symbols-outlined text-[16px]">list_alt</span>
+          <span>DOCKET QUEUE ({filteredCases.length})</span>
+        </button>
+        <button
+          onClick={() => setMobileTab('detail')}
+          className={`flex-1 py-2 rounded-lg font-bold transition-all press-tactile flex items-center justify-center gap-1.5 ${
+            mobileTab === 'detail'
+              ? 'bg-primary text-on-primary shadow-sm'
+              : 'text-on-surface-variant hover:text-on-surface'
+          }`}
+        >
+          <span className="material-symbols-outlined text-[16px]">info</span>
+          <span>{selectedCase ? `#${selectedCase.reference_number || 'DETAIL'}` : 'CASE DETAIL'}</span>
+        </button>
+      </div>
+
+      {/* Responsive Grid / Column Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left Column: Ticket Queue & Filters */}
-        <div className="lg:col-span-5 space-y-3">
+        <div className={`lg:col-span-5 space-y-3 ${mobileTab === 'detail' ? 'hidden lg:block' : 'block'}`}>
           {/* Filter Pills & Search */}
           <div className="space-y-2.5">
             <div className="flex items-center gap-1.5 liquid-glass p-1.5 rounded-lg border border-outline-variant/30 overflow-x-auto text-xs font-mono">
               <button
                 onClick={() => setFilterTab('ALL')}
-                className={`px-3 py-1.5 rounded-md transition-all duration-200 press-tactile ${
+                className={`px-3 py-1.5 rounded-md transition-all duration-200 press-tactile whitespace-nowrap ${
                   filterTab === 'ALL'
                     ? 'bg-primary text-on-primary font-bold shadow-xs scale-[1.02]'
                     : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60'
@@ -121,7 +148,7 @@ export const WorkbenchView: React.FC = () => {
               </button>
               <button
                 onClick={() => setFilterTab('ACTIVE')}
-                className={`px-3 py-1.5 rounded-md transition-all duration-200 press-tactile ${
+                className={`px-3 py-1.5 rounded-md transition-all duration-200 press-tactile whitespace-nowrap ${
                   filterTab === 'ACTIVE'
                     ? 'bg-primary text-on-primary font-bold shadow-xs scale-[1.02]'
                     : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60'
@@ -131,7 +158,7 @@ export const WorkbenchView: React.FC = () => {
               </button>
               <button
                 onClick={() => setFilterTab('BREACHED')}
-                className={`px-3 py-1.5 rounded-md transition-all duration-200 press-tactile ${
+                className={`px-3 py-1.5 rounded-md transition-all duration-200 press-tactile whitespace-nowrap ${
                   filterTab === 'BREACHED'
                     ? 'bg-secondary text-on-secondary font-bold shadow-xs scale-[1.02]'
                     : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60'
@@ -141,7 +168,7 @@ export const WorkbenchView: React.FC = () => {
               </button>
               <button
                 onClick={() => setFilterTab('UNASSIGNED')}
-                className={`px-3 py-1.5 rounded-md transition-all duration-200 press-tactile ${
+                className={`px-3 py-1.5 rounded-md transition-all duration-200 press-tactile whitespace-nowrap ${
                   filterTab === 'UNASSIGNED'
                     ? 'bg-primary text-on-primary font-bold shadow-xs scale-[1.02]'
                     : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60'
@@ -184,7 +211,10 @@ export const WorkbenchView: React.FC = () => {
                 return (
                   <div
                     key={c.id}
-                    onClick={() => setSelectedCase(c)}
+                    onClick={() => {
+                      setSelectedCase(c);
+                      setMobileTab('detail');
+                    }}
                     className={`p-3.5 rounded-xl border transition-all duration-200 cursor-pointer space-y-2.5 card-3d press-tactile ${
                       isSelected
                         ? 'liquid-glass border-primary shadow-md ring-2 ring-primary/30 scale-[1.01]'
@@ -226,7 +256,18 @@ export const WorkbenchView: React.FC = () => {
         </div>
 
         {/* Right Column: Case Detail Pane */}
-        <div className="lg:col-span-7">
+        <div className={`lg:col-span-7 ${mobileTab === 'queue' ? 'hidden lg:block' : 'block'}`}>
+          {/* Back button for mobile view */}
+          <div className="lg:hidden mb-3">
+            <button
+              onClick={() => setMobileTab('queue')}
+              className="px-3 py-1.5 rounded-lg liquid-glass border border-outline-variant/30 text-xs font-mono font-bold text-primary flex items-center gap-1.5 press-tactile"
+            >
+              <span className="material-symbols-outlined text-[16px]">arrow_back</span>
+              <span>Back to Docket Queue</span>
+            </button>
+          </div>
+
           {selectedCase ? (
             <CaseDetail
               caseItem={selectedCase}
@@ -250,6 +291,7 @@ export const WorkbenchView: React.FC = () => {
         onCaseCreated={(newCase) => {
           fetchCases();
           setSelectedCase(newCase);
+          setMobileTab('detail');
         }}
       />
     </div>
